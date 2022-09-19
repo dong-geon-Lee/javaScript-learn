@@ -107,3 +107,11 @@ console.log(accounts);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+
+const eurToUsd = 1.1;
+const totalDepositsUSD = account1.movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUsd)
+  .reduce((acc, mov) => Math.round(acc + mov), 0);
+
+console.log(totalDepositsUSD);
