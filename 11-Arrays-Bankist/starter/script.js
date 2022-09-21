@@ -62,10 +62,12 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // 계좌 리스트 렌더링
-const displayMovements = movements => {
+const displayMovements = (movements, sort = false) => {
   containerMovements.innerHTML = '';
 
-  movements.forEach((mov, i) => {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach((mov, i) => {
     const type = mov > 0 ? `deposit` : 'withdrawal';
 
     const html = `
@@ -73,7 +75,7 @@ const displayMovements = movements => {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}</div>
+        <div class="movements__value">${mov}€</div>
       </div>
     `;
 
@@ -81,17 +83,39 @@ const displayMovements = movements => {
   });
 };
 
-displayMovements(account1.movements);
-
 // 계좌 총 EUR
-const calcDisplayBalance = movments => {
-  const balance = movments.reduce((acc, cur) => acc + cur, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcDisplayBalance = acc => {
+  acc.balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
+
+  labelBalance.textContent = `${acc.balance}€`;
 };
 
-console.log(calcDisplayBalance(account1.movements));
+// 계좌 IN, OUT, INTEREST 계산
+const calcDisplaySummary = acc => {
+  const incomes = acc.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
 
-// accounts key(username) 생성
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = acc.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+
+  labelSumOut.textContent = `${Math.abs(out)}`;
+
+  const interest = acc.movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * acc.interestRate) / 100)
+    .filter(int => int >= 1)
+    .reduce((acc, int) => acc + int, 0);
+
+  labelSumInterest.textContent = `${interest}€`;
+};
+
+// calcDisplaySummary(account1.movements);
+
+// 계좌(accounts) username(key) 생성
 const createUsernames = accs => {
   accs.forEach(acc => {
     acc.username = acc.owner
@@ -102,16 +126,137 @@ const createUsernames = accs => {
   });
 };
 
-console.log(createUsernames(accounts));
+createUsernames(accounts);
+
 console.log(accounts);
 
+// 로그인 기능
+let currentAccount;
+
+// 업데이트 렌더링
+const updateUI = acc => {
+  // Display movements
+  displayMovements(acc.movements);
+
+  // Display balance
+  calcDisplayBalance(acc);
+
+  // Display summary
+  calcDisplaySummary(acc);
+};
+
+btnLogin.addEventListener('click', e => {
+  e.preventDefault();
+
+  // input value를 검사해서 일치하는 객체 그룹을 찾는다.
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+
+  console.log(currentAccount);
+
+  // && 연산자를 이용하기보다 옵셔널 체이닝 ? 사용
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI and message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+
+    containerApp.style.opacity = 100;
+
+    // Clear input fields
+    inputLoginUsername.value = '';
+    inputLoginPin.value = '';
+
+    // blur 사용으로 초점을 잃게 만들어라
+    inputLoginPin.blur();
+
+    // UI 업데이트
+    updateUI(currentAccount);
+  }
+});
+
+// 다른 유저의 계좌로 돈 보내기
+// ! find + push 사용하기
+btnTransfer.addEventListener('click', e => {
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  console.log(amount, receiverAcc);
+
+  inputTransferTo.value = '';
+  inputTransferAmount.value = '';
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    // 계좌 인출하기
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+
+    updateUI(currentAccount);
+  }
+});
+
+btnLoan.addEventListener('click', e => {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+  const checkLoan = currentAccount.movements.some(mov => mov >= amount * 0.1);
+
+  if (amount > 0 && checkLoan) {
+    console.log('통과');
+    // Add movement
+    currentAccount.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+
+  inputLoanAmount.value = '';
+});
+
+// 계좌 삭제하기
+// ! findIndex + splice 사용하기
+btnClose.addEventListener('click', e => {
+  e.preventDefault();
+
+  const checkCloseAccount =
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin;
+
+  if (checkCloseAccount) {
+    // 요소를 삭제 할 떄, findIndex를 사용하는 방법
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+
+    accounts.splice(index, 1);
+    containerApp.style.opacity = 0;
+  }
+
+  inputCloseUsername.value = '';
+  inputClosePin.value = '';
+});
+
+// ! 전역변수
+let sorted = false;
+console.log(sorted, 'default');
+btnSort.addEventListener('click', e => {
+  e.preventDefault();
+
+  displayMovements(currentAccount.movements, !sorted);
+  // ? 지역변수
+  sorted = !sorted;
+
+  console.log(sorted);
+});
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-
-const eurToUsd = 1.1;
-const totalDepositsUSD = account1.movements
-  .filter(mov => mov > 0)
-  .map(mov => mov * eurToUsd)
-  .reduce((acc, mov) => Math.round(acc + mov), 0);
-
-console.log(totalDepositsUSD);

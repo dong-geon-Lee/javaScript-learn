@@ -1,8 +1,8 @@
 // todo [148강] - 코딩 챌린지 (1)
-
 // 3년 이상은 성인, 3년 미만은 강아지
 // checkDogs 라는 함수를 만드세요.
 // 2개의 배열을 허용합니다.
+
 let juliaTestData = [3, 5, 2, 12, 7];
 let kateTestData = [4, 1, 15, 8, 3];
 
@@ -17,7 +17,7 @@ function checkDogs(data1, data2) {
   // const dogs = [...modifyData1, ...data2];
   const dogs = modifyData1.concat(data2);
   console.log(dogs);
-
+  console.log(modifyData1);
   // for of 솔루션
   // for (let age of dogs) {
   //   if (age >= 3) {
@@ -63,5 +63,18 @@ const calcAverageHumanAge = data => {
 
   return average;
 };
+a;
 
 console.log(calcAverageHumanAge(data));
+
+// todo [154강] - 코딩 챌린지 (3)
+const calcAverageHumanAgeChain = data2 => {
+  const modifyDogAge = data2
+    .map(age => (age > 2 ? 16 + age * 4 : 2 * age))
+    .filter(age => age >= 18)
+    .reduce((acc, cur, _, arr) => Math.round(acc + cur / arr.length), 0);
+
+  return modifyDogAge;
+};
+
+console.log(calcAverageHumanAgeChain(data2));

@@ -1,6 +1,36 @@
 //todo [142강] - 간단한 배열 방법
 let arr = ['a', 'b', 'c', 'd', 'e'];
 
+const account1 = {
+  owner: 'Jonas Schmedtmann',
+  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  interestRate: 1.2,
+  pin: 1111,
+};
+
+const account2 = {
+  owner: 'Jessica Davis',
+  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  interestRate: 1.5,
+  pin: 2222,
+};
+
+const account3 = {
+  owner: 'Steven Thomas Williams',
+  movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  interestRate: 0.7,
+  pin: 3333,
+};
+
+const account4 = {
+  owner: 'Sarah Smith',
+  movements: [430, 1000, 700, 50, 90],
+  interestRate: 1,
+  pin: 4444,
+};
+
+const accounts = [account1, account2, account3, account4];
+
 //! [1] slice
 //? slice는 원본을 변경하지않는다.
 //  index에서 시작해서 index 사이의 요소들을 새로운 배열로 반환한다.
@@ -244,3 +274,116 @@ const max = movements.reduce(
 
 console.log(maxNum);
 console.log(max);
+
+console.log('시작 ');
+//? 22/9/19 ! 여기부터 노션 작성 시작 하기
+
+//todo1 고차함수의 파이프 라인 구축
+const eurToUsd1 = 1.1;
+const totalDepositsUSD = account1.movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUsd1)
+  .reduce((acc, mov) => Math.round(acc + mov), 0);
+
+console.log(totalDepositsUSD);
+
+console.log(account1.movements);
+// find 메서드는 실제로 새 배열을 반환하지 않는다.
+// 첫 번쨰 요소만 반환한다. filter와 유사한 점이 있다.
+// ! 필터는 모든 요소를 반환하지만 find는 한 개의 요소만 반환한다.
+const firstWithdrawal = account1.movements.find(mov => mov > 0);
+console.log(firstWithdrawal);
+
+// ! 굉장히 유용하고 강력한 방법이다. 조건에 일치하는 객체 그룹을 반환한다.
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
+
+//
+//
+// ! 22/9/21 시작하기
+console.log(movements);
+
+// todo include(Equality)
+console.log(movements.includes(-130));
+
+// todo some(Condition)
+console.log(movements.some(mov => mov === -130));
+
+const anyDepsits = movements.some(mov => mov > 0);
+console.log(anyDepsits);
+
+// todo every
+console.log(account4.movements.every(mov => mov > 0));
+
+// todo Separate callback
+const deposit = mov => mov > 0;
+console.log(movements.some(deposit));
+console.log(movements.every(deposit));
+console.log(movements.filter(deposit));
+
+// todo flat
+// 배열을 평탄화 하는 작업을 한다.
+const arrList = [[1, 2, 3], [4, 5, 6], 7, 8];
+console.log(arrList.flat());
+
+// flat 디폴트 값은 1이다. 숫자는 배열의 중첩 level 평탄화 시키는 기준을 의미한다.
+const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+console.log(arrDeep.flat(2));
+
+// const accountMovements = accounts.map(acc => acc.movements);
+// const allMovements = accountMovements.flat();
+// console.log(allMovements);
+// const overalBalance = allMovements.reduce((acc, mov) => acc + mov, 0);
+// console.log(overalBalance);
+
+// ! 파이프라인으로 아름답게 값 구성
+const overalBalance = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, cur) => acc + cur, 0);
+
+console.log(overalBalance, '결과');
+
+// todo flatMap
+// flat + map === flatMap, 코드가 더 간결해지고 쓰기가 쉬워졋다
+// ? 평탄화 level은 1레벨까지만 허용된다. 그 이상은 flat()을 사용해야 된다.
+const overalBalance2 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, cur) => acc + cur, 0);
+
+console.log(overalBalance2, '결과2');
+
+// todo sort
+// ! 원래 배열을 반환한다!
+// String
+const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+console.log(owners.sort());
+
+// Numbers
+console.log(movements);
+
+// return < 0, A,B (keep order)
+// return > 0, B,A (switch order)
+// ! 매개변수의 위치가 오름차순 및 내림차순을 결정한다.
+// ? 첫번쨰 매개변수 a가 b보다 앞에 위치하면 오름차순이다. return < 0
+// ? 두번쨰 매개변수 b가 a보다 앞에 위치하면 내림차순이다. return > 0
+
+// 오름차순, 작은 숫자에서 큰 숫자로 정렬
+movements.sort((a, b) => a - b);
+
+console.log(movements, '오름');
+
+// 내림차순 ,큰 숫자에서 작은 숫자로 정렬
+movements.sort((a, b) => b - a);
+
+console.log(movements, '내림');
+
+// todo fill
+console.log([1, 2, 3, 4, 5, 6, 7]);
+console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+
+const x = new Array(7);
+console.log(x);
+// ! fill은 원본 배열을 바꾼다.
+x.fill(4);
+console.log(x);
