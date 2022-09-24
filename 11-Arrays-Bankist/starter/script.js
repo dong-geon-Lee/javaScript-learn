@@ -1,9 +1,3 @@
-'use strict';
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// BANKIST APP
-
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -113,8 +107,6 @@ const calcDisplaySummary = acc => {
   labelSumInterest.textContent = `${interest}€`;
 };
 
-// calcDisplaySummary(account1.movements);
-
 // 계좌(accounts) username(key) 생성
 const createUsernames = accs => {
   accs.forEach(acc => {
@@ -188,9 +180,6 @@ btnTransfer.addEventListener('click', e => {
 
   console.log(amount, receiverAcc);
 
-  inputTransferTo.value = '';
-  inputTransferAmount.value = '';
-
   if (
     amount > 0 &&
     receiverAcc &&
@@ -203,6 +192,10 @@ btnTransfer.addEventListener('click', e => {
 
     updateUI(currentAccount);
   }
+
+  inputTransferTo.value = '';
+  inputTransferAmount.value = '';
+  inputTransferAmount.blur();
 });
 
 btnLoan.addEventListener('click', e => {
@@ -248,7 +241,7 @@ btnClose.addEventListener('click', e => {
 
 // ! 전역변수
 let sorted = false;
-console.log(sorted, 'default');
+console.log(sorted, '전역변수');
 btnSort.addEventListener('click', e => {
   e.preventDefault();
 
@@ -256,7 +249,24 @@ btnSort.addEventListener('click', e => {
   // ? 지역변수
   sorted = !sorted;
 
-  console.log(sorted);
+  console.log(sorted, '지역변수');
 });
+
+// DOM 요소는 실제 배열이 아니기 때문에 map 함수를 작동시키기 위해서는
+// Array.from 메서드를 사용해서 실제 배열로 변형시켜야 됩니다.
+labelBalance.addEventListener('click', () => {
+  // todo 방법1
+  const movementsUI = Array.from(
+    document.querySelectorAll('.movements__value'),
+    el => el.textContent.replace('€', '')
+  );
+
+  console.log(movementsUI);
+
+  // todo 방법2
+  const movementsUI2 = [...document.querySelectorAll('.movements__value')];
+  console.log(movementsUI2.map(el => el.textContent.replace('€', '')));
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

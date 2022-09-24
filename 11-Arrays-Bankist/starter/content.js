@@ -385,5 +385,36 @@ console.log(new Array(1, 2, 3, 4, 5, 6, 7));
 const x = new Array(7);
 console.log(x);
 // ! fill은 원본 배열을 바꾼다.
-x.fill(4);
+x.fill(1, 3, 5);
+x.fill(1);
 console.log(x);
+
+// ! 9월 24일
+// todo Array.from
+// 위의 new Array보다 더 선호되는 형태이다.
+const y = Array.from({ length: 3 }, () => 3);
+console.log(y, 'create');
+
+// map과 유사한 면이 있다.
+const z = Array.from({ length: 7 }, (_, i) => i + 1);
+console.log(z);
+
+// split의 "" 와 비슷하게 작동한다. 문자열 => 배열
+console.log(Array.from('dog')); // ['d', 'o', 'g']
+console.log(Array.from('3910')); // ['3', '9', '1', '0']
+
+// 1~100까지 무작위 숫자를 랜덤으로 출력
+const one = Array.from({ length: 100 }, (_, i) =>
+  Math.round(Math.random(i + 1) * 100)
+);
+
+console.log(one);
+
+// todo replace
+// mdn 참고해서 작성하기
+
+// todo 연산자
+let a = 10;
+let b = 10;
+console.log(++a);
+console.log(b++);
