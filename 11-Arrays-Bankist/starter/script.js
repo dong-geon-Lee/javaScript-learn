@@ -252,6 +252,7 @@ btnSort.addEventListener('click', e => {
   console.log(sorted, '지역변수');
 });
 
+// ! 여기부터 노션작성
 // DOM 요소는 실제 배열이 아니기 때문에 map 함수를 작동시키기 위해서는
 // Array.from 메서드를 사용해서 실제 배열로 변형시켜야 됩니다.
 labelBalance.addEventListener('click', () => {

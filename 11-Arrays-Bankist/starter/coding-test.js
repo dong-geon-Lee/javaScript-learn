@@ -63,7 +63,6 @@ const calcAverageHumanAge = data => {
 
   return average;
 };
-a;
 
 console.log(calcAverageHumanAge(data));
 
@@ -78,3 +77,45 @@ const calcAverageHumanAgeChain = data2 => {
 };
 
 console.log(calcAverageHumanAgeChain(data2));
+
+// todo [167강] - 코딩 챌린지 (4)
+
+const dogs = [
+  { weight: 22, curFood: 250, owner: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owner: ['Matilda'] },
+  { weight: 13, curFood: 275, owner: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owner: ['Michael'] },
+];
+// 1/8
+dogs.forEach(dog => {
+  dog.recommendedFood = dog.weight * 0.75 * 28;
+});
+
+console.log(dogs);
+
+// 2/8
+const findSarahDog = dogs.find(dog => dog.owner.includes('Sarah'));
+console.log(findSarahDog);
+
+// 3/8
+const ownersEatTooMuch = dogs.filter(dog => dog.curFood > dog.recommendedFood);
+console.log(ownersEatTooMuch);
+
+const ownersEatTooLittle = dogs.filter(
+  dog => dog.curFood < dog.recommendedFood
+);
+
+console.log(ownersEatTooLittle);
+
+// 4/8 여기부터 시작해
+ownersEatTooMuch.forEach(dogs => {
+  console.log(`${dogs.owner[0]} and ${dogs.owner[1]} dogs eat too much!`);
+});
+
+// 5/8
+
+// 6/8
+
+// 7/8
+
+// 8/8

@@ -1,3 +1,4 @@
+// ! 여기 노션
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -101,7 +102,7 @@ const { deposits, withdrawals } = accounts
 console.log(deposits, withdrawals);
 
 // todo3 - 첫번쨰 문자열 대문자로 바꾸기
-// 고차함수 내부에 메서드 쓰기
+// 고차함수 내부에 메서드 쓰기 및 리팩토링
 const convertTitleCase = title => {
   const capitalize = str => {
     return str[0].toUpperCase() + str.slice(1);
