@@ -389,7 +389,7 @@ x.fill(1, 3, 5);
 x.fill(1);
 console.log(x);
 
-// ! 9월 24일 // ! 여기 노션
+// ! 블로그 써야 되는 부분 9 / 28
 // todo Array.from
 // 위의 new Array보다 더 선호되는 형태이다.
 const y = Array.from({ length: 3 }, () => 3);

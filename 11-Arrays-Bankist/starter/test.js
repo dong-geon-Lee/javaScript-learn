@@ -1,4 +1,5 @@
-// ! 여기 노션
+// ! 블로그 써야 되는 부분 9 / 28
+
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',

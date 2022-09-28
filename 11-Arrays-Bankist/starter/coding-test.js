@@ -78,24 +78,37 @@ const calcAverageHumanAgeChain = data2 => {
 
 console.log(calcAverageHumanAgeChain(data2));
 
+// ! 블로그 써야 되는 부분 9 / 28
 // todo [167강] - 코딩 챌린지 (4)
-
 const dogs = [
   { weight: 22, curFood: 250, owner: ['Alice', 'Bob'] },
   { weight: 8, curFood: 200, owner: ['Matilda'] },
   { weight: 13, curFood: 275, owner: ['Sarah', 'John'] },
   { weight: 32, curFood: 340, owner: ['Michael'] },
 ];
+
 // 1/8
 dogs.forEach(dog => {
-  dog.recommendedFood = dog.weight * 0.75 * 28;
+  dog.recommendedFood = Math.round(dog.weight ** 0.75 * 28);
 });
-
 console.log(dogs);
+
+// 솔루션 1
+// dogs.forEach(dog => (dog.recFood = Math.trunc(dog.weight ** 0.75 * 28)));
+// console.log(dogs);
 
 // 2/8
 const findSarahDog = dogs.find(dog => dog.owner.includes('Sarah'));
 console.log(findSarahDog);
+
+// 솔루션 2
+// const dogSarah = dogs.find(dog => dog.owner.includes('Sarah'));
+// console.log(dogSarah);
+// console.log(
+//   `Sarah's dog is eating too ${
+//     dogSarah.curFood > dogSarah.recFood ? 'much' : 'little'
+//   }`
+// );
 
 // 3/8
 const ownersEatTooMuch = dogs.filter(dog => dog.curFood > dog.recommendedFood);
@@ -104,18 +117,62 @@ console.log(ownersEatTooMuch);
 const ownersEatTooLittle = dogs.filter(
   dog => dog.curFood < dog.recommendedFood
 );
-
 console.log(ownersEatTooLittle);
 
-// 4/8 여기부터 시작해
-ownersEatTooMuch.forEach(dogs => {
-  console.log(`${dogs.owner[0]} and ${dogs.owner[1]} dogs eat too much!`);
-});
+// 솔루션 3
+// const ownersEatTooMuch = dogs
+//   .filter(dog => dog.curFood > dog.recFood)
+//   .flatMap(dog => dog.owner);
+
+// console.log(ownersEatTooMuch);
+
+// const ownersEatTooLittle = dogs
+//   .filter(dog => dog.curFood < dog.recFood)
+//   .flatMap(dog => dog.owner);
+
+// console.log(ownersEatTooLittle);
+
+// 4/8
+const eatMuch = ownersEatTooMuch.flatMap(dogs => dogs.owner);
+console.log(`${eatMuch.join(' and ')}'s dogs eat too much!`);
+
+const eatLittle = ownersEatTooLittle.flatMap(dogs => dogs.owner);
+console.log(`${eatLittle.join(' and ')}'s dogs eat too little!`);
+
+// 솔루션 4
+// console.log(`${eatMuch.join(' and ')}'s dogs eat too much!`);
+// console.log(`${eatLittle.join(' and ')}'s dogs eat too little!`);
 
 // 5/8
+// 솔루션 5
+console.log(dogs.some(dog => dog.curFood === dog.recFood));
 
 // 6/8
+const recommends = dogs.some(dog =>
+  dog.curFood < dog.recommendedFood * 1.1 &&
+  dog.curFood > dog.recommendedFood * 0.9
+    ? true
+    : false
+);
+console.log(recommends);
+
+// 솔루션 6
+const checkEatingOkay = dog => {
+  return (
+    dog.curFood < dog.recommendedFood * 1.1 &&
+    dog.curFood > dog.recommendedFood * 0.9
+  );
+};
+
+console.log(dogs.some(checkEatingOkay));
 
 // 7/8
+// 솔루션 7
+console.log(dogs.filter(checkEatingOkay));
 
 // 8/8
+// 솔루션 8
+const dogsCopy = dogs
+  .slice()
+  .sort((a, b) => a.recommendedFood - b.recommendedFood);
+console.log(dogsCopy);
