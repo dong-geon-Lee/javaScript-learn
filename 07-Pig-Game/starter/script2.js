@@ -5,6 +5,7 @@ const score1El = _doc('#score--1');
 const diceEl = _doc('.dice');
 const btnRoll = _doc('.btn--roll');
 const btnHold = _doc('.btn--hold');
+const btnNewGame = _doc('.btn--new');
 const current0El = _doc('#current--0');
 const current1El = _doc('#current--1');
 const player0 = _doc('.player--0');
@@ -26,120 +27,91 @@ let cur0Score = 0;
 // 1번 현재점수
 let cur1Score = 0;
 
+let playing = true;
+
 // 더미 데이터 초기화
 score0El.textContent = 0;
 score1El.textContent = 0;
 diceEl.style.display = `none`;
 
-// 주사위 굴리기
-// ! Hold는 누적값 계산
-// ! 주사위 1은 cur0Score 초기화
-// 버튼이 클릭 할 떄마다 랜덤숫자가 변수에 할당된다.
 btnRoll.addEventListener('click', () => {
   let randomNumber = Math.trunc(Math.random() * 6 + 1);
 
-  diceEl.style.display = `block`;
-  diceEl.src = `dice-${randomNumber}.png`;
+  if (playing) {
+    diceEl.style.display = `block`;
+    diceEl.src = `dice-${randomNumber}.png`;
 
-  if (player0.classList.contains('player--active')) {
-    if (randomNumber === 1) {
-      console.log(cur0Score);
-      current0El.textContent = cur0Score = 0;
-      activePlayer = 1;
-      player0.classList.remove('player--active');
-      player1.classList.add('player--active');
-    } else {
-      score0 += randomNumber;
-      cur0Score = score0;
-      current0El.textContent = cur0Score - scores[activePlayer];
-    }
-  } else if (player1.classList.contains('player--active')) {
-    if (randomNumber === 1) {
-      current1El.textContent = cur1Score = 0;
-      activePlayer = 0;
-      player1.classList.remove('player--active');
-      player0.classList.add('player--active');
-    } else {
-      score1 += randomNumber;
-      cur1Score = score1;
-      current1El.textContent = cur1Score - scores[activePlayer];
+    if (player0.classList.contains('player--active')) {
+      if (randomNumber === 1) {
+        cur0Score = score0 = scores[activePlayer];
+        current0El.textContent = cur0Score - scores[activePlayer];
+
+        activePlayer = 1;
+        player0.classList.remove('player--active');
+        player1.classList.add('player--active');
+      } else {
+        score0 += randomNumber;
+        cur0Score = score0;
+        current0El.textContent = cur0Score - scores[activePlayer];
+      }
+    } else if (player1.classList.contains('player--active')) {
+      if (randomNumber === 1) {
+        cur1Score = score1 = scores[activePlayer];
+        current1El.textContent = cur1Score - scores[activePlayer];
+
+        activePlayer = 0;
+        player1.classList.remove('player--active');
+        player0.classList.add('player--active');
+      } else {
+        score1 += randomNumber;
+        cur1Score = score1;
+        current1El.textContent = cur1Score - scores[activePlayer];
+      }
     }
   }
 });
 
 btnHold.addEventListener('click', () => {
-  if (player0.classList.contains('player--active')) {
-    current0El.textContent = cur0Score = 0;
-    score0El.textContent = scores[activePlayer] = score0;
-    activePlayer = 1;
-    player0.classList.remove('player--active');
-    player1.classList.add('player--active');
-  } else if (player1.classList.contains('player--active')) {
-    current1El.textContent = cur1Score = 0;
-    score1El.textContent = scores[activePlayer] = score1;
-    activePlayer = 0;
-    player1.classList.remove('player--active');
-    player0.classList.add('player--active');
+  if (playing) {
+    if (player0.classList.contains('player--active')) {
+      if (score0 > 20) {
+        playing = false;
+        diceEl.style.display = `none`;
+        player0.classList.add('player--winner');
+      }
+      current0El.textContent = cur0Score = 0;
+      score0El.textContent = scores[activePlayer] = score0;
+      activePlayer = 1;
+      player0.classList.remove('player--active');
+      player1.classList.add('player--active');
+    } else if (player1.classList.contains('player--active')) {
+      if (score1 > 20) {
+        playing = false;
+        diceEl.style.display = `none`;
+        player1.classList.add('player--winner');
+      }
+
+      current1El.textContent = cur1Score = 0;
+      score1El.textContent = scores[activePlayer] = score1;
+      activePlayer = 0;
+      player1.classList.remove('player--active');
+      player0.classList.add('player--active');
+    }
   }
 });
 
-// // 주사위 굴리기
-// btnRoll.addEventListener('click', () => {
-//   // 버튼이 클릭 할 떄마다 랜덤숫자가 변수에 할당된다.
-//   let randomNumber = Math.trunc(Math.random() * 6 + 1);
+btnNewGame.addEventListener('click', () => {
+  cur0Score = cur1Score = score0 = score1 = 0;
+  activePlayer = scores[0] = scores[1] = 0;
+  current0El.textContent = cur0Score;
+  current1El.textContent = cur1Score;
+  score0El.textContent = score0;
+  score1El.textContent = score1;
 
-//   diceEl.style.display = `block`;
-//   diceEl.src = `dice-${randomNumber}.png`;
-
-//   // 버튼 클릭 시, active 클래스가 0번 player에 있을 떄
-//   // ! Hold는 누적값 계산
-//   // ! 주사위 1은 cur0Score 초기화
-//   if (player0.classList.contains('player--active')) {
-//     if (randomNumber === 1) {
-//       scores[activePlayer] = cur0Score = 0;
-//       current0El.textContent = scores[activePlayer];
-
-//       activePlayer = 1;
-//       player0.classList.remove('player--active');
-//       player1.classList.add('player--active');
-//     } else {
-//       cur0Score += randomNumber;
-//       current0El.textContent = cur0Score;
-//       scores[activePlayer] = cur0Score;
-//     }
-//   } else if (player1.classList.contains('player--active')) {
-//     if (randomNumber === 1) {
-//       scores[activePlayer] = cur1Score = 0;
-//       current1El.textContent = scores[activePlayer];
-
-//       activePlayer = 0;
-//       player1.classList.remove('player--active');
-//       player0.classList.add('player--active');
-//     } else {
-//       cur1Score += randomNumber;
-//       current1El.textContent = cur1Score;
-//       scores[activePlayer] = cur1Score;
-//     }
-//   }
-// });
-
-// btnHold.addEventListener('click', () => {
-//   if (player0.classList.contains('player--active')) {
-//     if (cur0Score > 0) {
-//       scores[activePlayer] += cur0Score;
-//     }
-//     current0El.textContent = cur0Score = 0;
-//     score0El.textContent = scores[activePlayer];
-
-//     activePlayer = 1;
-//     player0.classList.remove('player--active');
-//     player1.classList.add('player--active');
-//   } else if (player1.classList.contains('player--active')) {
-//     current1El.textContent = cur1Score = 0;
-//     score1El.textContent = scores[activePlayer];
-
-//     activePlayer = 0;
-//     player1.classList.remove('player--active');
-//     player0.classList.add('player--active');
-//   }
-// });
+  playing = true;
+  player0.classList.add('player--active');
+  player1.classList.remove('player--active');
+  player0.classList.remove('player--winner');
+  player1.classList.remove('player--winner');
+  diceEl.style.display = `none`;
+});
