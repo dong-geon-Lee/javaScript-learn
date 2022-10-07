@@ -46,6 +46,11 @@ const restaurant = {
   orderPasta: function (ing1, ing2, ing3) {
     console.log(`Here is your delicious pasta with ${ing1} ${ing2} ${ing3}`);
   },
+
+  orderPizza: function (mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  },
 };
 
 restaurant.orderDelivery({
@@ -174,3 +179,137 @@ const restaurantCopy = { ...restaurant };
 restaurantCopy.name = 'Ristorante Roma';
 console.log(restaurantCopy.name);
 console.log(restaurant.name);
+
+// 106강 - Destructuring
+// 스프레드 오른쪽에
+const arrList2 = [1, 2, ...[3, 4]];
+console.log(arrList2);
+
+// 래스트, 왼쪽에
+const [h, w, ...others] = [1, 2, 3, 4, 5];
+console.log(h, w, others);
+
+const [Pizza, , risotto, ...otherFood] = [
+  ...restaurant.mainMenu,
+  ...restaurant.starterMenu,
+];
+
+console.log(Pizza, risotto, otherFood);
+
+// Objects
+const { sat, ...weekdays } = restaurant.openingHours;
+console.log(sat, weekdays);
+
+// 2) Functions
+const add = function (...numbers) {
+  console.log(numbers);
+
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum += numbers[i];
+    console.log(sum);
+  }
+};
+
+// let numberList = [8, 2, 5, 3, 2, 1, 4];
+add(2, 3);
+add(5, 3, 7, 2);
+add(8, 2, 5, 3, 2, 1, 4);
+
+const x1 = [23, 5, 7];
+add(...x1);
+
+restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinach');
+restaurant.orderPizza('mushrooms');
+
+//  107강
+// 모든 데이터 타입 사용가능, 모든 데이터 타입 반환
+// short-circuiting
+console.log('---- OR ----');
+
+console.log(3 || 'Jonas');
+console.log('' || 'Jonas');
+console.log(true || 0);
+// 둘다 false 값이고 마지막 false값을 반환한다.
+console.log(undefined || null);
+
+console.log(undefined || 0 || '' || 'Hello' || 23 || null);
+
+restaurant.numGuests = 31;
+const guests1 = restaurant.numGuests ? restaurant.numGuests : 10;
+console.log(guests1);
+
+const guests2 = restaurant.numGuests || 10;
+console.log(guests2);
+
+console.log('---- AND ----');
+// 첫 번쨰 값이 거짓인 경우 그 값을 즉시 반환한다.
+// 두 번쨰 피연산자를 평가하지 않는다.
+console.log(0 && 'Jonas');
+console.log(0 && 1);
+// true가 나오면 평가를 계속 진행하여 마지막 값을 반환한다.
+console.log(7 && 'Jonas');
+// null은 false가 나왔으므로 문자열 jonas 단락 된다.
+console.log('Hello' && 23 && null && 'jonas');
+
+// if (restaurant.orderPizza) {
+//   restaurant.orderPizza('mushrooms', 'spinach');
+// }
+
+restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach');
+
+// 108 nullish 병합연산자(??)
+// or연산자 || 와 비슷하게 작동한다.
+// Nullish: null and undefiend (NOT 0 or '')
+// 숫자 0과 빈 문자열 ''을 true로 인지한다.
+const guestCorrect = restaurant.numGuests ?? 10;
+console.log(guestCorrect);
+
+//  109강 논리연산자
+const rest1 = {
+  name: 'Capri',
+  numGuests: 20,
+  // numGuests: 0,
+};
+
+const rest2 = {
+  name: 'La Piazza',
+  owner: 'Giovanni Rossi',
+};
+
+// OR assignment operator
+rest1.numGuests = rest1.numGuests || 10;
+// rest1.numGuests ||= 10;
+
+rest2.numGuests = rest2.numGuests || 10;
+// rest2.numGuests ||= 10;
+
+console.log(rest1);
+console.log(rest2);
+
+// Nullish operator - null병합 연산자는 null or undefined만 잡아낸다
+rest1.numGuests = rest1.numGuests ?? 10;
+// rest1.numGuests ??= 10;
+
+rest2.numGuests = rest2.numGuests ?? 10;
+// rest2.numGuests ??= 10;
+
+console.log(rest1);
+console.log(rest2);
+
+// AND assignment operator
+// 첫번쨰 값이 false알떄 그 즉시 반환되고 뒤는 단락된다.
+rest1.owner = rest1.owner && '<ANONYMOUS>';
+// rest1.owner &&= '<ANONYMOUS>';
+
+// owner가 true고 뒤 문자열로 true이므로 마지막 문자열을 반환한다.
+rest2.owner = rest2.owner && '<ANONYMOUS>';
+// rest2.owner &&= '<ANONYMOUS>';
+
+console.log(rest1);
+console.log(rest2);
+
+// 110강 - 코딩챌린지 #1
+//  처리
+
+// 111강 - for of
