@@ -5,6 +5,25 @@
 const flights =
   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
 
+const weekday = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+const openingHours = {
+  [weekday[3]]: {
+    open: 12,
+    close: 22,
+  },
+  fri: {
+    open: 11,
+    close: 23,
+  },
+  sat: {
+    open: 0, // Open 24 hours
+    close: 24,
+  },
+};
+
+console.log(openingHours);
+
 // Data needed for first part of the section
 const restaurant = {
   name: 'Classico Italiano',
@@ -12,32 +31,13 @@ const restaurant = {
   categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+  openingHours,
 
-  openingHours: {
-    thu: {
-      open: 12,
-      close: 22,
-    },
-    fri: {
-      open: 11,
-      close: 23,
-    },
-    sat: {
-      open: 0, // Open 24 hours
-      close: 24,
-    },
-  },
-
-  order: function (starterIndex, mainIndex) {
+  order(starterIndex, mainIndex) {
     console.log(this);
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
-  orderDelivery: function ({
-    starterIndex = 1,
-    mainIndex = 0,
-    time = '20:00',
-    address,
-  }) {
+  orderDelivery({ starterIndex = 1, mainIndex = 0, time = '20:00', address }) {
     console.log(
       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
     );
@@ -74,6 +74,7 @@ const arr = [2, 3, 4];
 // 배열의 요소에 접근한다.
 const [x, y, z] = arr;
 console.log(x, y, z);
+console.log(arr);
 
 // ! key에 접근 할 때는 문자열을 써줘야 된다!
 // ! 다른 방법은 .(도트 연산자로 key와 연결해라)
@@ -101,6 +102,8 @@ const nested = [2, 4, [5, 6]];
 // console.log(i,j)
 const [i, , [j, k]] = nested;
 console.log(i, j, k);
+console.log(nested.flat());
+console.log(nested);
 
 //  Default values
 const [p, q, r] = [8, 9];
@@ -111,8 +114,12 @@ console.log(a, b, c);
 
 // 104강 - 객체 구조분해
 // ? 트릭 4 구조분해 및 이름 바꾸기
-const { name: restaurantName, openingHours, categories } = restaurant;
-console.log(restaurantName, openingHours, categories);
+const {
+  name: restaurantName,
+  openingHours: openingHour,
+  categories,
+} = restaurant;
+console.log(restaurantName, openingHour, categories);
 
 // restaruant에 존재하지 않는 key를 default value로 정의 할 수 있으며
 // 이미 있는 starterMenu도 배열을 기본값으로 줄 수 있다.
@@ -137,6 +144,7 @@ console.log(ocn, ccn);
 // 105강 spread operator
 const arrList = [7, 8, 9];
 const newArr = [1, 2, ...arrList];
+
 console.log(arrList);
 console.log(newArr);
 console.log(...newArr);
@@ -147,17 +155,20 @@ console.log(newMenu);
 
 // Copy array
 const mainMenuCopy = [...restaurant.mainMenu];
+console.log(mainMenuCopy);
 
 // Join 2 arrays
 const menuList = [...restaurant.starterMenu, ...restaurant.mainMenu];
 console.log(menuList);
 
-// iterables  arrays, strings, maos, sets. NOT objects(객체는 아니다)
+// iterables  arrays, strings, map, sets. NOT objects(객체는 아니다)
 // ! 자주 잊어먹는다. 배열 뿐만 아니라 문자열도 spread 사용이 가능하다.
 const str = 'Jonas';
 const letters = [...str, ' ', 'S.'];
 console.log(letters);
 console.log(...str);
+console.log(...str.split(''));
+console.log('J o n a s');
 // console.log(`${...str}`);
 
 const ingredients = [
@@ -168,7 +179,7 @@ const ingredients = [
 
 console.log(ingredients);
 
-restaurant.orderPasta(ingredients[0], ingredients[1], ingredients[2]);
+// restaurant.orderPasta(ingredients[0], ingredients[1], ingredients[2]);
 restaurant.orderPasta(...ingredients);
 
 // Objects
@@ -262,6 +273,7 @@ restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach');
 // or연산자 || 와 비슷하게 작동한다.
 // Nullish: null and undefiend (NOT 0 or '')
 // 숫자 0과 빈 문자열 ''을 true로 인지한다.
+restaurant.numGuests = 0;
 const guestCorrect = restaurant.numGuests ?? 10;
 console.log(guestCorrect);
 
@@ -313,3 +325,35 @@ console.log(rest2);
 //  처리
 
 // 111강 - for of
+// break와 continue문을 사용할 수없다.
+const menus = [...restaurant.starterMenu, ...restaurant.mainMenu];
+console.log(menus);
+
+for (const item of menus) {
+  console.log(item);
+}
+
+// 구조 분해 사용
+for (const [i, item] of menus.entries()) {
+  console.log(`${i + 1}: ${item}`);
+}
+
+// 112강 - 객체 리터럴
+// ES6 enhanced object literals
+// 객체의 key와 value의 명칭이 같으면 축약형태로 작성 가능
+// ? restaurant 객체에서 예시 확인하기
+// obj: obj => obj,
+// 함수 메서드를 간단하게 작성하기
+
+// 113강 - 옵셔널 체이닝 (?.)
+if (restaurant.openingHours && restaurant.openingHours.mon) {
+  console.log(restaurant.openingHours.mon);
+}
+
+// 속성이 읽히지 않으면 즉시 undefined 반환
+// 속성이 null이 아니어야 합니다.
+// 0이나 빈 문자열이면 여전히 존재
+console.log(restaurant.openingHours.mon?.open);
+
+// 에러 발생. mon에서 undefined인데 undefined.open으로 읽으려하니 에러가 걸린다.
+// console.log(restaurant.openingHours.mon.open);

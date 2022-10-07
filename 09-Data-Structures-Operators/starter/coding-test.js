@@ -100,6 +100,7 @@ console.log(players1Final);
 const {
   odds: { team1, x: draw, team2 },
 } = game;
+
 console.log(team1, draw, team2);
 
 // 6. Write a function ('printGoals') that receives an arbitrary number of player names (NOT an array) and
@@ -127,4 +128,5 @@ printGoals(...game.scored);
 // console.log(teams1 > teams2 ? teams1 : teams2);
 
 team1 < team2 && console.log('Team 2 is more likely to win');
-team1 > team2 && console.log('Team 1 is more likely to win');
+
+console.log(team1 > team2 && console.log('Team 1 is more likely to win'));
