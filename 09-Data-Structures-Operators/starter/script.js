@@ -8,7 +8,7 @@ const flights =
 const weekday = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
 const openingHours = {
-  [weekday[3]]: {
+  thu: {
     open: 12,
     close: 22,
   },
@@ -338,6 +338,10 @@ for (const [i, item] of menus.entries()) {
   console.log(`${i + 1}: ${item}`);
 }
 
+for (const item of menus.entries()) {
+  console.log(item);
+}
+
 // 112강 - 객체 리터럴
 // ES6 enhanced object literals
 // 객체의 key와 value의 명칭이 같으면 축약형태로 작성 가능
@@ -350,10 +354,213 @@ if (restaurant.openingHours && restaurant.openingHours.mon) {
   console.log(restaurant.openingHours.mon);
 }
 
+// 에러 발생 -> mon에서 undefined인데 undefined.open으로 읽으려하니 에러가 걸린다.
+console.log(restaurant.openingHours.mon?.open);
+
 // 속성이 읽히지 않으면 즉시 undefined 반환
 // 속성이 null이 아니어야 합니다.
 // 0이나 빈 문자열이면 여전히 존재
-console.log(restaurant.openingHours.mon?.open);
+let bomo = {
+  money: '',
+  cake: 0,
+};
 
-// 에러 발생. mon에서 undefined인데 undefined.open으로 읽으려하니 에러가 걸린다.
-// console.log(restaurant.openingHours.mon.open);
+console.log(restaurant.openingHours.mon?.open);
+console.log(bomo.cake ?? 'empty');
+
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+console.log(openingHours);
+
+// ! 유용한 예제, 옵셔널 체이닝은 병합 연산자와 함께 사용해야된다.
+// ! 결과값을 얻지 못하는 상태에서 우측 연산자에 정의한 기본값을 받으려면
+// ! 옵셔널 체이닝으로 undefined 값을 얻어내서 에러를 막아야 병합연산자까지
+// ! 로직 처리가 이어지기 때문이다.
+for (const day of days) {
+  const open = restaurant.openingHours[day]?.open ?? 'closed';
+  console.log(`On ${day}, we open at ${open}`);
+}
+
+// Methods
+console.log(restaurant.order(0, 1) ?? 'Method does not exist');
+console.log(restaurant.orderRisotto?.(0, 1) ?? 'Method does not exist');
+
+// Array
+const users = [{ name: { he: { she: null } } }];
+// const users = [];
+
+// 일반 옵셔널 체이닝을 사용하여 없는 속성이 계속 연결돼도
+// undefined가 반환되고 병합 연산자까지 평가되어 우측의 value를 얻는다
+console.log(users.length);
+console.log(users[0].name.he?.she ?? 'User array empty');
+console.log(users[0].name.he.she);
+// console.log(users[0]?.name ?? users.push(1, 2, 3));
+
+// if (users.length > 0) {
+//   console.log(users[0].name);
+// } else {
+//   console.log('user array empty');
+// }
+
+// 114강 - 객체 반복 Object.key, Object.value, Object.entires
+console.log(openingHours);
+
+// Property names
+const properties = Object.keys(openingHour);
+console.log(properties, 'Object.key');
+
+let openStr = `we are open on ${properties.length} days: `;
+
+for (const day of properties) {
+  openStr += `${day}, `;
+}
+
+console.log(openStr);
+
+let openStr2 = `we are open on ${properties.length} days: `;
+
+for (const [i, el] of properties.entries()) {
+  let arrLen = properties.length - 1;
+  arrLen === i ? (openStr2 += `${el}`) : (openStr2 += `${el}, `);
+}
+
+for (const item of properties.entries()) {
+  console.log(item);
+}
+
+console.log(openStr2);
+
+// Property Values
+const values = Object.values(openingHours);
+console.log(values, 'Object.values');
+
+// Property keys
+const keys = Object.keys(openingHours);
+console.log(keys, 'Object.keys');
+
+// Entire object
+const entries = Object.entries(openingHours);
+console.log(entries, 'Object.entries');
+
+// ! 훌륭한 예제
+for (const [day, { open, close }] of entries) {
+  console.log(`On ${day} we open at ${open} and close at ${close}`);
+}
+
+// 115강 - 코딩 챌린지 #2
+
+// 116강 - new Set()
+const ordersSet = new Set([
+  'Pasta',
+  'Pizza',
+  'Pizza',
+  'Risotto',
+  'Pasta',
+  'Pizza',
+]);
+
+console.log(ordersSet);
+console.log(new Set('Jonas'));
+// size는 배열의 길이와 유사하다. 그러나 배열의 길이는 아니다.
+console.log(ordersSet.size);
+console.log(ordersSet.has('Pizza'));
+console.log(ordersSet.has('Bread'));
+ordersSet.add('Garlic Bread');
+ordersSet.add('Garlic Bread');
+ordersSet.delete('Risotto');
+// ordersSet.clear();
+console.log(ordersSet);
+// Set으로 iterable 배열을 만들고 fof of로 순회 시,
+// ! 중복된 요소들이 제외되고 출력되었다.
+
+for (const order of ordersSet) {
+  console.log(order);
+}
+// ! 가장 핵심인 부분
+// 중복을 제거하고 실제 배열로 만든다
+const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter'];
+const staffUnique = [...new Set(staff)];
+console.log(staffUnique);
+console.log(staffUnique.length);
+
+// 고유한 배열의 길이
+console.log(
+  new Set(['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']).size
+);
+
+// 고유한 문자열의 길이
+console.log(new Set('jonasschmedtmann').size);
+
+// 117강 - new Map()
+const rest = new Map();
+rest.set('name', 'Classico Italiano');
+rest.set(1, 'Firenze, Italy');
+console.log(rest.set(2, 'Lisbon, Portugal'));
+
+rest
+  .set('categories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+  .set('open', 11)
+  .set('close', 23)
+  .set(true, 'We are open :D')
+  .set(false, 'We are closed :(');
+
+console.log(rest.get('name'));
+console.log(rest.get(true));
+console.log(rest.get(1));
+
+const time = 21;
+
+console.log(rest.get(time > rest.get('open') && time < rest.get('close')));
+
+console.log(rest.has('categories'));
+rest.delete(2);
+// rest.clear();
+const arr11 = [1, 2];
+rest.set(arr11, 'Test');
+rest.set(document.querySelector('h1'), 'Heading');
+
+console.log(rest);
+console.log(rest.size);
+console.log(rest.get(arr11));
+
+// 118강 - iterable new Map()
+const question = new Map([
+  ['question', 'What is the best programming language in the world?'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JavaScript'],
+  ['correct', 3],
+  [true, 'Correct 🎉'],
+  [false, 'Try again!'],
+]);
+
+console.log(question);
+console.log(question.get(1));
+// Convery object to map
+console.log(Object.entries(openingHours));
+const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap);
+
+// Quiz app
+for (const [key, value] of question) {
+  if (typeof key === 'number') {
+    console.log(`Answer ${key}: ${value}`);
+  }
+}
+
+// const answer = Number(prompt('Your answer'));
+const answer = 3;
+console.log(answer);
+
+console.log(question.get(answer));
+console.log(question.get('correct') === answer);
+console.log(question.get(question.get('correct') === answer));
+
+// Convert map to array
+console.log([...question]);
+console.log([...question.keys()]);
+console.log([...question.values()]);
+
+// 119강 데이터 구조 사용
+// 1. 간단한 리스트 - Arrays or Sets
+// 2. key/value pairs - Objects or Maps
