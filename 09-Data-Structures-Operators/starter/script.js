@@ -465,10 +465,12 @@ console.log(new Set('Jonas'));
 console.log(ordersSet.size);
 console.log(ordersSet.has('Pizza'));
 console.log(ordersSet.has('Bread'));
+
 ordersSet.add('Garlic Bread');
 ordersSet.add('Garlic Bread');
 ordersSet.delete('Risotto');
-// ordersSet.clear();
+console.log(ordersSet.size);
+ordersSet.clear();
 console.log(ordersSet);
 // Set으로 iterable 배열을 만들고 fof of로 순회 시,
 // ! 중복된 요소들이 제외되고 출력되었다.
@@ -476,6 +478,7 @@ console.log(ordersSet);
 for (const order of ordersSet) {
   console.log(order);
 }
+
 // ! 가장 핵심인 부분
 // 중복을 제거하고 실제 배열로 만든다
 const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter'];
@@ -536,10 +539,16 @@ const question = new Map([
 
 console.log(question);
 console.log(question.get(1));
+
 // Convery object to map
 console.log(Object.entries(openingHours));
 const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap.get('thu'));
+console.log(hoursMap.delete('fri'));
 console.log(hoursMap);
+
+const newHours = [...hoursMap];
+console.log(newHours);
 
 // Quiz app
 for (const [key, value] of question) {
@@ -564,3 +573,172 @@ console.log([...question.values()]);
 // 119강 데이터 구조 사용
 // 1. 간단한 리스트 - Arrays or Sets
 // 2. key/value pairs - Objects or Maps
+
+// 120강 코딩테스트
+
+// 121강 문자열과 함께 작동
+const airline = 'TAP Air Portugal';
+const plane = 'A320';
+
+console.log(plane[0]);
+console.log(plane[1]);
+console.log(plane[2]);
+console.log('B737'[0]);
+
+console.log(airline.length);
+console.log('B737'.length);
+
+// 기본적으로 문자열은 원시값이기 떄문에 변경할 수 없으며
+// 다른값에 저장하여 새로원 문자열로 반환한다.
+// ! indexOf lastIndexOf
+console.log(airline.indexOf('r'));
+console.log(airline.lastIndexOf('r'));
+console.log(airline.lastIndexOf('portugal'));
+
+// ! slice
+console.log(airline.slice(4));
+console.log(airline.slice(4, 7));
+
+console.log(airline.slice(0, airline.indexOf(' ')));
+console.log(airline.slice(airline.lastIndexOf(' ') + 1));
+
+console.log(airline.slice(-2));
+console.log(airline.slice(1, -1));
+
+const checkMiddleSeat = seat => {
+  const s = seat.slice(-1);
+
+  if (s === 'B' || s === 'E') {
+    console.log('You got the middle seat 🌞');
+  } else {
+    console.log('You got lucky 🌝');
+  }
+};
+
+checkMiddleSeat('11B');
+checkMiddleSeat('23C');
+checkMiddleSeat('3E');
+
+console.log(new String('jonas'));
+console.log(typeof new String('jonas'));
+console.log(typeof new String('jonas').slice(1));
+
+// 122강 - 문자열 작업
+// ! toLowerCase toUpperCase
+console.log(airline.toLowerCase());
+console.log(airline.toUpperCase());
+
+// Fix capitalization in name
+const passenger = 'jOnAS';
+const passengerLower = passenger.toLowerCase();
+const passengerCorrect =
+  passengerLower[0].toUpperCase() + passengerLower.slice(1);
+
+console.log(passengerCorrect);
+
+// Comparing email
+const email = 'hello@jonas.io';
+const loginEmail = '  Hello@Jonas.Io \n';
+
+// const lowerEmail = loginEmail.toLowerCase();
+// const trimmedEmail = lowerEmail.trim();
+// console.log(trimmedEmail);
+
+// ! trim
+const normalizedEmail = loginEmail.toLowerCase().trim();
+console.log(normalizedEmail);
+console.log(email === normalizedEmail);
+
+// replacing - 원본을 변형하지 않는다.
+// ! replace replaceAll
+const priceGB = '288,97£';
+const priceUS = priceGB.replace('£', '$').replace(',', '.');
+console.log(priceUS);
+
+const announcement =
+  'All passengers come to boarding door 23. Boarding door 23!';
+
+console.log(announcement.replace('door', 'gate'));
+console.log(announcement.replace(/door/g, 'gate'));
+console.log(announcement.replaceAll('door', 'gate'));
+
+// Booleans
+// ! includes startsWith endsWith
+const planes = 'Airbus A320neo';
+console.log(planes.includes('A320'));
+console.log(planes.includes('Boeing'));
+console.log(planes.startsWith('Air'));
+
+if (planes.startsWith('Airbus') && planes.endsWith('neo')) {
+  console.log('Part of the NEW ARirbus family');
+}
+
+// Practice exercise
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+
+  if (baggage.includes('knife') || baggage.includes('gun')) {
+    console.log('You are NOT allowed on board');
+  } else {
+    console.log('Welcome aboard!');
+  }
+};
+
+checkBaggage('I have a laptop, some Food and a pocket Knife');
+checkBaggage('Socks and camera');
+checkBaggage('Got some snacks and a gun for protection');
+
+// 123강 문자열 작동 3
+// ! split join
+console.log('a+very+nice+string'.split('+'));
+console.log('Jonas Schmedtmann'.split(' '));
+
+const [firstName, lastName] = 'Jonas Schmedtmann'.split(' ');
+console.log(firstName, lastName);
+
+const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ');
+console.log(newName);
+
+const capitalizeName = name => {
+  const names = name.split(' ');
+  const namesUpper = [];
+
+  for (const n of names) {
+    namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
+  }
+
+  console.log(namesUpper.join(' '));
+};
+
+capitalizeName('jessica ann smith davis');
+capitalizeName('jonas schmedtmann');
+
+// Padding
+// ! padStart padEnd
+const message = 'Go to gate 23!';
+console.log(message.padStart(20, '+').padEnd(30, '+'));
+console.log('Jonas'.padStart(20, '+').padEnd(30, '+'));
+
+const maskCreditCard = number => {
+  const str = number + '';
+  // const last = str.slice(4);
+  const last = str.slice(-4);
+
+  // return last.padEnd(str.length, '*');
+  return last.padStart(str.length, '*');
+};
+
+console.log(maskCreditCard(43125553));
+console.log(maskCreditCard(4312555312323412));
+console.log(maskCreditCard('4312555312323412245'));
+
+// Repeat
+// ! repeat
+const message2 = 'Bad waether...';
+console.log(message2.repeat(3));
+
+const planesInLine = n => {
+  console.log(`There are ${n} planes in line ${'🛩'.repeat(n)}`);
+};
+
+planesInLine(3);
