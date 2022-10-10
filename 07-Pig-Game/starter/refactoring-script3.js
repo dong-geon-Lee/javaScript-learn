@@ -1,5 +1,4 @@
 const _doc = message => document.querySelector(message);
-
 const score0El = _doc('#score--0');
 const score1El = _doc('#score--1');
 const diceEl = _doc('.dice');
@@ -11,19 +10,23 @@ const current1El = _doc('#current--1');
 const player0 = _doc('.player--0');
 const player1 = _doc('.player--1');
 
-scores = [0, 0];
-let score0 = 0;
-let score1 = 0;
+let scores, score0, score1, cur0Score, cur1Score, activePlayer, playing;
 
-let cur0Score = 0;
-let cur1Score = 0;
+const init = () => {
+  scores = [0, 0];
+  score0 = 0;
+  cur0Score = 0;
+  score1 = 0;
+  activePlayer = 0;
+  cur1Score = 0;
+  playing = true;
 
-let activePlayer = 0;
-let playing = true;
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  diceEl.style.display = `none`;
+};
 
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.style.display = `none`;
+init();
 
 const sumScorePlayer0 = randomNumber => {
   score0 += randomNumber;
