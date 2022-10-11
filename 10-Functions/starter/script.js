@@ -42,6 +42,7 @@ const checkIn = (flightNum, passenger) => {
   passenger.name = 'Mr. ' + passenger.name;
 
   console.log(passenger.passport);
+
   if (passenger.passport === 2473) {
     // alert('Checked in');
     console.log('Checked in');
@@ -177,3 +178,137 @@ const flightData = [777, 'George Cooper'];
 book.call(swiss, ...flightData);
 
 // ! 134강 - bind
+const bookEW = book.bind(eurowings);
+const bookLH = book.bind(lufthansa);
+const bookLX = book.bind(swiss);
+
+bookEW(23, 'Steven Williams');
+
+const bookEW23 = book.bind(eurowings, 23);
+console.log(bookEW23);
+bookEW23('Martha Cooper');
+
+// With Event Listener
+lufthansa.planes = 300;
+
+lufthansa.buyPlane = function () {
+  console.log(this, '와우');
+  this.planes++;
+  console.log(this.planes, '와우2');
+};
+
+// lufthansa.buyPlane();
+
+// ! 굉장히 중요하다.
+document
+  .querySelector('.buy')
+  .addEventListener('click', lufthansa.buyPlane.bind(lufthansa));
+
+//  ! 중요한 case 흔히 볼 수 있는 패턴
+// Partial application
+const addTax = (rate, value) => value + value * rate;
+console.log(addTax(0.1, 200));
+
+const addVAT = addTax.bind(null, 0.1);
+console.log(addVAT(200));
+
+const addTaxRate = function (rate) {
+  return function (value) {
+    return value + value * rate;
+  };
+};
+
+console.log(addTaxRate(0.1)(200));
+
+const addVAT2 = addTaxRate(0.1);
+console.log(addVAT2(200));
+
+// ! 135강 - 코딩 챌린지 #1
+
+// ! 136강 - 즉시실행함수(IIFE)
+(function () {
+  console.log('This will never run again');
+  const isPrivatge = 23;
+  console.log(isPrivatge);
+})();
+
+(() => console.log('This will never run again'))();
+
+{
+  const isPrivate = 23;
+  var notPrivate = 46;
+}
+
+// console.log(isPrivate); const 지역 변수이므로 값을 에러 발생
+console.log(notPrivate); // var는 외부 변수에 접근 가능하다
+
+// ! 137강 - 클로저
+// 스코프와 클로저 둘 다 알아야된다. 함수의 실행이 끝났는데 변수에
+// 접근 가능 한 이유를 설명해주기 떄문이다.
+// ? 모든 함수는 항상 생성된 실행 컨텍스트의 변수 환경에 접근 할 수 있다.
+// 함수는 외부 범위에 대한 참조를 유지한다.
+const secureBooking = function () {
+  let passengerCount = 0;
+
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} passengers`);
+  };
+};
+
+// booker() 함수는 변수 passengerCount를 읽을 수 있다.
+// 따라서 함수 실행이 끝나도 여전히 passengerCount값을 읽을 수 있다.
+// 이를 연결을 클로저라고 한다. 클로저는 가변적인 환경이다.
+// ! 스코프 체인이 유지되는 방법은 클로저를 통한다.
+// 실행 컨텍스트가 종료되도 가변적인 환경(변수값)은 살아있다.
+// 함수는 변수에 대한 연결점을 잃어버리지 않는다.
+// ? 클로저는 기본적으로 스코프 체인보다 우선한다.
+const booker = secureBooking();
+
+booker();
+booker();
+booker();
+
+console.dir(booker);
+
+// ! 138강 - 클로저 예제
+
+let f;
+
+const g = () => {
+  const a = 23;
+  f = () => {
+    console.log(a * 2);
+  };
+};
+
+const h = function () {
+  const b = 7;
+  f = () => {
+    console.log(b * 2);
+  };
+};
+
+g();
+f();
+console.dir(f);
+
+// Re-assigning f function
+h();
+f();
+console.dir(f);
+
+// example 2
+const boardPassengers = (n, wait) => {
+  const perGroup = n / 3;
+
+  setTimeout(() => {
+    console.log(`Will start boarding all ${n} passengers`);
+    console.log(`There are 3 groups, each with ${perGroup} passengers`);
+  }, wait * 1000);
+};
+
+setTimeout(() => console.log('TIMER'), 1000);
+
+const perGroup = 1000;
+boardPassengers(180, 3);
