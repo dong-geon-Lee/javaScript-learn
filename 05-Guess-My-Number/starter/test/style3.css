@@ -1,3 +1,160 @@
 @import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
 
-/* font-family: 'Press Start 2P', sans-serif; */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Press Start 2P', sans-serif;
+  background-color: #222;
+  color: #222;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 2.8rem 2rem;
+}
+
+.header button {
+  border: none;
+  padding: 1.6rem 2.4rem;
+  font-family: inherit;
+  font-size: 1.6rem;
+  font-weight: 800;
+  background-color: #eee;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.header button:hover {
+  opacity: 0.8;
+}
+
+.header p {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.content {
+  padding: 6rem 0;
+}
+
+.content h1 {
+  color: #fff;
+  text-align: center;
+  font-size: 2.6rem;
+  letter-spacing: 0.3rem;
+}
+
+.box {
+  width: 100%;
+  margin: 12rem 0;
+  justify-content: center;
+  display: flex;
+  position: relative;
+}
+
+.question--box {
+  background-color: #eee;
+  width: 11.4rem;
+  height: 9.6rem;
+  font-size: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.line {
+  width: 100%;
+  height: 0.6rem;
+  background-color: #eee;
+  flex: 1;
+}
+
+.container {
+  display: flex;
+  margin-top: 15rem;
+  gap: 3.6rem;
+}
+
+.container .left-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-side .number--input {
+  width: 20rem;
+  height: 10rem;
+  background-color: inherit;
+  color: #eee;
+  font-family: inherit;
+  font-size: 3.8rem;
+  border: 4px solid #eee;
+  text-align: center;
+  padding: 2rem;
+}
+
+.left-side .check-btn {
+  margin: 3.6rem 0;
+  border: none;
+  padding: 2rem 2.4rem;
+  font-family: inherit;
+  font-size: 1.8rem;
+  letter-spacing: 0.1rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
+.left-side .check-btn:hover {
+  opacity: 0.8;
+}
+
+.container .right-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.right-side .info-box {
+  padding: 0 0 0 4.8rem;
+}
+
+.right-side h2 {
+  color: #eee;
+  padding: 1.4rem 2.6rem;
+  margin-top: 1.6rem;
+  font-size: 1.6rem;
+}
+
+.right-side .score-info {
+  margin-top: 3.6rem;
+  color: #eee;
+  padding: 1rem 2rem;
+  line-height: 6rem;
+  font-size: 1.8rem;
+}
+
+.score-info .text--box {
+  display: flex;
+}
+
+.text--box .score--text,
+.highscore--text {
+  margin-left: 2rem;
+}
