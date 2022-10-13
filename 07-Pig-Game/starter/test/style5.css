@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-image: linear-gradient(to top left, #753682 0%, #bf2e34 100%);
+  height: 100vh;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 50rem 50rem;
+  grid-template-rows: 60rem;
+  align-content: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+}
+
+.content__box.player--active {
+  background-color: #dcb0be;
+}
+
+.content__box {
+  background-color: #bf7c97;
+  transition: background-color 0.3s ease-in;
+}
+
+.player__text {
+  font-size: 3.6rem;
+  text-transform: uppercase;
+  grid-row: 3 / 4;
+  grid-column: 3 / 9;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.score__text {
+  display: block;
+  font-size: 7.6rem;
+  color: #c5365f;
+  grid-row: 4 / 5;
+  grid-column: 3 / 9;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.current__box {
+  padding: 3.2rem 0;
+  background-color: #c3466c;
+  color: #fff;
+  line-height: 1rem;
+  border-radius: 0.6rem;
+  grid-row: 8 / 9;
+  grid-column: 4 / 8;
+  text-align: center;
+  width: 100%;
+  justify-self: center;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.current__text {
+  text-transform: uppercase;
+  font-size: 1.6rem;
+}
+
+.current__score {
+  font-size: 3rem;
+}
+
+.content__box {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.current__text {
+  margin-bottom: 2.4rem;
+  line-height: 2.6rem;
+}
+
+.btn {
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  position: absolute;
+  top: 26%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16%;
+  letter-spacing: 0.1rem;
+  justify-self: center;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.6rem;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  background-color: #f0822f;
+  color: #ffffff;
+}
+
+.roll-dice {
+  top: 62%;
+  width: 15%;
+}
+
+.hold {
+  top: 69%;
+  width: 12%;
+}
+
+.player--active {
+  background-color: #dcb0be;
+}
+
+.dice--img {
+  width: 9.6rem;
+  height: 9.6rem;
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0.2rem 1rem 3rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+  display: none;
+}
+
+.content__box.player--winner {
+  background-color: #2f2f2f;
+}
