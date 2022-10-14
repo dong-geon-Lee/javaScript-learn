@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" type="image/png" href="/icon.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style3.css" />
+    <title>Bankist</title>
+  </head>
+
+  <body>
+    <header class="navbar">
+      <p class="start__text">Log in to get started</p>
+
+      <div class="logo__box">
+        <img src="logo.png" alt="logo" class="logo" />
+      </div>
+
+      <div class="navbar__input-box">
+        <input type="text" class="input__user" placeholder="user" />
+        <input type="password" class="input__pin" placeholder="PIN" />
+        <button class="user__login"><span>&rarr;</span></button>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="balance__box">
+        <h2 class="balance__text">Current balance</h2>
+        <small class="current__day__text">As of 10/14/2022</small>
+      </div>
+
+      <h1 class="current__balance">0000€</h1>
+
+      <section class="banking__group">
+        <div class="banking__recoded-box">
+          <div class="banking__movments">
+            <div>
+              <label class="deposit">2 deposit</label>
+              <span class="deposit__time">3 days ago</span>
+            </div>
+            <p class="deposit__recode">4,000€</p>
+          </div>
+
+          <div class="banking__movments">
+            <div>
+              <label class="withdraw">1 withdrawal</label>
+              <span class="withdraw__time">24/01/2037 </span>
+            </div>
+            <p class="withdraw__recode">-378€</p>
+          </div>
+        </div>
+
+        <div class="banking__option-box">
+          <div class="transfer__money">
+            <h1 class="transfer__title">Transfer money</h1>
+
+            <div class="input__box">
+              <div>
+                <input type="text" class="transfer__input" />
+                <label class="transfer__text">Transfer to</label>
+              </div>
+
+              <div>
+                <input type="number" class="amount__input" />
+                <label class="amount__text">Amount</label>
+              </div>
+
+              <button class="user__login transfer__send">&rarr;</button>
+            </div>
+          </div>
+
+          <div class="request__loan">
+            <h1 class="Request__title">Request loan</h1>
+
+            <div class="input__box">
+              <div>
+                <input type="number" class="amount__input" />
+                <label class="amount__text">Amount</label>
+              </div>
+
+              <button class="user__login request__send">&rarr;</button>
+            </div>
+          </div>
+
+          <div class="close__account">
+            <h1 class="close__title">Close account</h1>
+
+            <div class="input__box">
+              <div class="close__box">
+                <input type="text" class="close__input" />
+                <label class="close__text">Confirm user</label>
+              </div>
+
+              <div>
+                <input type="number" class="amount__input" />
+                <label class="amount__text">Confirm PIN</label>
+              </div>
+
+              <button class="user__login close__send">&rarr;</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="banking__current-box">
+        <p class="in">in <span class="in__number">0000€</span></p>
+        <p class="out">out <span class="out__number">0000€</span></p>
+        <p class="interest">
+          interest <span class="interest__number">0000€</span>
+        </p>
+
+        <button class="sort__btn">&downarrow; sort</button>
+        <small class="connect__record"
+          >You will be logged out in <strong>05:00</strong></small
+        >
+      </section>
+    </main>
+
+    <!-- js script -->
+    <script src="script3.js"></script>
+  </body>
+</html>

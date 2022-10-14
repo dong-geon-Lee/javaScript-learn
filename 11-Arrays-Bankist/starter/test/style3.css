@@ -1,0 +1,321 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f3f3f3;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+}
+
+.start__text {
+  font-size: 1.6rem;
+  font-weight: 400;
+  flex: 1;
+}
+
+.logo__box {
+  flex: 0.7;
+}
+
+.logo {
+  width: 4.6rem;
+  height: 4.6rem;
+}
+
+.navbar__input-box {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  flex: 0.3;
+}
+
+.input__user,
+.input__pin {
+  font-family: inherit;
+  padding: 1rem 1rem;
+  border-radius: 2rem;
+  background-color: #fff;
+  border: none;
+  outline: 1px solid #fff;
+  border-color: #bbb;
+  transition: all 1s ease;
+  text-align: center;
+  width: 10rem;
+  height: 3.4rem;
+}
+
+.input__user:focus,
+.input__pin:focus {
+  outline: 1px solid #bbb;
+}
+
+.input__user::placeholder,
+.input__pin::placeholder {
+  font-family: inherit;
+  color: #bbb;
+  text-align: center;
+}
+
+.user__login {
+  border: none;
+  font-size: 2rem;
+  font-weight: 300;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  background: none;
+}
+
+.user__login:hover,
+.user__login:focus {
+  color: #bbb;
+  opacity: 0.9;
+}
+
+/* grid의 장점과 편리함을 느껴보기 */
+.container {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  width: 100rem;
+  height: 71rem;
+  margin: 3rem auto;
+  background-color: #f3f3f3;
+}
+
+.balance__text {
+  font-size: 2.2rem;
+  font-weight: 400;
+}
+
+.balance__box {
+  grid-row: 1 / 2;
+  grid-column: 1 / 4;
+}
+
+.current__day__text {
+  font-size: 1.2rem;
+  color: #222;
+}
+
+.current__balance {
+  grid-row: 1 / 2;
+  grid-column: 10 / 11;
+  justify-self: right;
+  font-size: 3.6rem;
+  font-weight: 400;
+  letter-spacing: 0.04rem;
+  margin-bottom: 2rem;
+}
+
+.banking__recoded-box {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+.banking__group {
+  /* ! 중첩된 그리드  */
+  grid-row: 2 / 10;
+  grid-column: 1 / 11;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.banking__movments {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  border-bottom: 2px solid #eee;
+}
+
+.deposit {
+  padding: 0.3rem 1rem;
+  background-image: linear-gradient(to top left, #56be7c 0%, #83d569 100%);
+  color: #fff;
+  border-radius: 1rem;
+  text-transform: uppercase;
+}
+
+.deposit__time,
+.withdraw__time {
+  margin-left: 1.4rem;
+  font-size: 1rem;
+  color: #222;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.deposit__recode,
+.withdraw__recode {
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  margin-right: 1rem;
+}
+
+.withdraw {
+  padding: 0.3rem 1rem;
+  background-image: linear-gradient(to top left, #e6305a 0%, #f94e60 100%);
+  color: #fff;
+  border-radius: 1rem;
+  text-transform: uppercase;
+}
+
+.banking__current-box {
+  /* ! 중첩된 그리드  */
+  grid-row: 14 / 16;
+  grid-column: 1 / 11;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  align-content: center;
+  justify-items: left;
+  margin-top: 3rem;
+}
+
+.in,
+.out,
+.interest,
+.connect__record {
+  padding: 2rem 0rem;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+}
+
+.in__number,
+.out__number,
+.interest__number {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #64c873;
+  margin-right: 0.6rem;
+}
+
+.out__number {
+  color: #f5465e;
+}
+
+.sort__btn {
+  border: none;
+  text-transform: uppercase;
+  background-color: inherit;
+  justify-self: right;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.sort__btn:hover {
+  color: #222;
+  opacity: 0.8;
+}
+
+.connect__record {
+  grid-column: 7 / 9;
+  justify-self: right;
+}
+
+.banking__option-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.transfer__money {
+  grid-column: 1 / 4;
+  grid-row: 1 / 2;
+  background-image: linear-gradient(to top left, #ffb503 0%, #ffc403 100%);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4rem;
+}
+
+.request__loan {
+  grid-column: 1 / 4;
+  grid-row: 2 / 3;
+  background-image: linear-gradient(to top left, #56be7c 0%, #83d569 100%);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4rem;
+}
+
+.close__account {
+  grid-column: 1 / 4;
+  grid-row: 3 / 4;
+  background-image: linear-gradient(to top left, #e6305a 0%, #f94e60 100%);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4rem;
+}
+
+.input__box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.transfer__input,
+.amount__input,
+.close__input {
+  border: none;
+  padding: 1rem;
+  opacity: 0.35;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.transfer__text,
+.amount__text,
+.close__text {
+  display: block;
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 0.6rem;
+}
+
+.transfer__title,
+.Request__title,
+.close__title {
+  margin-bottom: 1rem;
+  line-height: 2.4rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.transfer__send,
+.request__send,
+.close__send {
+  background-color: #fff;
+  padding: 0.4rem 2rem;
+  border-radius: 1rem;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+}
+
+.transfer__send:foucs {
+  opacity: 0.8;
+}
