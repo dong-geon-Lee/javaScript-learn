@@ -93,6 +93,12 @@ body {
   height: 71rem;
   margin: 3rem auto;
   background-color: #f3f3f3;
+  transition: all 0.6s ease-in;
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
 }
 
 .balance__text {
@@ -126,6 +132,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  overflow: scroll;
 }
 
 .banking__group {
@@ -279,7 +286,9 @@ body {
 
 .transfer__input,
 .amount__input,
-.close__input {
+.loan__input,
+.close__input,
+.close__input-pin {
   border: none;
   padding: 1rem;
   opacity: 0.35;

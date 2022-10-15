@@ -26,13 +26,13 @@
       <div class="navbar__input-box">
         <input type="text" class="input__user" placeholder="user" />
         <input type="password" class="input__pin" placeholder="PIN" />
-        <button class="user__login"><span>&rarr;</span></button>
+        <button type="button" class="user__login"><span>&rarr;</span></button>
       </div>
     </header>
 
-    <main class="container">
+    <main class="container hidden">
       <div class="balance__box">
-        <h2 class="balance__text">Current balance</h2>
+        <h2 class="balance__text">Currnt balance</h2>
         <small class="current__day__text">As of 10/14/2022</small>
       </div>
 
@@ -72,7 +72,9 @@
                 <label class="amount__text">Amount</label>
               </div>
 
-              <button class="user__login transfer__send">&rarr;</button>
+              <button type="button" class="user__login transfer__send">
+                &rarr;
+              </button>
             </div>
           </div>
 
@@ -81,7 +83,7 @@
 
             <div class="input__box">
               <div>
-                <input type="number" class="amount__input" />
+                <input type="number" class="loan__input" />
                 <label class="amount__text">Amount</label>
               </div>
 
@@ -99,7 +101,7 @@
               </div>
 
               <div>
-                <input type="number" class="amount__input" />
+                <input type="number" class="close__input-pin" />
                 <label class="amount__text">Confirm PIN</label>
               </div>
 
