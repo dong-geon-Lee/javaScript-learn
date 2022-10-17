@@ -1,4 +1,141 @@
 'use strict';
+
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const btnCloseModal = document.querySelector('.btn--close-modal');
+const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScorollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+const openModal = function (e) {
+  e.preventDefault();
+
+  modal.classList.remove('hidden');
+  overlay.classList.remove('hidden');
+};
+
+const closeModal = function () {
+  modal.classList.add('hidden');
+  overlay.classList.add('hidden');
+};
+
+btnsOpenModal.forEach(btn => btn.addEventListener('click', openModal));
+btnCloseModal.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+    closeModal();
+  }
+});
+
+btnScorollTo.addEventListener('click', e => {
+  e.preventDefault();
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+///////////////////////////////////////
+// ! 192강 이벤트 위임
+
+//  page Navigation (이벤트 위임 전 코드)
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+
+// const id = this.getAttribute('href');
+// console.log(id);
+// document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// ! 1. 공통 부모 요소에 이벤트 리스너를 추가해라 (이벤트 위임!)
+// 비효율적인 코드를 계선하기 위함이다.
+// ! 2. 어떤 요소가 이벤트를 일으켰는지 정의해라
+// ! 3. 매칭 전략 (떄떄로 많이 이용한다)
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  console.log(e.target);
+  e.preventDefault();
+
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+// ! 193강 DOM 순회
+const h1 = document.querySelector('h1');
+
+// Going downwards: child
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.childNodes);
+console.log(h1.children);
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+// Going upwards: parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+// ! 매우 중요한 스킬
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+
+// nav랑 가장 가까운 부모요소의 style을 바꿔라
+const nav = document.querySelector('nav');
+nav.closest('.header').style.background = '#fff';
+
+// 자기 자신
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+// h1의 부모의 자식 element를 얻는다.
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(el => {
+  if (el !== h1) {
+    el.style.transform = `scale(1)`;
+  }
+});
+
+// ! 194강 tap 컴포넌트
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+console.log(tabs);
+// 안 좋은 코드 200개의 탭이 있으면 어떻게 되겠는가??
+// todo 공통의 부모에서 이벤트를 만들어서 위임해라
+// tabs.forEach(t =>
+//   t.addEventListener('click', () => {
+//     console.log('TAB');
+//   })
+// );
+// html 내부에서 data-tab이라는 속성을 따로 쓴다.
+// DOM 에 정보를 저장하는 용도이다.
+// parentElement 또는 closest를 사용해서 상위 부모를 검색하는데 사용할 수 있다.
+tabsContainer.addEventListener('click', e => {
+  const clicked = e.target.closest('.operations__tab');
+  console.log(clicked);
+
+  // Guard clause
+  if (!clicked) return;
+
+  // remove active classes
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+
+  // Active tab
+  clicked.classList.add('operations__tab--active');
+
+  // Activate content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+// ///////////////////
 /**
   자바스크립트 객체는 Node로 나타낸다. Node는 DOM보다 상위유형에 속한다. 
   Node는 textContent, childNodes, parentNode, cloneNode가 나뉜다.  
@@ -145,83 +282,56 @@
 // logo.classList.contains('c');
 // logo.classList.closest('c');
 // Modal window
-///////////////////////////////////////
-
-const modal = document.querySelector('.modal');
-const overlay = document.querySelector('.overlay');
-const btnCloseModal = document.querySelector('.btn--close-modal');
-const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-
-const openModal = function (e) {
-  e.preventDefault();
-  modal.classList.remove('hidden');
-  overlay.classList.remove('hidden');
-};
-
-const closeModal = function () {
-  modal.classList.add('hidden');
-  overlay.classList.add('hidden');
-};
-
-btnsOpenModal.forEach(btn => btn.addEventListener('click', openModal));
-btnCloseModal.addEventListener('click', closeModal);
-overlay.addEventListener('click', closeModal);
-
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-    closeModal();
-  }
-});
 
 //! 188강 - 스크롤
-const btnScorollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
+// const btnScorollTo = document.querySelector('.btn--scroll-to');
+// const section1 = document.querySelector('#section--1');
 
-// getBoundingClientRect(), window.pageXOffset, window.pageYOffset
-// document.documentElement.clientWidth, document.documentElement.clientHeight
-// window.scrollTo()
-btnScorollTo.addEventListener('click', e => {
-  const s1coords = section1.getBoundingClientRect();
-  console.log(s1coords);
-  console.log(e.target.getBoundingClientRect());
-  console.log('Current scroll (X/Y)', window.pageXOffset, window.pageYOffset);
-  console.log(
-    'height/width viewPort',
-    document.documentElement.clientHeight,
-    document.documentElement.clientWidth
-  );
+// // getBoundingClientRect(), window.pageXOffset, window.pageYOffset
+// // document.documentElement.clientWidth, document.documentElement.clientHeight
+// // window.scrollTo()
+// btnScorollTo.addEventListener('click', e => {
+//   const s1coords = section1.getBoundingClientRect();
+//   console.log(s1coords);
+//   console.log(e.target.getBoundingClientRect());
+//   console.log('Current scroll (X/Y)', window.pageXOffset, window.pageYOffset);
+//   console.log(
+//     'height/width viewPort',
+//     document.documentElement.clientHeight,
+//     document.documentElement.clientWidth
+//   );
 
-  // old pattern 1
-  // Scrolling
-  // window.scrollTo(
-  //   s1coords.left + window.pageXOffset,
-  //   s1coords.top + window.pageYOffset
-  // );
+//   // old pattern 1
+//   // Scrolling
+//   // window.scrollTo(
+//   //   s1coords.left + window.pageXOffset,
+//   //   s1coords.top + window.pageYOffset
+//   // );
 
-  // old pattern 2
-  // window.scrollTo({
-  //   left: s1coords.left + window.pageXOffset,
-  //   top: s1coords.top + window.pageYOffset,
-  //   behavior: 'smooth',
-  // });
+//   // old pattern 2
+//   // window.scrollTo({
+//   //   left: s1coords.left + window.pageXOffset,
+//   //   top: s1coords.top + window.pageYOffset,
+//   //   behavior: 'smooth',
+//   // });
 
-  section1.scrollIntoView({ behavior: 'smooth' });
-});
+//   section1.scrollIntoView({ behavior: 'smooth' });
+// });
 
 //! 189강 - 이벤트
-const h1 = document.querySelector('h1');
+// const h1 = document.querySelector('h1');
 
-const alertH1 = e => {
-  alert('addEventListener: Great! You are reading the heading :D');
+// const alertH1 = e => {
+//   alert('addEventListener: Great! You are reading the heading :D');
 
-  // h1.removeEventListener('mouseenter', alertH1);
-};
+//   // h1.removeEventListener('mouseenter', alertH1);
+// };
 
-h1.addEventListener('mouseenter', alertH1);
+// h1.addEventListener('mouseenter', alertH1);
 
-setTimeout(() => {
-  h1.removeEventListener('mouseenter', alertH1);
-}, 3000);
+// setTimeout(() => {
+//   h1.removeEventListener('mouseenter', alertH1);
+// }, 3000);
 
 //! 190강 - 이벤트 단계
 // 1. Capturing phase (캡쳐 단계) - 이벤트가 하위 요소로 전파되는 단계
@@ -242,28 +352,28 @@ setTimeout(() => {
 // 대부분의 이벤트는 캡쳐 & 버블링 과정을 거친다.
 
 //! 191강 - 이벤트 전파 예시
-const randomInt = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
+// const randomInt = (min, max) =>
+//   Math.floor(Math.random() * (max - min + 1) + min);
 
-const randomColor = () =>
-  `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+// const randomColor = () =>
+//   `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
 
-console.log(randomInt(1, 3));
+// console.log(randomInt(1, 3));
 // console.log(randomColor());
 // document.body.style.backgroundColor = randomColor();
 
-document.querySelector('.nav__link').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  console.log('LINK', e.target, e.currentTarget);
-  console.log(e.currentTarget === this);
-});
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('LINK', e.target, e.currentTarget);
+//   console.log(e.currentTarget === this);
+// });
 
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  console.log('CONTAINER', e.target, e.currentTarget);
-});
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('CONTAINER', e.target, e.currentTarget);
+// });
 
-document.querySelector('.nav').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  console.log('NAV', e.target, e.currentTarget);
-});
+// document.querySelector('.nav').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('NAV', e.target, e.currentTarget);
+// });
