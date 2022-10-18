@@ -6,6 +6,10 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScorollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -34,84 +38,9 @@ btnScorollTo.addEventListener('click', e => {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
-///////////////////////////////////////
-// ! 192강 이벤트 위임
-
-//  page Navigation (이벤트 위임 전 코드)
-// document.querySelectorAll('.nav__link').forEach(function (el) {
-//   el.addEventListener('click', function (e) {
-//     e.preventDefault();
-
-// const id = this.getAttribute('href');
-// console.log(id);
-// document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-//   });
-// });
-
-// ! 1. 공통 부모 요소에 이벤트 리스너를 추가해라 (이벤트 위임!)
-// 비효율적인 코드를 계선하기 위함이다.
-// ! 2. 어떤 요소가 이벤트를 일으켰는지 정의해라
-// ! 3. 매칭 전략 (떄떄로 많이 이용한다)
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  console.log(e.target);
-  e.preventDefault();
-
-  if (e.target.classList.contains('nav__link')) {
-    const id = e.target.getAttribute('href');
-    console.log(id);
-    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-  }
-});
-
-// ! 193강 DOM 순회
-const h1 = document.querySelector('h1');
-
-// Going downwards: child
-console.log(h1.querySelectorAll('.highlight'));
-console.log(h1.childNodes);
-console.log(h1.children);
-h1.firstElementChild.style.color = 'white';
-h1.lastElementChild.style.color = 'orangered';
-
-// Going upwards: parents
-console.log(h1.parentNode);
-console.log(h1.parentElement);
-
-// ! 매우 중요한 스킬
-h1.closest('.header').style.background = 'var(--gradient-secondary)';
-
-// nav랑 가장 가까운 부모요소의 style을 바꿔라
-const nav = document.querySelector('nav');
-nav.closest('.header').style.background = '#fff';
-
-// 자기 자신
-h1.closest('h1').style.background = 'var(--gradient-primary)';
-
-// Going sideways: siblings
-console.log(h1.previousElementSibling);
-console.log(h1.nextElementSibling);
-
-// h1의 부모의 자식 element를 얻는다.
-console.log(h1.parentElement.children);
-[...h1.parentElement.children].forEach(el => {
-  if (el !== h1) {
-    el.style.transform = `scale(1)`;
-  }
-});
-
 // ! 194강 tap 컴포넌트
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
 
-console.log(tabs);
-// 안 좋은 코드 200개의 탭이 있으면 어떻게 되겠는가??
 // todo 공통의 부모에서 이벤트를 만들어서 위임해라
-// tabs.forEach(t =>
-//   t.addEventListener('click', () => {
-//     console.log('TAB');
-//   })
-// );
 // html 내부에서 data-tab이라는 속성을 따로 쓴다.
 // DOM 에 정보를 저장하는 용도이다.
 // parentElement 또는 closest를 사용해서 상위 부모를 검색하는데 사용할 수 있다.
@@ -134,6 +63,150 @@ tabsContainer.addEventListener('click', e => {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// ! 195강 이벤트 핸들러에 인수 전달하기
+// Menu fade animation
+const handleHover = (event, opacity) => {
+  if (event.target.classList.contains('nav__link')) {
+    const link = event.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    console.log(siblings);
+
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = opacity;
+    });
+
+    logo.style.opacity = opacity;
+  }
+};
+
+//  mouseover는 버블링 되지않음
+nav.addEventListener('mouseover', event => handleHover(event, 0.5));
+nav.addEventListener('mouseout', event => handleHover(event, 1));
+
+//! 196강 - Sticky
+// Sticky navigation
+const initialCoords = section1.getBoundingClientRect();
+console.log(initialCoords, '? 의미하는바');
+
+// window.addEventListener('scroll', () => {
+//   console.log(window.scrollY);
+
+//   if (window.scrollY > initialCoords.top) {
+//     nav.classList.add('sticky');
+//   } else {
+//     nav.classList.remove('sticky');
+//   }
+// });
+
+// const obsCallbak = (entries, observer) => {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+
+// const obsOptions = {
+//   root: null,
+//   threshold: [0, 0.2],
+// };
+
+// //! 197강 - IntersectionObserver API
+// const observer = new IntersectionObserver(obsCallbak, obsOptions);
+// observer.observe(section1);
+
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+console.log(navHeight);
+
+const stickyNav = entries => {
+  const [entry] = entries;
+  console.log(entry, '흐음');
+  console.log(entry.isIntersecting);
+
+  if (!entry.isIntersecting) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(header);
+
+///////////////////////////////////////
+// ! 192강 이벤트 위임
+
+//  page Navigation (이벤트 위임 전 코드)
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+
+// const id = this.getAttribute('href');
+// console.log(id);
+// document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// ! 1. 공통 부모 요소에 이벤트 리스너를 추가해라 (이벤트 위임!)
+// 비효율적인 코드를 계선하기 위함이다.
+// ! 2. 어떤 요소가 이벤트를 일으켰는지 정의해라
+// ! 3. 매칭 전략 (떄떄로 많이 이용한다)
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  console.log(e.target);
+  e.preventDefault();
+
+  if (
+    e.target.classList.contains('nav__link') &&
+    !e.target.classList.contains('btn--show-modal')
+  ) {
+    const id = e.target.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+// ! 193강 DOM 순회
+const h1 = document.querySelector('h1');
+
+// Going downwards: child
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.childNodes);
+console.log(h1.children);
+// h1.firstElementChild.style.color = 'white';
+// h1.lastElementChild.style.color = 'orangered';
+
+// Going upwards: parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+// ! 매우 중요한 스킬
+// h1.closest('.header').style.background = 'var(--gradient-secondary)';
+
+// nav랑 가장 가까운 부모요소의 style을 바꿔라
+
+// nav.closest('.header').style.background = '#fff';
+
+// 자기 자신
+// h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+// h1의 부모의 자식 element를 얻는다.
+console.log(h1.parentElement.children);
+// [...h1.parentElement.children].forEach(el => {
+//   if (el !== h1) {
+//     el.style.transform = `scale(1)`;
+//   }
+// });
 
 // ///////////////////
 /**
