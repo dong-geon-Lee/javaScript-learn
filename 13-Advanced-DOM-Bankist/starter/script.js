@@ -10,6 +10,8 @@ const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
+const navLinks = document.querySelector('.nav__links');
+const sliders = document.querySelector('.slider');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -38,7 +40,17 @@ btnScorollTo.addEventListener('click', e => {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
-// ! 194강 tap 컴포넌트
+navLinks.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    e.target.classList.contains('nav__link') &&
+    !e.target.classList.contains('btn--show-modal')
+  ) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
 
 // todo 공통의 부모에서 이벤트를 만들어서 위임해라
 // html 내부에서 data-tab이라는 속성을 따로 쓴다.
@@ -64,7 +76,6 @@ tabsContainer.addEventListener('click', e => {
     .classList.add('operations__content--active');
 });
 
-// ! 195강 이벤트 핸들러에 인수 전달하기
 // Menu fade animation
 const handleHover = (event, opacity) => {
   if (event.target.classList.contains('nav__link')) {
@@ -86,10 +97,168 @@ const handleHover = (event, opacity) => {
 nav.addEventListener('mouseover', event => handleHover(event, 0.5));
 nav.addEventListener('mouseout', event => handleHover(event, 1));
 
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = entries => {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(header);
+
+const allSections = document.querySelectorAll('.section');
+
+const revealSection = (entries, observer) => {
+  const [entry] = entries;
+  console.log(entry.isIntersecting, '초기값');
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
+
+const imgTargets = document.querySelectorAll('img[data-src]');
+console.log(imgTargets);
+
+const loadImg = (entries, observer) => {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', () => {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  rootMargin: '-324px',
+});
+
+imgTargets.forEach(img => imgObserver.observe(img));
+
+const slider = () => {
+  const slides = document.querySelectorAll('.slide');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  const dotContainer = document.querySelector('.dots');
+
+  let curSlide = 0;
+  let maxSlide = slides.length;
+
+  const init = () => {
+    goToSlide(0);
+    createDots();
+    activateDot(0);
+  };
+
+  init();
+
+  function goToSlide(slide) {
+    console.log(slide, '문자열연산??');
+    slides.forEach(
+      (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+    );
+  }
+
+  function createDots() {
+    slides.forEach((_, i) => {
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class='dots__dot' data-slide='${i}'></button>`
+      );
+    });
+  }
+
+  function activateDot(slide) {
+    console.log(slide, '문자열 맞지 ??');
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach(dot => dot.classList.remove('dots__dot--active'));
+
+    document
+      .querySelector(`.dots__dot[data-slide='${slide}']`)
+      .classList.add('dots__dot--active');
+  }
+
+  slides.forEach((s, i) => {
+    console.log(i, '숫자 0부터?');
+    s.style.transform = `translateX(${100 * i}%)`;
+  });
+
+  // Next slide
+  const nextSlide = () => {
+    if (curSlide === maxSlide - 1) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  // Prev slide
+  const prevSlide = () => {
+    if (curSlide === 0) {
+      curSlide = maxSlide - 1;
+    } else {
+      curSlide--;
+    }
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  btnRight.addEventListener('click', nextSlide);
+  btnLeft.addEventListener('click', prevSlide);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') prevSlide();
+    e.key === 'ArrowRight' && nextSlide();
+  });
+
+  dotContainer.addEventListener('click', e => {
+    if (e.target.classList.contains('dots__dot')) {
+      curSlide = +e.target.dataset.slide;
+      goToSlide(curSlide);
+      activateDot(curSlide);
+    }
+  });
+};
+
+slider();
+
 //! 196강 - Sticky
 // Sticky navigation
-const initialCoords = section1.getBoundingClientRect();
-console.log(initialCoords, '? 의미하는바');
+// const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords, '? 의미하는바');
 
 // window.addEventListener('scroll', () => {
 //   console.log(window.scrollY);
@@ -116,122 +285,167 @@ console.log(initialCoords, '? 의미하는바');
 // const observer = new IntersectionObserver(obsCallbak, obsOptions);
 // observer.observe(section1);
 
-const header = document.querySelector('.header');
-const navHeight = nav.getBoundingClientRect().height;
+// const header = document.querySelector('.header');
+// const navHeight = nav.getBoundingClientRect().height;
 
-const stickyNav = entries => {
-  const [entry] = entries;
+// const stickyNav = entries => {
+//   const [entry] = entries;
 
-  if (!entry.isIntersecting) {
-    nav.classList.add('sticky');
-  } else {
-    nav.classList.remove('sticky');
-  }
-};
+//   if (!entry.isIntersecting) {
+//     nav.classList.add('sticky');
+//   } else {
+//     nav.classList.remove('sticky');
+//   }
+// };
 
-const headerObserver = new IntersectionObserver(stickyNav, {
-  root: null,
-  threshold: 0,
-  rootMargin: `-${navHeight}px`,
-});
+// const headerObserver = new IntersectionObserver(stickyNav, {
+//   root: null,
+//   threshold: 0,
+//   rootMargin: `-${navHeight}px`,
+// });
 
-headerObserver.observe(header);
+// headerObserver.observe(header);
 
 //! 198강 - display scrolling element
 // Reveal sections
-const allSections = document.querySelectorAll('.section');
-
-const revealSection = (entries, observer) => {
-  const [entry] = entries;
-
-  if (!entry.isIntersecting) return;
-
-  entry.target.classList.remove('section--hidden');
-  observer.unobserve(entry.target);
-};
-
-const sectionObserver = new IntersectionObserver(revealSection, {
-  root: null,
-  threshold: 0.15,
-});
-
-allSections.forEach(section => {
-  sectionObserver.observe(section);
-  // section.classList.add('section--hidden');
-});
 
 //! 199강 - lazy loading image
 // Lazy loading images
-const imgTargets = document.querySelectorAll('img[data-src]');
-console.log(imgTargets);
+// const imgTargets = document.querySelectorAll('img[data-src]');
+// console.log(imgTargets);
 
-const loadImg = (entries, observer) => {
-  const [entry] = entries;
+// const loadImg = (entries, observer) => {
+//   const [entry] = entries;
 
-  if (!entry.isIntersecting) return;
+//   if (!entry.isIntersecting) return;
 
-  entry.target.src = entry.target.dataset.src;
-  entry.target.addEventListener('load', () => {
-    entry.target.classList.remove('lazy-img');
-  });
+//   entry.target.src = entry.target.dataset.src;
+//   entry.target.addEventListener('load', () => {
+//     entry.target.classList.remove('lazy-img');
+//   });
 
-  observer.unobserve(entry.target);
-};
+//   observer.unobserve(entry.target);
+// };
 
-const imgObserver = new IntersectionObserver(loadImg, {
-  root: null,
-  threshold: 0,
-  rootMargin: '-480px',
-});
+// const imgObserver = new IntersectionObserver(loadImg, {
+//   root: null,
+//   threshold: 0,
+//   rootMargin: '-324px',
+// });
 
-imgTargets.forEach(img => imgObserver.observe(img));
+// imgTargets.forEach(img => imgObserver.observe(img));
 
-//! 200강 - slider
+//! 200강 ~ 201강 - slider
 // Slider
-const slides = document.querySelectorAll('.slide');
-const btnLeft = document.querySelector('.slider__btn--left');
-const btnRight = document.querySelector('.slider__btn--right');
+// const slider = () => {
+//   const slides = document.querySelectorAll('.slide');
+//   const btnLeft = document.querySelector('.slider__btn--left');
+//   const btnRight = document.querySelector('.slider__btn--right');
+//   const dotContainer = document.querySelector('.dots');
 
-let curSlide = 0;
-const maxSlide = slides.length;
+//   let curSlide = 0;
+//   const maxSlide = slides.length;
 
-slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+//   const createDots = () => {
+//     slides.forEach((_, i) => {
+//       dotContainer.insertAdjacentHTML(
+//         'beforeend',
+//         `<button class='dots__dot' data-slide='${i}'></button>`
+//       );
+//     });
+//   };
 
-const goToSlide = slide => {
-  slides.forEach(
-    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
-  );
-};
+//   const activateDot = slide => {
+//     console.log(slide, '문자열 맞지 ??');
+//     document
+//       .querySelectorAll('.dots__dot')
+//       .forEach(dot => dot.classList.remove('dots__dot--active'));
 
-goToSlide(0);
+//     document
+//       .querySelector(`.dots__dot[data-slide='${slide}']`)
+//       .classList.add('dots__dot--active');
+//   };
 
-// Next slide
-const nextSlide = () => {
-  if (curSlide === maxSlide - 1) {
-    curSlide = 0;
-  } else {
-    curSlide++;
-  }
+//   slides.forEach((s, i) => {
+//     console.log(i, '숫자 0부터?');
+//     s.style.transform = `translateX(${100 * i}%)`;
+//   });
 
-  goToSlide(curSlide);
-};
+//   const goToSlide = slide => {
+//     console.log(slide, '문자열연산??');
+//     slides.forEach(
+//       (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+//     );
+//   };
 
-// Prev slide
-const prevSlide = () => {
-  if (curSlide === 0) {
-    curSlide = maxSlide - 1;
-  } else {
-    curSlide--;
-  }
+//   // Next slide
+//   const nextSlide = () => {
+//     if (curSlide === maxSlide - 1) {
+//       curSlide = 0;
+//     } else {
+//       curSlide++;
+//     }
 
-  goToSlide(curSlide);
-};
+//     goToSlide(curSlide);
+//     activateDot(curSlide);
+//   };
 
-btnRight.addEventListener('click', nextSlide);
-btnLeft.addEventListener('click', prevSlide);
-///////////////////////////////////////
+//   // Prev slide
+//   const prevSlide = () => {
+//     if (curSlide === 0) {
+//       curSlide = maxSlide - 1;
+//     } else {
+//       curSlide--;
+//     }
+
+//     goToSlide(curSlide);
+//     activateDot(curSlide);
+//   };
+
+//   const init = () => {
+//     goToSlide(0);
+//     createDots();
+//     activateDot(0);
+//   };
+
+//   init();
+
+//   btnRight.addEventListener('click', nextSlide);
+//   btnLeft.addEventListener('click', prevSlide);
+//   ///////////////////////////////////////
+
+//   document.addEventListener('keydown', e => {
+//     if (e.key === 'ArrowLeft') prevSlide();
+//     e.key === 'ArrowRight' && nextSlide();
+//   });
+
+//   dotContainer.addEventListener('click', e => {
+//     if (e.target.classList.contains('dots__dot')) {
+//       curSlide = +e.target.dataset.slide;
+//       goToSlide(curSlide);
+//       activateDot(curSlide);
+//     }
+//   });
+// };
+
+// slider();
+
+// ! 202강 Lifecycle DOM Event
+// document.addEventListener('DOMContentLoaded', e => {
+//   console.log(e, 'HTML parsed and DOM tree build! ');
+// });
+
+// window.addEventListener('load', e => {
+//   console.log('Page fully loaded', e);
+// });
+
+// window.addEventListener('beforeunload', e => {
+//   e.preventDefault();
+//   console.log(e);
+//   e.returnValue = '';
+// });
+
 // ! 192강 이벤트 위임
-
 //  page Navigation (이벤트 위임 전 코드)
 // document.querySelectorAll('.nav__link').forEach(function (el) {
 //   el.addEventListener('click', function (e) {
@@ -247,33 +461,33 @@ btnLeft.addEventListener('click', prevSlide);
 // 비효율적인 코드를 계선하기 위함이다.
 // ! 2. 어떤 요소가 이벤트를 일으켰는지 정의해라
 // ! 3. 매칭 전략 (떄떄로 많이 이용한다)
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  console.log(e.target);
-  e.preventDefault();
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   console.log(e.target);
+//   e.preventDefault();
 
-  if (
-    e.target.classList.contains('nav__link') &&
-    !e.target.classList.contains('btn--show-modal')
-  ) {
-    const id = e.target.getAttribute('href');
-    console.log(id);
-    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-  }
-});
+//   if (
+//     e.target.classList.contains('nav__link') &&
+//     !e.target.classList.contains('btn--show-modal')
+//   ) {
+//     const id = e.target.getAttribute('href');
+//     console.log(id);
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   }
+// });
 
 // ! 193강 DOM 순회
-const h1 = document.querySelector('h1');
+// const h1 = document.querySelector('h1');
 
-// Going downwards: child
-console.log(h1.querySelectorAll('.highlight'));
-console.log(h1.childNodes);
-console.log(h1.children);
-// h1.firstElementChild.style.color = 'white';
-// h1.lastElementChild.style.color = 'orangered';
+// // Going downwards: child
+// console.log(h1.querySelectorAll('.highlight'));
+// console.log(h1.childNodes);
+// console.log(h1.children);
+// // h1.firstElementChild.style.color = 'white';
+// // h1.lastElementChild.style.color = 'orangered';
 
-// Going upwards: parents
-console.log(h1.parentNode);
-console.log(h1.parentElement);
+// // Going upwards: parents
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
 
 // ! 매우 중요한 스킬
 // h1.closest('.header').style.background = 'var(--gradient-secondary)';
@@ -286,11 +500,11 @@ console.log(h1.parentElement);
 // h1.closest('h1').style.background = 'var(--gradient-primary)';
 
 // Going sideways: siblings
-console.log(h1.previousElementSibling);
-console.log(h1.nextElementSibling);
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
 
-// h1의 부모의 자식 element를 얻는다.
-console.log(h1.parentElement.children);
+// // h1의 부모의 자식 element를 얻는다.
+// console.log(h1.parentElement.children);
 // [...h1.parentElement.children].forEach(el => {
 //   if (el !== h1) {
 //     el.style.transform = `scale(1)`;
