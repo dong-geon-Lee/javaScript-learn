@@ -1,0 +1,327 @@
+/* The page is NOT responsive. You can implement responsiveness yourself if you wanna have some fun 😃 */
+
+:root {
+  --color-primary: #5ec576;
+  --color-secondary: #ffcb03;
+  --color-tertiary: #ff585f;
+  --color-primary-darker: #4bbb7d;
+  --color-secondary-darker: #ffbb00;
+  --color-tertiary-darker: #fd424b;
+  --color-primary-opacity: #5ec5763a;
+  --color-secondary-opacity: #ffcd0331;
+  --color-tertiary-opacity: #ff58602d;
+  --gradient-primary: linear-gradient(to top left, #39b385, #9be15d);
+  --gradient-secondary: linear-gradient(to top left, #ffb003, #ffcb03);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  color: #444;
+  line-height: 1.9;
+  background-color: #f3f3f3;
+}
+
+/* GENERAL ELEMENTS */
+.section {
+}
+
+.section--hidden {
+}
+
+.section__title {
+}
+
+.section__description {
+}
+
+.section__header {
+}
+
+.btn {
+}
+
+.btn:hover {
+}
+
+.btn--text {
+}
+
+p {
+}
+
+/* This is BAD for accessibility! Don't do in the real world! */
+button:focus {
+}
+
+img {
+}
+
+.lazy-img {
+}
+
+/* NAVIGATION */
+.nav {
+}
+
+/* nav and stickly class at the same time */
+.nav.sticky {
+}
+
+.nav__logo {
+}
+
+.nav__links {
+}
+
+.nav__item {
+}
+
+.nav__link:link,
+.nav__link:visited {
+}
+
+.nav__link--btn:link,
+.nav__link--btn:visited {
+}
+
+.nav__link--btn:hover,
+.nav__link--btn:active {
+}
+
+/* HEADER */
+.header {
+}
+
+.header__title {
+}
+
+h1 {
+}
+
+h4 {
+}
+
+.header__img {
+}
+
+.highlight {
+}
+
+.highlight::after {
+}
+
+/* FEATURES */
+.features {
+}
+
+.features__img {
+}
+
+.features__feature {
+}
+
+.features__icon {
+}
+
+.features__icon svg {
+}
+
+.features__header {
+}
+
+/* OPERATIONS */
+.operations {
+}
+
+.operations__tab-container {
+}
+
+.operations__tab {
+}
+
+.operations__tab span {
+}
+
+.operations__tab--1 {
+}
+
+.operations__tab--1:hover {
+}
+
+.operations__tab--3 {
+}
+
+.operations__tab--3:hover {
+}
+
+.operations__tab--active {
+}
+
+.operations__content {
+}
+
+.operations__content--active {
+}
+
+.operations__header {
+}
+
+.operations__icon {
+}
+
+.operations__icon svg {
+}
+
+.operations__content p {
+}
+
+.operations__icon--1 {
+}
+.operations__icon--2 {
+}
+.operations__icon--3 {
+}
+.operations__icon--1 svg {
+}
+.operations__icon--2 svg {
+}
+.operations__icon--3 svg {
+}
+
+/* SLIDER */
+.slider {
+}
+
+.slide {
+}
+
+.slide > img {
+}
+
+.slider__btn {
+}
+
+.slider__btn--left {
+}
+
+.slider__btn--right {
+}
+
+.dots {
+}
+
+.dots__dot {
+}
+
+.dots__dot:last-child {
+}
+
+.dots__dot--active {
+}
+
+/* TESTIMONIALS */
+.testimonial {
+}
+
+.testimonial::before {
+}
+
+.testimonial__header {
+}
+
+.testimonial__text {
+}
+
+.testimonial__author {
+}
+
+.testimonial__photo {
+}
+
+.testimonial__name {
+}
+
+.testimonial__location {
+}
+
+.section__title--testimonials {
+}
+
+/* SIGNUP */
+.section--sign-up {
+}
+
+.section--sign-up .section__header {
+}
+
+.section--sign-up .section__title {
+}
+
+.section--sign-up .btn {
+}
+
+/* FOOTER */
+.footer {
+}
+
+.footer__nav {
+}
+
+.footer__item {
+}
+
+.footer__link {
+}
+
+.footer__logo {
+}
+
+.footer__copyright {
+}
+
+.footer__copyright .footer__link {
+}
+
+/* MODAL WINDOW */
+.modal {
+}
+
+.overlay {
+}
+
+.modal__header {
+}
+
+.modal__form {
+}
+
+.modal__form label {
+}
+
+.modal__form input {
+}
+
+.modal__form button {
+}
+
+.btn--close-modal {
+}
+
+.hidden {
+}
+
+/* COOKIE MESSAGE */
+.cookie-message {
+}

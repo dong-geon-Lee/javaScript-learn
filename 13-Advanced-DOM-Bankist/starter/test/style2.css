@@ -35,15 +35,14 @@ body {
 
 /* GENERAL ELEMENTS */
 .section {
+  /* height 100vh라서 높이 간격을 크게 뒀다. */
   padding: 15rem 3rem;
+  /* 위와의 경계를 표시하기 위해. */
   border-top: 1px solid #ddd;
-
   transition: transform 1s, opacity 1s;
 }
 
 .section--hidden {
-  opacity: 0;
-  transform: translateY(8rem);
 }
 
 .section__title {
@@ -90,9 +89,12 @@ body {
   font-weight: 500;
   color: var(--color-primary);
   border: none;
+  /* currentColor 옵션은 잃어버리기 쉽네. */
   border-bottom: 1px solid currentColor;
+  /* border-bottom에 간격 높이를 주기 위해서. */
   padding-bottom: 2px;
   cursor: pointer;
+  /* ? */
   transition: all 0.3s;
 }
 
@@ -119,19 +121,20 @@ img {
   justify-content: space-between;
   align-items: center;
   height: 9rem;
+  /* ? */
   width: 100%;
   padding: 0 6rem;
+  /* ? */
   z-index: 100;
 }
 
 /* nav and stickly class at the same time */
 .nav.sticky {
-  position: fixed;
-  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .nav__logo {
   height: 4.5rem;
+  /* ? */
   transition: all 0.3s;
 }
 
@@ -145,14 +148,19 @@ img {
   margin-left: 4rem;
 }
 
+/* :link, :visited 안해도 똑같은거 같은데? */
 .nav__link:link,
 .nav__link:visited {
   font-size: 1.7rem;
   font-weight: 400;
+
+  /* 부모 body 색상 물려받음 */
   color: inherit;
+
   text-decoration: none;
+
+  /* a태그는 인라인태그니까 */
   display: block;
-  transition: all 0.3s;
 }
 
 .nav__link--btn:link,
@@ -165,14 +173,13 @@ img {
 
 .nav__link--btn:hover,
 .nav__link--btn:active {
-  color: inherit;
   background-color: var(--color-primary-darker);
   color: #333;
 }
 
 /* HEADER */
 .header {
-  padding: 0 3rem;
+  padding: 0rem 3rem;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -180,21 +187,29 @@ img {
 }
 
 .header__title {
+  /* ! 흥미로운데? .header 클래스가 column이라 
+  여기 flex도 세로로 모든 콘텐츠를 다 채워나간다 */
   flex: 1;
 
   max-width: 115rem;
   display: grid;
   grid-template-columns: 3fr 2fr;
   row-gap: 3rem;
-  align-content: center;
+  /* ? 굳이 없어도 될거 같은데?  */
   justify-content: center;
 
+  align-content: center;
+
+  /* items를 수축시킨다. 세로로 콘텐츠의 크기만큼 */
   align-items: start;
+  /* items를 수축시킨다. 시작 지점으로 가로 */
   justify-items: start;
 }
 
 h1 {
   font-size: 5.5rem;
+
+  /* ? 이 속성의 문자 자간 간격을 말하는건가?  */
   line-height: 1.35;
 }
 
@@ -204,9 +219,12 @@ h4 {
 }
 
 .header__img {
+  /* 이미지 비율 값 설정 안하면 3fr 2fr 해도 변화없다 */
   width: 100%;
   grid-column: 2 / 3;
+  /* ! 놀라운 span! */
   grid-row: 1 / span 4;
+  /* ! transform 으로 좌우 요소의 균형을 맞추기도 하는구나! */
   transform: translateY(-6rem);
 }
 
@@ -220,16 +238,17 @@ h4 {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 100%;
   width: 100%;
+  height: 100%;
   z-index: -1;
   opacity: 0.7;
-  transform: scale(1.07, 1.05) skewX(-15deg);
+  transform: scale(1.07, 1.05) skew(-15deg);
   background-image: var(--gradient-primary);
 }
 
 /* FEATURES */
 .features {
+  /* ! grid 의 사용이 돋보인다. */
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
@@ -242,25 +261,27 @@ h4 {
 
 .features__feature {
   align-self: center;
+  /* ? justify가 grid에서 작동하는 방법에 대해서 알아야 겠다.  */
   justify-self: center;
   width: 70%;
   font-size: 1.5rem;
 }
 
 .features__icon {
+  /* ? 아이콘 정렬을 위한 테크닉을 썻다.  */
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-primary-opacity);
   height: 5.5rem;
   width: 5.5rem;
+  background-color: var(--color-primary-opacity);
   border-radius: 50%;
   margin-bottom: 2rem;
 }
 
 .features__icon svg {
-  height: 2.5rem;
   width: 2.5rem;
+  height: 2.5rem;
   fill: var(--color-primary);
 }
 
@@ -272,9 +293,8 @@ h4 {
 /* OPERATIONS */
 .operations {
   max-width: 100rem;
+  /* ? 왜 이렇게 하는걸까? padding안쓰고? */
   margin: 12rem auto 0 auto;
-
-  background-color: #fff;
 }
 
 .operations__tab-container {
@@ -284,6 +304,7 @@ h4 {
 
 .operations__tab {
   margin-right: 2.5rem;
+  /* 이 연출은 클릭 시 위 아래 차이점을 보여주기위해서 */
   transform: translateY(-50%);
 }
 
@@ -303,7 +324,6 @@ h4 {
 
 .operations__tab--3 {
   background-color: var(--color-tertiary);
-  margin: 0;
 }
 
 .operations__tab--3:hover {
@@ -311,22 +331,15 @@ h4 {
 }
 
 .operations__tab--active {
-  transform: translateY(-66%);
 }
 
 .operations__content {
-  display: none;
-
-  /* JUST PRESENTATIONAL */
+  /* display: none; */
   font-size: 1.7rem;
   padding: 2.5rem 7rem 6.5rem 7rem;
 }
 
 .operations__content--active {
-  display: grid;
-  grid-template-columns: 7rem 1fr;
-  column-gap: 3rem;
-  row-gap: 0.5rem;
 }
 
 .operations__header {
@@ -339,18 +352,17 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 7rem;
   width: 7rem;
+  height: 7rem;
   border-radius: 50%;
 }
 
 .operations__icon svg {
-  height: 2.75rem;
   width: 2.75rem;
+  height: 2.75rem;
 }
 
 .operations__content p {
-  grid-column: 2;
 }
 
 .operations__icon--1 {
@@ -374,301 +386,126 @@ h4 {
 
 /* SLIDER */
 .slider {
-  max-width: 100rem;
-  height: 50rem;
-  margin: 0 auto;
-  position: relative;
-
-  /* IN THE END */
-  overflow: hidden;
 }
 
 .slide {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 50rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* THIS creates the animation! */
-  transition: transform 1s;
 }
 
 .slide > img {
-  /* Only for images that have different size than slide */
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .slider__btn {
-  position: absolute;
-  top: 50%;
-  z-index: 10;
-
-  border: none;
-  background: rgba(255, 255, 255, 0.7);
-  font-family: inherit;
-  color: #333;
-  border-radius: 50%;
-  height: 5.5rem;
-  width: 5.5rem;
-  font-size: 3.25rem;
-  cursor: pointer;
 }
 
 .slider__btn--left {
-  left: 6%;
-  transform: translate(-50%, -50%);
 }
 
 .slider__btn--right {
-  right: 6%;
-  transform: translate(50%, -50%);
 }
 
 .dots {
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
 }
 
 .dots__dot {
-  border: none;
-  background-color: #b9b9b9;
-  opacity: 0.7;
-  height: 1rem;
-  width: 1rem;
-  border-radius: 50%;
-  margin-right: 1.75rem;
-  cursor: pointer;
-  transition: all 0.5s;
-
-  /* Only necessary when overlying images */
-  /* box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.7); */
 }
 
 .dots__dot:last-child {
-  margin: 0;
 }
 
 .dots__dot--active {
-  background-color: #fff;
-  /* background-color: #888; */
-  opacity: 1;
 }
 
 /* TESTIMONIALS */
 .testimonial {
-  width: 65%;
-  position: relative;
 }
 
 .testimonial::before {
-  content: '\201C';
-  position: absolute;
-  top: -5.7rem;
-  left: -6.8rem;
-  line-height: 1;
-  font-size: 20rem;
-  font-family: inherit;
-  color: var(--color-primary);
-  z-index: -1;
 }
 
 .testimonial__header {
-  font-size: 2.25rem;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
 }
 
 .testimonial__text {
-  font-size: 1.7rem;
-  margin-bottom: 3.5rem;
-  color: #666;
 }
 
 .testimonial__author {
-  margin-left: 3rem;
-  font-style: normal;
-
-  display: grid;
-  grid-template-columns: 6.5rem 1fr;
-  column-gap: 2rem;
 }
 
 .testimonial__photo {
-  grid-row: 1 / span 2;
-  width: 6.5rem;
-  border-radius: 50%;
 }
 
 .testimonial__name {
-  font-size: 1.7rem;
-  font-weight: 500;
-  align-self: end;
-  margin: 0;
 }
 
 .testimonial__location {
-  font-size: 1.5rem;
 }
 
 .section__title--testimonials {
-  margin-bottom: 4rem;
 }
 
 /* SIGNUP */
 .section--sign-up {
-  background-color: #37383d;
-  border-top: none;
-  border-bottom: 1px solid #444;
-  text-align: center;
-  padding: 10rem 3rem;
 }
 
 .section--sign-up .section__header {
-  color: #fff;
-  text-align: center;
 }
 
 .section--sign-up .section__title {
-  margin-bottom: 6rem;
 }
 
 .section--sign-up .btn {
-  font-size: 1.9rem;
-  padding: 2rem 5rem;
 }
 
 /* FOOTER */
 .footer {
-  padding: 10rem 3rem;
-  background-color: #37383d;
 }
 
 .footer__nav {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 5rem;
 }
 
 .footer__item {
-  margin-right: 4rem;
 }
 
 .footer__link {
-  font-size: 1.6rem;
-  color: #eee;
-  text-decoration: none;
 }
 
 .footer__logo {
-  height: 5rem;
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 5rem;
 }
 
 .footer__copyright {
-  font-size: 1.4rem;
-  color: #aaa;
-  text-align: center;
 }
 
 .footer__copyright .footer__link {
-  font-size: 1.4rem;
 }
 
 /* MODAL WINDOW */
 .modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 60rem;
-  background-color: #f3f3f3;
-  padding: 5rem 6rem;
-  box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  transition: all 0.5s;
 }
 
 .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  z-index: 100;
-  transition: all 0.5s;
 }
 
 .modal__header {
-  font-size: 3.25rem;
-  margin-bottom: 4.5rem;
-  line-height: 1.5;
 }
 
 .modal__form {
-  margin: 0 3rem;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  align-items: center;
-  gap: 2.5rem;
 }
 
 .modal__form label {
-  font-size: 1.7rem;
-  font-weight: 500;
 }
 
 .modal__form input {
-  font-size: 1.7rem;
-  padding: 1rem 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 0.5rem;
 }
 
 .modal__form button {
-  grid-column: 1 / span 2;
-  justify-self: center;
-  margin-top: 1rem;
 }
 
 .btn--close-modal {
-  font-family: inherit;
-  color: inherit;
-  position: absolute;
-  top: 0.5rem;
-  right: 2rem;
-  font-size: 4rem;
-  cursor: pointer;
-  border: none;
-  background: none;
 }
 
 .hidden {
-  visibility: hidden;
-  opacity: 0;
 }
 
 /* COOKIE MESSAGE */
 .cookie-message {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
-  background-color: white;
-  color: #bbb;
-  font-size: 1.5rem;
-  font-weight: 400;
 }
