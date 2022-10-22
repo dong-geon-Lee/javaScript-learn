@@ -43,6 +43,9 @@ body {
 }
 
 .section--hidden {
+  /* ! 애니메이션 위로 올라가오는거 section별로  */
+  /* opacity: 0; */
+  transform: translateY(8rem);
 }
 
 .section__title {
@@ -130,6 +133,8 @@ img {
 
 /* nav and stickly class at the same time */
 .nav.sticky {
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .nav__logo {
@@ -161,6 +166,7 @@ img {
 
   /* a태그는 인라인태그니까 */
   display: block;
+  transition: all 0.3s;
 }
 
 .nav__link--btn:link,
@@ -331,15 +337,22 @@ h4 {
 }
 
 .operations__tab--active {
+  transform: translateY(-66%);
 }
 
 .operations__content {
-  /* display: none; */
+  /* 1개의 content를 제외하고 다 가림 */
+  display: none;
   font-size: 1.7rem;
   padding: 2.5rem 7rem 6.5rem 7rem;
 }
 
 .operations__content--active {
+  display: grid;
+  /* ! 윗 부분을 자유롭게 비율을 설정하고 p만 따로 설정 */
+  grid-template-columns: 7rem 1fr;
+  column-gap: 3rem;
+  row-gap: 0.5rem;
 }
 
 .operations__header {
@@ -363,6 +376,8 @@ h4 {
 }
 
 .operations__content p {
+  /* ! 놀라운 테크닉인데?  */
+  grid-column: 1 / 3;
 }
 
 .operations__icon--1 {
@@ -386,126 +401,305 @@ h4 {
 
 /* SLIDER */
 .slider {
+  /* ? max-width로 잠재 크기를 미리 설정할 수 있다.  */
+  max-width: 100rem;
+  /* ! 의도적으로 높이를 설정했다. 보일 건 1개 뿐이니까  */
+  height: 50rem;
+  margin: 0 auto;
+  position: relative;
+  /* ! height를 넘어가는 것은 숨겨졌다! */
+  overflow: hidden;
 }
 
 .slide {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 50rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* ? */
+  transition: transform 1s;
 }
 
 .slide > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .slider__btn {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  border: none;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: inherit;
+  color: #333;
+  border-radius: 50%;
+  width: 5.5rem;
+  height: 5.5rem;
+  font-size: 3.25rem;
+  cursor: pointer;
 }
 
 .slider__btn--left {
+  left: 6%;
+  transform: translate(-50%, -50%);
 }
 
 .slider__btn--right {
+  right: 6%;
+  transform: translate(50%, -50%);
 }
 
 .dots {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  transform: translateX(-50%);
+  display: flex;
 }
 
 .dots__dot {
+  border: none;
+  background-color: #b9b9b9;
+  opacity: 0.7;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  margin-right: 1.75rem;
+  cursor: pointer;
+  transition: all 0.5s;
 }
 
 .dots__dot:last-child {
+  margin: 0;
 }
 
 .dots__dot--active {
+  background-color: #fff;
+  /* background-color: #888; */
+  opacity: 1;
 }
 
 /* TESTIMONIALS */
 .testimonial {
+  width: 65%;
+  position: relative;
 }
 
+/* before은 .testimonial 내부에서 
+박스의 제일 안쪽에 있을건지 마지막에 있을건지 차이 */
 .testimonial::before {
+  /* !content 직접 활용  */
+  content: '\201C';
+  position: absolute;
+  top: -5.7rem;
+  left: -6.8rem;
+  font-size: 20rem;
+  font-family: inherit;
+  /* line-height가 비교적 큰 차이를 만든다. */
+  line-height: 1;
+  color: var(--color-primary);
+  /* ? 이걸 왜 쓰지? */
+  z-index: -1;
 }
 
 .testimonial__header {
+  font-size: 2.25rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
 }
 
 .testimonial__text {
+  font-size: 1.7rem;
+  margin-bottom: 3.5rem;
+  color: #666;
 }
 
 .testimonial__author {
+  margin-left: 3rem;
+  font-style: normal;
+  display: grid;
+  /* 이 비율은 사진 이미지를 위한것 */
+  grid-template-columns: 6.5rem 1fr;
+  column-gap: 2rem;
 }
 
 .testimonial__photo {
+  grid-row: 1 / span 2;
+  width: 6.5rem;
+  border-radius: 50%;
 }
 
 .testimonial__name {
+  font-size: 1.7rem;
+  font-weight: 500;
+  /* 아래로 정렬 */
+  align-self: end;
+  margin: 0;
 }
 
 .testimonial__location {
+  font-size: 1.5rem;
 }
 
 .section__title--testimonials {
+  margin-bottom: 4rem;
 }
 
 /* SIGNUP */
 .section--sign-up {
+  background-color: #37383d;
+  border-top: none;
+  border-bottom: 1px solid #444;
+  text-align: center;
+  padding: 10rem 3rem;
 }
 
 .section--sign-up .section__header {
+  color: #fff;
+  text-align: center;
 }
 
 .section--sign-up .section__title {
+  margin-bottom: 6rem;
 }
 
 .section--sign-up .btn {
+  font-size: 1.9rem;
+  padding: 2rem 5rem;
 }
 
 /* FOOTER */
 .footer {
+  padding: 10rem 3rem;
+  background-color: #37383d;
 }
 
 .footer__nav {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5rem;
 }
 
 .footer__item {
+  margin-right: 4rem;
 }
 
 .footer__link {
+  font-size: 1.6rem;
+  color: #eee;
+  text-decoration: none;
 }
 
 .footer__logo {
+  height: 5rem;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 5rem;
 }
 
+/* 태그 안에 한꺼번에 넣으면 정렬이 쉬워진다.  */
 .footer__copyright {
+  font-size: 1.4rem;
+  color: #aaa;
+  text-align: center;
 }
 
 .footer__copyright .footer__link {
+  font-size: 1.4rem;
 }
 
 /* MODAL WINDOW */
 .modal {
+  /* ! fixed가 핵심이구나  */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 60rem;
+  background-color: #f3f3f3;
+  padding: 5rem 6rem;
+  box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: all 0.5s;
 }
 
 .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* ? 이 속성은 거의 처음 봄 */
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  transition: all 0.5s;
 }
 
 .modal__header {
+  font-size: 3.25rem;
+  margin-bottom: 4.5rem;
+  line-height: 1.5;
 }
 
 .modal__form {
+  margin: 0 3rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  gap: 2.5rem;
 }
 
 .modal__form label {
+  font-size: 1.7rem;
+  font-weight: 500;
 }
 
 .modal__form input {
+  font-size: 1.7rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
 }
 
 .modal__form button {
+  grid-column: 1 / span 2;
+  justify-self: center;
+  margin-top: 1rem;
 }
 
 .btn--close-modal {
+  font-family: inherit;
+  color: inherit;
+  position: absolute;
+  top: 0.5rem;
+  right: 2rem;
+  font-size: 4rem;
+  cursor: pointer;
+  border: none;
+  background: none;
 }
 
 .hidden {
+  /* ! 이거 2개의 차이점.... */
+  visibility: hidden;
+  opacity: 0;
 }
 
 /* COOKIE MESSAGE */
 .cookie-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  background-color: white;
+  color: #bbb;
+  font-size: 1.5rem;
+  font-weight: 400;
 }
