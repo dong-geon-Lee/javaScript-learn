@@ -132,3 +132,241 @@ console.log(jonas.hasOwnProperty('species'));
 // 부모를 두고 있는 프로토타입 표시 __proto__
 // jonas객체의 부모 프로토타입은 Person.prototype이다
 console.log(jonas.__proto__ === Person.prototype);
+
+// ! 211 강 - 프로토타입 built-in object
+// Person 생성자 함수
+console.log(jonas.__proto__);
+
+// 최상위 프로토타입 (Object.proptotype)
+console.log(jonas.__proto__.__proto__);
+
+// null이 나온다. 이 위의 프로토타입이 없으므로
+console.log(jonas.__proto__.__proto__.__proto__);
+
+console.dir(Person.prototype.constructor);
+
+// 배열의 부모 프로토타입을 콘솔로 조회하면
+// concat, fill, find, map 등등 배열 메서드들이 나열된다.
+// 그래서 사용이 가능했던 것이다. 배열은 메서드를 상속한다.
+// 배열 리스트를 만들 때마다 실제로 배열 생성자(new Array)에 의해 생성되는 것과 같다.
+
+const arr = [3, 6, 6, 5, 6, 9, 9]; // new Array === []
+console.log(arr.__proto__);
+console.log(arr.__proto__ === Array.prototype);
+
+// 최상위 프로토타입 (Object.proptotype)을 가진다.
+console.log(arr.__proto__.__proto__);
+
+// 모든 배열은 배열 생성자의 프로토타입 속성에 있다
+Array.prototype.unique = function () {
+  return [...new Set(this)];
+};
+
+console.log(arr.unique());
+
+// DOM에는 6~7단계의 거대한 프로토타입 체인으로 연결되어 있다
+const h1 = document.querySelector('h1');
+console.dir(h1);
+
+// ! 212 강 - 코딩 test
+// test 파일 확인하기.
+
+// ! 213 강 - ES6 Class
+class PersonCl {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+
+  // Methods will be added to .prototype property
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  }
+
+  // PersonCl.prototype.greet = function () {
+  //   console.log(`Hey ${this.fullName}`);
+  // };
+  // 프로토타입으로 만든 것과 정확히 같이 동작한다.
+  greet() {
+    console.log(`Hey ${this.fullName}`);
+  }
+
+  // get의 사용
+  get age() {
+    return 2000 - this.birthYear;
+  }
+
+  // set의 사용
+  set fullName(name) {
+    if (name.includes(' ')) {
+      this._fullName = name;
+    } else {
+      alert(`${name} is not a full name!`);
+    }
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
+
+  hey() {
+    console.log('OOP 오늘 꼭 할 수 있다');
+  }
+
+  static hey() {
+    console.log('Hey there');
+    console.log(this);
+  }
+}
+
+const jessica = new PersonCl('Jessica Davis', 1996);
+console.log(jessica);
+jessica.greet();
+jessica.calcAge();
+console.log(jessica.__proto__ === PersonCl.prototype);
+
+console.log(jessica.age);
+console.log(jessica.fullName);
+jessica.fullName = 'lee dongGun';
+console.log(jessica.fullName);
+
+const walter = new PersonCl('Walter White', 1965);
+
+// 1. Classes are NOT hoisted (클래스는 호이스팅 되지 않는다)
+// 2. Class are first-class citizes (함수에 반환 및 전달할 수 있다)
+// 3. Classes are executed in strict mode (엄격 모드에서 실행된다)
+
+// ! 214 강 - Setter & Getter
+// setter와 getter는 기본적으로 함수다.
+// class도 동일한 방식으로 작동한다.
+const account = {
+  owner: 'Jonas',
+  movements: [200, 530, 120, 300],
+
+  get lastest() {
+    return this.movements.slice(-1).pop();
+  },
+
+  // set에서는 매개변수가 1개 이상은 있어야 된다.
+  set lastest(mov) {
+    this.movements.push(mov);
+  },
+};
+
+// 메서드 앞에다가 get을 사용하면 속성자까지만 작성해도 함수가 호출된다.
+console.log(account.lastest);
+
+// set을 사용하고 싶으면 메서드에 값을 할당한다. (set의 동작 방식)
+account.lastest = 50;
+
+// 확인결과 리스트에 새로운 배열이 추가되었다.
+console.log(account.movements);
+
+// ! 215 강 - Static Methods
+// Person.hey = function () {
+// ? 클래스 PersonCl에서 직접 메서드를 호출하는 방법으로
+// ? 정적 메서드가 사용 된다. walter와 같은 인스턴스는
+// hey 메서드 앞에 static이 붙어있으면 이름이 같아도
+// 읽을 수 없다. 따라서 static이 없는 다른 메서드를 읽는다.(hey)
+PersonCl.hey();
+walter.hey();
+
+// ! 216강 - Object create
+const PersonProto = {
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+
+// Object.create() 메서드를 이용해서 객체의
+// 프로토타입을 수동으로 설정할 수 있다.
+// 프로토타입 상속을 구현하는 방법이다.(실제로는 적게 쓰이는 기법)
+const steven = Object.create(PersonProto);
+console.log(steven);
+steven.birthYear = 2022;
+steven.calcAge();
+console.log(steven.__proto__ === PersonProto);
+
+const sarah = Object.create(PersonProto);
+sarah.init('Sarah', 1979);
+sarah.calcAge();
+
+// ! 217강 - class 코딩 테스트
+
+// ! 218강 - 클래스 간의 상속 : 생성자 함수
+const PersonJS = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+PersonJS.prototype.calcAge = function () {
+  console.log(2027 - this.birthYear);
+};
+
+// 자식 클래스에서 추가 속성을 만든다.
+const Student = function (firstName, birthYear, course) {
+  Person.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+// Linking prototypes (상속)
+Student.prototype = Object.create(PersonJS.prototype);
+
+// 절대 작동하지 않는다!!
+// Student.prototype = PersonJS.prototype
+
+Student.prototype.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+};
+
+const mike = new Student('Mike', 2020, 'Computer Science');
+mike.introduce();
+mike.calcAge();
+console.log(mike);
+console.log(mike.__proto__);
+console.log(mike.__proto__.__proto__);
+console.log(mike.__proto__.__proto__.__proto__);
+console.log(mike instanceof Student);
+console.log(mike instanceof PersonJS);
+console.log(mike instanceof Object);
+
+Student.prototype.constructor = Student;
+console.dir(Student.prototype.constructor);
+
+// ! 219강 - 코딩 테스트
+
+// ! 220강 - 클래스 상속 ES6
+
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    // Always needs to happen first!
+    super(fullName, birthYear);
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(`My name is ${this.fullName} and I study ${this.course}`);
+  }
+
+  // 메서드명이 같은 경우(부모 메서드랑) 다형성에 의해서 새로 오버라이드가 되어 덮어쓰기 됨.
+  calcAge() {
+    console.log(
+      `I'm ${
+        2037 - this.birthYear
+      } years old, but as a student I feel more like ${
+        2037 - this.birthYear + 10
+      }`
+    );
+  }
+}
+
+const martha = new StudentCl('Martha Jones', 2012, 'Computer Science');
+console.log(martha);
+
+martha.introduce();
+martha.calcAge();
