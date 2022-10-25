@@ -370,3 +370,98 @@ console.log(martha);
 
 martha.introduce();
 martha.calcAge();
+
+// ! 221강 - 클래스 상속 ES6 (Object.create)
+const PersonProto2 = {
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+
+const stevens = Object.create(PersonProto2);
+console.log(stevens);
+
+const StudentProto = Object.create(PersonProto2);
+StudentProto.init = function (firstName, birthYear, course) {
+  PersonProto2.init.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+StudentProto.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+};
+
+const jays = Object.create(StudentProto);
+jays.init('Lee', '2022', 'Computer Science');
+jays.introduce();
+jays.calcAge();
+console.log(jays);
+
+// ! 222강 - 또 다른 클래스 예시
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this._pin = pin;
+    // protected property
+    this._movements = [];
+    this.locale = navigator.language;
+
+    console.log(`Thanks for opening an account, ${owner}`);
+  }
+
+  getMovements() {
+    return this._movements;
+  }
+
+  deposit(val) {
+    this._movements.push(val);
+    return this;
+  }
+
+  withdraw(val) {
+    this.deposit(-val);
+    return this;
+  }
+
+  approveLoan(val) {
+    return true;
+  }
+
+  requestLoan(val) {
+    if (this.approveLoan(val)) {
+      this.deposit(val);
+      console.log(`Loan approved`);
+      return this;
+    }
+  }
+}
+
+const acc1 = new Account('Jonas', 'EUR', 1111);
+acc1.deposit(250);
+acc1.withdraw(140);
+acc1.requestLoan(1000);
+acc1.approveLoan(1000);
+console.log(acc1.getMovements());
+console.log(acc1);
+console.log(acc1.pin);
+
+// ! 223강 ~ 224강 - 캡슐화: 보호되는 속성과 방법
+
+// ! 225강 - 연결 방법 (메서드 체이닝)
+acc1.deposit(300).deposit(500).withdraw(35).requestLoan(2500).withdraw(4000);
+console.log(acc1);
+
+// ! 226강 - ES6 클래스 요약
+// class의 extends 클래스간의 상속을 의미하고 자동적으로 프로토타입 체인을 설정한다.
+// public 필드란 생성자 함수 위에 전역변수 형태 처럼 만들고 값을 할당하는 것이다
+// private 필드는 외부 class의 접근을 막기 위해서 사용하는데 public필드 앞에 #이 붙은 형태다.
+// static 필드는 클래스에서 직접 접근 할 수 있는 변수 또는 메서드를 의미한다.
+// constructor 생성자 함수는 new 연산자에 의해 자동으로 호출된다. (클래스의 인스턴스를 만들 떄마다 사용)
+
+// ! 227강 - 코딩 테스트 #4
