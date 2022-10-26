@@ -16,35 +16,41 @@
 // 3. Flow-chart - WHAT we will build - 간단하게 스케치를 한다. 절대로 전체에 매달리지마라
 // 4. Architecture - HOW we will build it - 데이터를 관리하는 방법
 
-// prettier-ignore
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-const form = document.querySelector('.form');
-const containerWorkouts = document.querySelector('.workouts');
-const inputType = document.querySelector('.form__input--type');
-const inputDistance = document.querySelector('.form__input--distance');
-const inputDuration = document.querySelector('.form__input--duration');
-const inputCadence = document.querySelector('.form__input--cadence');
-const inputElevation = document.querySelector('.form__input--elevation');
-
 class Workout {
   date = new Date();
   id = (Date.now() + '').slice(-10);
+  clicks = 0;
 
   constructor(coords, distance, duration) {
     this.coords = coords; // [lat, lng] 위도, 경도
     this.distance = distance; // in km
     this.duration = duration; // in min
   }
+
+  _setDescription() {
+    // prettier-ignore
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+    'July', 'August', 'September', 'October', 'November', 'December'];
+
+    this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${
+      months[this.date.getMonth()]
+    } ${this.date.getDate()}`;
+  }
+
+  click() {
+    this.clicks++;
+  }
 }
 
 class Running extends Workout {
+  type = 'running';
+
   constructor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
     this.cadence = cadence;
     this.calcPace();
+    this._setDescription();
   }
-
   calcPace() {
     // min/km
     this.pace = this.duration / this.distance;
@@ -53,10 +59,13 @@ class Running extends Workout {
 }
 
 class Cycling extends Workout {
+  type = 'cycling';
+
   constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
     this.calcSpeed();
+    this._setDescription();
   }
 
   calcSpeed() {
@@ -72,16 +81,34 @@ class Cycling extends Workout {
 
 ///////////////////////////////////////////////////////////
 // Application ARCHITECTURE
+const form = document.querySelector('.form');
+const containerWorkouts = document.querySelector('.workouts');
+const inputType = document.querySelector('.form__input--type');
+const inputDistance = document.querySelector('.form__input--distance');
+const inputDuration = document.querySelector('.form__input--duration');
+const inputCadence = document.querySelector('.form__input--cadence');
+const inputElevation = document.querySelector('.form__input--elevation');
+
 class App {
   // private keyword setting
   #map;
+  #mapZoomLevel = 13;
   #mapEvent;
+  #workouts = [];
 
   // 클래스에서 새로운 객체가 생성될 떄 생성자 함수는 즉시 호출됩니다.
   constructor() {
     console.log(this, '{}');
     console.log('즉시 호출');
+
+    // Get user's position
     this._getPosition();
+
+    // Get data from local storage
+    this._getLocalStorage();
+
+    // Attach event handlers
+    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
 
     // 항상 실제로 반복되는 작업 중에 하나이다.
     // bind로 감싸지 않으면 this는 form 요소를 가리키기 때문이다.
@@ -128,7 +155,7 @@ class App {
     // setView는 배열을 받는다([경도,위도])
     // 숫자가 높아질수록 지도가 더 확대된다.
     // 상수 map에 이벤트 리스너를 추가 할 수있다.
-    this.#map = L.map('map').setView(coords, 13);
+    this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
 
     // 방대한 메서드들을 확인 할 수 있다.
     console.log(this.#map);
@@ -146,6 +173,10 @@ class App {
     // Handling clicks on map
     console.log(this, '왜?');
     this.#map.on('click', this._showForm.bind(this));
+
+    this.#workouts.forEach(work => {
+      this._renderWorkoutMarker(work);
+    });
   }
 
   _showForm(mapE) {
@@ -166,6 +197,19 @@ class App {
     inputDistance.focus();
   }
 
+  _hideForm() {
+    // Empty inputs
+    inputDistance.value =
+      inputDuration.value =
+      inputCadence.value =
+      inputElevation.value =
+        '';
+
+    form.getElementsByClassName.display = 'none';
+    form.classList.add('hidden');
+    setTimeout(() => (form.style.display = 'grid'), 1000);
+  }
+
   _toggleElevationField() {
     inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
@@ -173,24 +217,78 @@ class App {
 
   _newWorkout(e) {
     e.preventDefault();
-    // console.log(this);
-    // Clear input fields
-    inputDistance.value =
-      inputDuration.value =
-      inputCadence.value =
-      inputElevation.value =
-        '';
+
+    const validInputs = (...inputs) => {
+      return inputs.every(inp => Number.isFinite(inp));
+    };
+
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0);
 
     console.log(e, 'event');
     console.log(this, 'this');
     console.log(this.#map);
-    const { lat, lng } = this.#mapEvent.latlng;
-    console.log(lat, lng); // 위치 / 경도
 
+    // Get data from form
+    const type = inputType.value;
+    const distance = +inputDistance.value;
+    const duration = +inputDuration.value;
+    const { lat, lng } = this.#mapEvent.latlng;
+
+    let workout;
+
+    // If workout running, create running object
+    if (type === 'running') {
+      const cadence = +inputCadence.value;
+
+      // Check if data is valid
+      if (
+        !validInputs(distance, duration, cadence) ||
+        !allPositive(distance, duration, cadence)
+      ) {
+        return alert('Inputs have to be positive numbers!');
+      }
+
+      workout = new Running([lat, lng], distance, duration, cadence);
+    }
+
+    // If workout cycling, create running object
+    if (type === 'cycling') {
+      const elevation = +inputElevation.value;
+
+      if (
+        !validInputs(distance, duration, elevation) ||
+        !allPositive(distance, duration)
+      ) {
+        return alert('Inputs have to be positive numbers!');
+      }
+
+      workout = new Cycling([lat, lng], distance, duration, elevation);
+    }
+
+    // Add new object to workout array
+    this.#workouts.push(workout);
+    console.log(workout);
+
+    // Render workout on map as marker
+    this._renderWorkoutMarker(workout);
+
+    console.log(lat, lng); // 위치 / 경도
     // 1. L.marker() : 마커를 지도에 추가합니다 (위치와 경도를 넣는다)
     // 2. addTo() : marker를 지도에 추가합니다.(상수 map의 위치정보를 넣는다)
     // 3. bindPopup : 팝업을 생성하는 메서드이다. (문자열 및 객체를 넣는다)
-    L.marker([lat, lng])
+
+    // Render workout on list
+    this._renderWorkout(workout);
+
+    // Hide form + Clear input fields
+    this._hideForm();
+
+    // Set local storage to all workouts
+    this._setLocalStorage();
+  }
+
+  _renderWorkoutMarker(workout) {
+    L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -198,11 +296,142 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: 'running-popup',
+          className: `${workout.type}-popup`,
         })
       )
-      .setPopupContent('Workout')
+      .setPopupContent(
+        `${workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${workout.description}`
+      )
       .openPopup();
+  }
+
+  _renderWorkout(workout) {
+    let html = `
+      <li class="workout workout--${workout.type}" data-id="${workout.id}">
+        <h2 class="workout__title">${workout.description}</h2>
+        <div class="workout__details">
+          <span class="workout__icon">${
+            workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
+          }</span>
+          <span class="workout__value">${workout.distance}</span>
+          <span class="workout__unit">km</span>
+        </div>
+        <div class="workout__details">
+          <span class="workout__icon">⏱</span>
+          <span class="workout__value">${workout.duration}</span>
+          <span class="workout__unit">min</span>
+        </div>
+    `;
+
+    if (workout.type == 'running') {
+      html += `
+        <div class="workout__details">
+          <span class="workout__icon">⚡️</span>
+          <span class="workout__value">${workout.pace.toFixed(1)}</span>
+          <span class="workout__unit">min/km</span>
+        </div>
+        <div class="workout__details">
+          <span class="workout__icon">🦶🏼</span>
+          <span class="workout__value">${workout.cadence}</span>
+          <span class="workout__unit">spm</span>
+        </div>
+      </li>
+      `;
+    }
+
+    if (workout.type === 'cycling') {
+      html += `
+        <div class="workout__details">
+          <span class="workout__icon">⚡️</span>
+          <span class="workout__value">${workout.speed.toFixed(1)}</span>
+          <span class="workout__unit">km/h</span>
+        </div>
+        <div class="workout__details">
+          <span class="workout__icon">⛰</span>
+          <span class="workout__value">${workout.elevationGain}</span>
+          <span class="workout__unit">m</span>
+        </div>
+      </li>
+      `;
+    }
+
+    form.insertAdjacentHTML('afterend', html);
+  }
+
+  _moveToPopup(e) {
+    const workoutEl = e.target.closest('.workout');
+    console.log(workoutEl);
+
+    if (!workoutEl) return;
+
+    const workout = this.#workouts.find(
+      work => work.id === workoutEl.dataset.id
+    );
+
+    console.log(workout);
+
+    this.#map.setView(workout.coords, this.#mapZoomLevel, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+
+    // ? 로컬스토리지에 있는 객체는 모든 메서드를 상속하지 않는다.
+    // ? click는 에러에 걸리게 됩니다.
+    // using the public interface
+    // workout.click();
+  }
+
+  _setLocalStorage() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+  }
+
+  _getLocalStorage() {
+    const data = JSON.parse(localStorage.getItem('workouts'));
+    console.log(data);
+
+    if (!data) return;
+
+    this.#workouts = data;
+    console.log(this.#workouts);
+
+    // ! 새로운 배열을 만들지 않는다! forEach가 핵심!
+    // ! 배열 구조분해 할당 노션 복습하기
+    this.#workouts.forEach(work => {
+      this._renderWorkout(work);
+    });
+
+    // ! 솔루션 1
+    // data.forEach(work => {
+    //   let obj;
+    //   if (work.type === 'running') obj = new Running();
+    //   if (work.type === 'cycling') obj = new Cycling();
+
+    //   Object.assign(obj, work);
+    //   this.#workouts.push(obj);
+    // });
+
+    // this.#workouts.forEach(work => {
+    //   this._renderWorkout(work);
+    // });
+
+    // ! 솔루션 2
+    // this.#workouts = data.map(work => {
+    //   let obj;
+    //   if (work.type === 'running') obj = new Running();
+    //   if (work.type === 'cycling') obj = new Cycling();
+
+    //   Object.assign(obj, work);
+    //   return obj;
+    // });
+
+    // this.#workouts.forEach(work => this._renderWorkout(work));
+  }
+
+  _reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
   }
 }
 
