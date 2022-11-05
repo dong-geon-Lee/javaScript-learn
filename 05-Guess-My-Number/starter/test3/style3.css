@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
+
+/* font-family: 'Press Start 2P', sans-serif; */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Press Start 2P', sans-serif;
+  background-color: #222;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.header {
+  padding: 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.btn--again {
+  border: none;
+  border-radius: 0.3rem;
+  padding: 1.6rem 2rem;
+  color: #222;
+  font-size: 1.8rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn--again:hover {
+  opacity: 0.9;
+}
+
+.text__small {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.title {
+  color: #fff;
+  text-align: center;
+  padding: 9rem 0;
+  font-size: 3rem;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.question {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12rem;
+  height: 10rem;
+  background-color: #fff;
+  border-radius: 0.3rem;
+  z-index: 5;
+}
+
+.question__text {
+  color: #222;
+  font-size: 4.8rem;
+}
+
+.line {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-color: #fff;
+}
+
+.container {
+  display: flex;
+  color: #fff;
+  padding: 10rem 10rem;
+}
+
+.left--side {
+  flex: 1;
+  padding: 20rem 0rem;
+}
+
+.left--box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.border--line {
+  border: 4px solid #fff;
+  background-color: inherit;
+  padding: 3rem 2rem;
+  font-family: inherit;
+  font-size: 4.6rem;
+  width: 40%;
+  text-align: center;
+  color: #fff;
+}
+
+.check--btn {
+  background-color: #fff;
+  padding: 2rem 2rem;
+  margin-top: 2.6rem;
+}
+
+.right--side {
+  flex: 1;
+  padding: 20rem 0rem;
+  padding-left: 15%;
+}
+
+.start__text {
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 8.4rem;
+}
+
+.score__info {
+  width: 100%;
+  font-size: 1.7rem;
+  margin-left: auto;
+}
+
+.score {
+  margin-bottom: 1.6rem;
+}
