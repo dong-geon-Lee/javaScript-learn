@@ -1,0 +1,90 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(to top left, #28b487, #7dd56f);
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+.btn--group {
+  display: flex;
+  justify-content: center;
+  gap: 3.6em;
+}
+
+.modal--btn {
+  margin-top: 20rem;
+  padding: 2rem;
+  font-size: 2rem;
+  font-family: inherit;
+  font-weight: 700;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+}
+
+.modal--btn:hover {
+  background-color: beige;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 2.6rem 4rem;
+  width: 70%;
+  border-radius: 1rem;
+  z-index: 5;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.modal p {
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.6px;
+  margin-top: 2rem;
+}
+
+.btn__position {
+  width: 100%;
+  text-align: right;
+}
+
+.close--btn {
+  border: none;
+  font-size: 2.6rem;
+  font-weight: 700;
+  font-family: inherit;
+  background-color: inherit;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
+.modal.hidden,
+.overlay.hidden {
+  display: none;
+}
