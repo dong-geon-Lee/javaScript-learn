@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" type="image/png" href="/icon.png" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style3.css" />
+    <title>Bankist</title>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <h2 class="login__status">Log in to get started</h2>
+      <div class="logo__box">
+        <img src="logo.png" alt="logo" class="logo__img" />
+      </div>
+
+      <form class="box">
+        <input type="text" placeholder="user" class="user__input" />
+        <input type="text" placeholder="PIN" class="pin__input" />
+        <button type="submit" class="login__btn">&rarr;</button>
+      </form>
+    </header>
+
+    <div class="container">
+      <!-- Current balance display-->
+      <section class="current__balance-area">
+        <div class="current__box">
+          <h2 class="current__text">Current balance</h2>
+          <small class="current__date">As of 05/03/2037</small>
+        </div>
+        <h1 class="current__balance">0000€</h1>
+      </section>
+
+      <main class="main__content-container">
+        <!-- Recoded balance -->
+        <section class="recoded__area">
+          <div class="recoded__box">
+            <label class="recoded__label deposit">2 Deposit</label>
+            <span class="recoded__time">3 Days Ago</span>
+            <span class="recoded__cash">4000€</span>
+          </div>
+
+          <div class="recoded__box">
+            <label class="recoded__label withdrawal">1 Withdrawal</label>
+            <span class="recoded__time">24/01/2037</span>
+            <span class="recoded__cash">-378€</span>
+          </div>
+        </section>
+
+        <section class="user__action-area">
+          <!-- Transfer money -->
+          <div class="transfer__container">
+            <h1 class="tranfer__title">Transfer money</h1>
+            <form class="tranfer__box">
+              <div class="transfer__user-name">
+                <input type="text" class="input transfer__input-name" />
+                <label class="transfer__label">Transfer to</label>
+              </div>
+              <div class="transfer__user-amount">
+                <input type="number" class="input transfer__input-amount" />
+                <label class="transfer__amount">Amount</label>
+              </div>
+              <button type="submit" class="btn transfer__btn">&rarr;</button>
+            </form>
+          </div>
+
+          <!-- Request loan -->
+          <div class="request__container">
+            <h1 class="request__title">Request loan</h1>
+            <form class="request__box">
+              <div class="request__user-amount">
+                <input type="number" class="input request__input-amount" />
+                <label class="request__amount">Amount</label>
+              </div>
+              <button type="submit" class="btn request__btn">&rarr;</button>
+            </form>
+          </div>
+
+          <!-- Close account -->
+          <div class="close__container">
+            <h1 class="close__title">Close account</h1>
+            <form class="close__box">
+              <div class="close__user-name">
+                <input type="text" class="input close__input-user" />
+                <label class="close__label">Confirm user</label>
+              </div>
+              <div class="close__user-amount">
+                <input type="text" class="input close__input-pin" />
+                <label class="close__pin">Confirm PIN</label>
+              </div>
+              <button type="submit" class="btn close__btn">&rarr;</button>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="user__balance-container">
+        <div class="user__balance-active">
+          <div class="in">In <span class="display__in">0000€</span></div>
+          <div class="out">Out <span class="display__out">0000€</span></div>
+          <div class="interest">
+            Interest <span class="display__interest">0000€</span>
+          </div>
+          <div class="sort">↓ SORT</div>
+        </div>
+
+        <div class="login__time-box">
+          <small>You will be logged out in</small>
+          <strong>05:00</strong>
+        </div>
+      </footer>
+    </div>
+
+    <!-- js script -->
+    <script src="script3.js"></script>
+  </body>
+</html>

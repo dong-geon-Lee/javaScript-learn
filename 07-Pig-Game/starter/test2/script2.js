@@ -14,36 +14,43 @@ let scores = [0, 0];
 let curScore = 0;
 let playing = true;
 
+function activePlayer(curEl, removeActivePlayer, addActivePlayer) {
+  curEl.textContent = curScore = 0;
+  removeActivePlayer.classList.remove('player--active');
+  addActivePlayer.classList.add('player--active');
+}
+
+function winnerPlayer(playerPanelEl, isPlaying, diceEl) {
+  playing = isPlaying;
+  playerPanelEl.classList.add('player--winner');
+  diceEl.classList.add('hidden');
+}
+
 rollDice.addEventListener('click', e => {
   const target = e.target
     .closest('.container')
     .querySelector('.player--active');
+  const random = Math.floor(Math.random() * 6 + 1);
+  const activePlayer1 = target.classList.contains('player-panel--1');
+  const activePlayer2 = target.classList.contains('player-panel--2');
 
   if (target && playing) {
-    const random = Math.floor(Math.random() * 6 + 1);
-
     dice.classList.remove('hidden');
     dice.src = `dice-${random}.png`;
-    const activePlayer1 = target.classList.contains('player-panel--1');
-    const activePlayer2 = target.classList.contains('player-panel--2');
-
-    console.log(activePlayer1, activePlayer2);
 
     if (activePlayer1) {
       if (random === 1) {
-        cur1ScoreEl.textContent = curScore = 0;
-        player1Panel.classList.remove('player--active');
-        player2Panel.classList.add('player--active');
+        activePlayer(cur1ScoreEl, player1Panel, player2Panel);
         return;
       }
 
       curScore += random;
       cur1ScoreEl.textContent = curScore;
-    } else {
+    }
+
+    if (activePlayer2) {
       if (random === 1) {
-        cur2ScoreEl.textContent = curScore = 0;
-        player1Panel.classList.add('player--active');
-        player2Panel.classList.remove('player--active');
+        activePlayer(cur2ScoreEl, player2Panel, player1Panel);
         return;
       }
 
@@ -57,39 +64,26 @@ holdBtn.addEventListener('click', e => {
   const target = e.target
     .closest('.container')
     .querySelector('.player--active');
-
   const activePlayer1 = target.classList.contains('player-panel--1');
   const activePlayer2 = target.classList.contains('player-panel--2');
-
-  console.log(activePlayer1, activePlayer2);
 
   if (playing) {
     if (activePlayer1) {
       scores[0] += +curScore;
       displayScore1.textContent = scores[0];
 
-      if (scores[0] >= 20) {
-        player1Panel.classList.add('player--winner');
-        playing = false;
-        dice.classList.add('hidden');
-        return;
-      }
-      cur1ScoreEl.textContent = curScore = 0;
-      player1Panel.classList.remove('player--active');
-      player2Panel.classList.add('player--active');
-    } else {
+      scores[0] >= 20
+        ? winnerPlayer(player1Panel, false, dice)
+        : activePlayer(cur1ScoreEl, player1Panel, player2Panel);
+    }
+
+    if (activePlayer2) {
       scores[1] += +curScore;
       displayScore2.textContent = scores[1];
 
-      if (scores[1] >= 20) {
-        player2Panel.classList.add('player--winner');
-        playing = false;
-        dice.classList.add('hidden');
-        return;
-      }
-      cur2ScoreEl.textContent = curScore = 0;
-      player1Panel.classList.add('player--active');
-      player2Panel.classList.remove('player--active');
+      scores[1] >= 20
+        ? winnerPlayer(player2Panel, false, dice)
+        : activePlayer(cur2ScoreEl, player2Panel, player1Panel);
     }
   }
 });
