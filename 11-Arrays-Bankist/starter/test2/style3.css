@@ -126,7 +126,7 @@ body {
 
 .recoded__box {
   display: grid;
-  grid-template-columns: 2fr 6fr 1fr;
+  grid-template-columns: 2fr 6fr 1.6fr;
   padding: 2rem;
   justify-items: last baseline;
   align-items: center;
@@ -157,6 +157,7 @@ body {
 
 .recoded__box .recoded__cash {
   font-size: 1.6rem;
+  justify-self: right;
 }
 
 .user__action-area {

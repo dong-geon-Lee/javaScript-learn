@@ -209,7 +209,7 @@ const startLogOutTimer = () => {
   // console.log(timer, '여기는?');
 
   // Set time to 5 minutes
-  let time = 5;
+  let time = 500000;
 
   tick();
   // Call the timer every second
