@@ -14,47 +14,49 @@
     <title>Bankist | When Banking meets Minimalist</title>
   </head>
   <body>
-    <header class="header">
-      <div class="">
-        <img src="../img/logo.png" alt="logo" class="logo__img" />
-      </div>
-
-      <nav class="nav">
-        <ul class="link__group">
-          <li class="link__list">
-            <a class="link__tag" href="#">Features</a>
-          </li>
-          <li class="link__list">
-            <a class="link__tag" href="#">Operations</a>
-          </li>
-          <li class="link__list">
-            <a class="link__tag" href="#">Testimonials</a>
-          </li>
-        </ul>
-        <button class="nav__account-btn">Open account</button>
-      </nav>
-    </header>
-
     <main class="container">
-      <section class="hero__page">
-        <div class="hero__left-side">
-          <h1 class="hero__title">
-            When <span class="hero__decoration-text">banking</span> meets
-            <span class="hero__decoration-text">minimalist</span>
-          </h1>
-          <p class="hero__text">
-            A simpler banking experience for a simpler life.
-          </p>
-          <button class="hero__btn">Learn more &darr;</button>
-        </div>
-        <div class="hero__right-side">
-          <img src="../img/hero.png" alt="hero" class="hero__img" />
-        </div>
-      </section>
+      <div class="land__page">
+        <header class="header">
+          <div class="logo__box">
+            <img src="../img/logo.png" alt="logo" class="logo__img link__tag" />
+          </div>
+
+          <nav class="nav">
+            <ul class="link__group">
+              <li class="link__list">
+                <a class="link__tag" href="#">Features</a>
+              </li>
+              <li class="link__list">
+                <a class="link__tag" href="#">Operations</a>
+              </li>
+              <li class="link__list">
+                <a class="link__tag" href="#">Testimonials</a>
+              </li>
+            </ul>
+            <button class="nav__account-btn link__tag">Open account</button>
+          </nav>
+        </header>
+
+        <section class="hero__page">
+          <div class="hero__left-side">
+            <h1 class="hero__title">
+              When <span class="hero__decoration-text">banking</span> meets
+              <span class="hero__decoration-text">minimalist</span>
+            </h1>
+            <p class="hero__text">
+              A simpler banking experience for a simpler life.
+            </p>
+            <button class="hero__btn">Learn more &darr;</button>
+          </div>
+          <div class="hero__right-side">
+            <img src="../img/hero.png" alt="hero" class="hero__img" />
+          </div>
+        </section>
+      </div>
 
       <hr class="line" />
 
-      <section class="features__page">
+      <section class="features__page section" id="features__page">
         <div class="content__style features__text-box">
           <h2 class="title__style features__title">FEATURES</h2>
           <p class="text__style">
@@ -64,7 +66,12 @@
 
         <div class="features__container">
           <div class="features__itembox">
-            <img src="../img/digital-lazy.jpg" alt="img-1" class="img__1" />
+            <img
+              src="../img/digital-lazy.jpg"
+              alt="img-1"
+              class="feat__img img__1"
+              data-id="../img/digital.jpg"
+            />
             <div class="features__content">
               <div class="features__icons">
                 <svg>
@@ -94,11 +101,21 @@
                 quibusdam!
               </p>
             </div>
-            <img src="../img/grow-lazy.jpg" alt="2" class="img__2" />
+            <img
+              src="../img/grow-lazy.jpg"
+              alt="2"
+              class="feat__img img__2"
+              data-id="../img/grow.jpg"
+            />
           </div>
 
           <div class="features__itembox">
-            <img src="../img/card-lazy.jpg" alt="3" class="img__3" />
+            <img
+              src="../img/card-lazy.jpg"
+              alt="3"
+              class="feat__img img__3"
+              data-id="../img/card.jpg"
+            />
             <div class="features__content">
               <div class="features__icons">
                 <svg>
@@ -118,11 +135,11 @@
 
       <hr class="line" />
 
-      <section class="optionals__page">
+      <section class="optionals__page section">
         <div class="content__style">
-          <h2 class="title__style">FEATURES</h2>
+          <h2 class="title__style">OPERATIONS</h2>
           <p class="text__style">
-            Everything you need in a modern bank and more.
+            Everything as simple as possible, but no simpler.
           </p>
         </div>
 
@@ -133,8 +150,8 @@
             <button class="btn closing">03 Instant Closing</button>
           </div>
 
-          <div class="optionals__content">
-            <div class="svg__icon-box">
+          <div class="optionals__content optionals__content-1">
+            <div class="svg__icon-box svg__icon-box-1">
               <svg>
                 <use xlink:href="img/icons.svg#icon-upload"></use>
               </svg>
@@ -152,12 +169,52 @@
               </p>
             </div>
           </div>
+
+          <div class="optionals__content optionals__content-2">
+            <div class="svg__icon-box svg__icon-box-2">
+              <svg>
+                <use xlink:href="img/icons.svg#icon-home"></use>
+              </svg>
+            </div>
+
+            <div class="optional__box">
+              <h2 class="optional__title">
+                Buy a home or make your dreams come true, with instant loans.
+              </h2>
+              <p class="optional__text">
+                Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                cupidatat non proident, sunt in culpa qui officia deserunt
+                mollit anim id est laborum.
+              </p>
+            </div>
+          </div>
+
+          <div class="optionals__content optionals__content-3">
+            <div class="svg__icon-box svg__icon-box-3">
+              <svg>
+                <use xlink:href="img/icons.svg#icon-user-x"></use>
+              </svg>
+            </div>
+
+            <div class="optional__box">
+              <h2 class="optional__title">
+                No longer need your account? No problem! Close it instantly.
+              </h2>
+              <p class="optional__text">
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                qui officia deserunt mollit anim id est laborum. Ut enim ad
+                minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip ex ea commodo consequat.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       <hr class="line" />
 
-      <section class="testimonails">
+      <section class="testimonails section">
         <div class="content__style">
           <h2 class="title__style">NOT SURE YET?</h2>
           <p class="text__style">
@@ -198,7 +255,7 @@
       </section>
     </main>
 
-    <footer class="footer">
+    <footer class="footer section">
       <div class="footer__content-box">
         <h1 class="footer__title">
           The best day to join Bankist was one year ago. The second best is
@@ -225,6 +282,33 @@
         product.</small
       >
     </footer>
+
+    <div class="modals modal__hidden">
+      <button class="close__modals-btn">X</button>
+      <h2 class="modals__title">
+        Open your bank account in just
+        <span class="hero__decoration-text modal__decoration">5 minutes</span>
+      </h2>
+
+      <div class="modal__btn-box">
+        <div class="modal__input">
+          <label class="modal__label">First Name</label>
+          <input type="text" class="modal__input-style" />
+        </div>
+        <div class="modal__input">
+          <label class="modal__label">Last Name</label>
+          <input type="text" class="modal__input-style" />
+        </div>
+        <div class="modal__input">
+          <label class="modal__label">Email Address</label>
+          <input type="text" class="modal__input-style" />
+        </div>
+      </div>
+      <button class="next__btn">Next step &rarr;</button>
+    </div>
+
+    <div class="overlays modal__hidden"></div>
+
     <script src="script2.js"></script>
   </body>
 </html>
