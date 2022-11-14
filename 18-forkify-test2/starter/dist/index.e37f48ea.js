@@ -533,7 +533,8 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"aenu9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _webImmediateJs = require("core-js/modules/web.immediate.js");
+var _webImmediateJs = require("core-js/modules/web.immediate.js"); // window.addEventListener('load', showRecipe);
+ // ['hashchange','load'].forEach(ev=> window.addEventListener(ev,showRecipe));
 var _iconsSvg = require("url:../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _runtime = require("regenerator-runtime/runtime");
@@ -598,6 +599,16 @@ console.log("시작점");
  * 1개의 데이터 전용으로 만들어졌기 떄문이다.
  *
  * ? 290강
+ * 1. a태그에서 href에 id를 넣는다. (search-results의 ul태그 아래에 url hash를 추가)
+ * 2. a태그 클릭 시, 데이터를 동적으로 받아오기 위해서 이벤트를 추가한다.
+ * ->  window.addEventListener('hashchange', showRecipe);
+ * ->  id = window.location.hash.slice(1); API에 url에 id 넣기.
+ * window.location.hash은 href 값을 가져온다.
+ * a태그 요소를 클릭해서 url이 변경되면 hashchange 발생으로 showRecipe함수 호출됨.
+ * 3. window.addEventListener('load', showRecipe); 주로 새로 탭을 열 떄, 앱 화면이
+ * 아무것도 뜨지 않는 경우를 대비하려고 load 이벤트를 추가하는 코드가 설명되었는데, 이 코드가 없어도
+ * 새탭에서 앱 화면이 잘나오고 있다. 무시해도 상관없다고 판단됨.
+ * 4. id가 없으면 앱을 보호하기 위해서 guard문을 사용한다 !id -> return;
  */ const renderSpinner = (parentEl)=>{
     const markup = `
     <div class="spinner">
@@ -611,9 +622,12 @@ console.log("시작점");
 };
 const showRecipe = async ()=>{
     try {
+        const id = window.location.hash.slice(1);
+        console.log(id);
+        if (!id) return;
         //  1) Loading recipe
         renderSpinner(recipeContainer);
-        const response = await fetch("https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bcd09");
+        const response = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`);
         const data = await response.json();
         if (!response.ok) throw new Error(`${data.message}`);
         let { recipe  } = data.data;
@@ -725,6 +739,7 @@ const showRecipe = async ()=>{
     }
 };
 showRecipe();
+window.addEventListener("hashchange", showRecipe);
 
 },{"core-js/modules/web.immediate.js":"49tUX","url:../img/icons.svg":"loVOp","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
