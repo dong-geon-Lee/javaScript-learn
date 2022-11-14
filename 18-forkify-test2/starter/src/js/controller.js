@@ -50,17 +50,22 @@ console.log('시작점');
  * 가져오는 걸 허용하되 앞에 url: 을 붙여줘야 되는 규칙이 있다.
  * 지속적으로 더미데이터를 다루는게 중심이 되고있다.
  *
- *? 5.renderSpinner 함수를 만든다. 준비된 더미 데이터가 있고 recipeContainer
- * 에 만들어서 삽입한다. 그런데 궁금한 점은 이 스피너가 사라지는 이유가 뭔지 정확히 모르겠다.
+ * 5.renderSpinner 함수를 만든다. 준비된 더미 데이터가 있고 recipeContainer
+ * 에 만들어서 삽입한다. spinner가 사라지는 트릭은 간단하다. innerHTML을 이용한것이다.
+ * parentEl.innerHTML = ''; 은 관계없으며 recipeContainer.innerHTML = ''; 이
+ * 원인이 된다. 이런 트릭을 쓰지않으면 스피너 애니메이션은 계속 돌고 있는거 맞다! 인피니티니까!
  *
- *? 6. core-js, regenerate는 async-await 와 그 밖에 다른 것들을 폴리필하기 위해서
- * 사용한다고 하는데 무슨 말인지 모르겠다.
+ * 6.core-js, regenerate는 async-await 와 그 밖에 다른 것들을 폴리필하기 위해서
+ * 사용한다고 하는데 무슨 말인지 모르겠다. 별로 안중요할 가능성이 높다!
+ *
  * todo
  * 1) 첫 시작을 API를 요청한 후, 준비된 HTML 마크업을 이용해서
  * 데이터를 렌더링 하는 것으로 시작되었다. 더미데이터를 이용한 HTML 마크업은
  * 이미 준비되었기 떄문에 동적 데이터를 활용하기 좋다!
  * 2) API url이 단일데이터 렌더링 사용된 이유는 준비된 더미마크업이
  * 1개의 데이터 전용으로 만들어졌기 떄문이다.
+ *
+ * ? 290강
  */
 
 const renderSpinner = parentEl => {
