@@ -303,6 +303,28 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.transfers.active {
+  transform: translateY();
+}
+
+.loans.active {
+}
+
+.closing.active {
+}
+
+.optionals__content-1.active {
+  z-index: 4;
+}
+
+.optionals__content-2.active {
+  z-index: 3;
+}
+
+.optionals__content-3.active {
+  z-index: 2;
+}
+
 .btn__box {
   display: flex;
   justify-content: space-around;
@@ -310,7 +332,7 @@ body {
   width: 62%;
   gap: 2.6rem;
   margin: 0rem 0 3rem 0;
-  transform: translateY(5rem);
+
   padding: 0rem 0 5rem 0;
 }
 
@@ -321,6 +343,13 @@ body {
   width: 100%;
   font-family: inherit;
   cursor: pointer;
+  transform: translateY(6.7rem);
+}
+
+.transfers.active,
+.loans.active,
+.closing.active {
+  transform: translateY(5.7rem);
 }
 
 .transfers {
@@ -389,11 +418,34 @@ body {
   margin: 0 auto;
   position: relative;
   width: 100%;
-  padding: 5rem 0;
+  padding: 14rem 0 25rem 0;
+  overflow: hidden;
+}
+
+.testimonials__group {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  padding: 4.4rem 5rem 10rem 4.4rem;
+  /* display: none; */
+  transition: transform 0.4s ease;
+}
+
+.testimonials__group--1 {
+  transform: translate(-50%, -50%);
+}
+
+.testimonials__group--2 {
+  transform: translate(150%, -50%);
+}
+
+.testimonials__group--3 {
+  transform: translate(250%, -50%);
 }
 
 .testiminal__content {
-  width: 75%;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -421,12 +473,13 @@ body {
 
 .testiminal__content h2 {
   font-size: 2rem;
+  margin-left: 2rem;
 }
 
 .testiminal__content p {
   font-size: 1.4rem;
   letter-spacing: 0.03rem;
-  margin: 1.6rem 0 2.4rem 0;
+  margin: 1.6rem 0 2.4rem 2rem;
 }
 
 .arrow__btn {
@@ -443,10 +496,14 @@ body {
 
 .arrow__left {
   left: 0%;
+  cursor: pointer;
+  z-index: 3;
 }
 
 .arrow__right {
   right: 0%;
+  cursor: pointer;
+  z-index: 3;
 }
 
 .testimonails {
@@ -460,7 +517,7 @@ body {
 .testimonal__box {
   display: flex;
   align-items: center;
-  margin: 0 12rem;
+  margin: 0 8rem;
   gap: 1.6rem;
 }
 
@@ -479,6 +536,10 @@ body {
   display: flex;
   justify-content: center;
   gap: 1.4rem;
+  position: absolute;
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%, -0%);
 }
 
 .dot__container .dot {
@@ -644,8 +705,7 @@ body {
 
 .hidden {
   /* visibility: hidden;
-  opacity: 0;
-  transform: translateY(8rem); */
+  opacity: 0; */
 }
 
 .modal__hidden {

@@ -145,12 +145,19 @@
 
         <div class="optinonal__container">
           <div class="btn__box">
-            <button class="btn transfers">01 Instant Transfers</button>
-            <button class="btn loans">02 Instant Loans</button>
-            <button class="btn closing">03 Instant Closing</button>
+            <button class="btn transfers active" data-id="transfer">
+              01 Instant Transfers
+            </button>
+            <button class="btn loans" data-id="loans">02 Instant Loans</button>
+            <button class="btn closing" data-id="closing">
+              03 Instant Closing
+            </button>
           </div>
 
-          <div class="optionals__content optionals__content-1">
+          <div
+            class="optionals__content optionals__content-1 active"
+            data-id="transfer"
+          >
             <div class="svg__icon-box svg__icon-box-1">
               <svg>
                 <use xlink:href="img/icons.svg#icon-upload"></use>
@@ -170,7 +177,7 @@
             </div>
           </div>
 
-          <div class="optionals__content optionals__content-2">
+          <div class="optionals__content optionals__content-2" data-id="loans">
             <div class="svg__icon-box svg__icon-box-2">
               <svg>
                 <use xlink:href="img/icons.svg#icon-home"></use>
@@ -190,7 +197,10 @@
             </div>
           </div>
 
-          <div class="optionals__content optionals__content-3">
+          <div
+            class="optionals__content optionals__content-3"
+            data-id="closing"
+          >
             <div class="svg__icon-box svg__icon-box-3">
               <svg>
                 <use xlink:href="img/icons.svg#icon-user-x"></use>
@@ -223,33 +233,139 @@
         </div>
 
         <div class="testimonalis__container">
-          <button class="arrow__btn arrow__left">&larr;</button>
-          <button class="arrow__btn arrow__right">&rarr;</button>
+          <div
+            class="testimonials__group testimonials__group--1"
+            data-id="group1"
+          >
+            <div class="testiminal__content">
+              <h2 class="testiminal__title">Best financial decision ever!</h2>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Accusantium quas quisquam non? Quas voluptate nulla minima
+                deleniti optio ullam nesciunt, numquam corporis et asperiores
+                laboriosam sunt, praesentium suscipit blanditiis. Necessitatibus
+                id alias reiciendis, perferendis facere pariatur dolore veniam
+                autem esse non voluptatem saepe provident nihil molestiae.
+              </p>
+            </div>
 
-          <div class="testiminal__content">
-            <h2 class="testiminal__title">Best financial decision ever!</h2>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Accusantium quas quisquam non? Quas voluptate nulla minima
-              deleniti optio ullam nesciunt, numquam corporis et asperiores
-              laboriosam sunt, praesentium suscipit blanditiis. Necessitatibus
-              id alias reiciendis, perferendis facere pariatur dolore veniam
-              autem esse non voluptatem saepe provident nihil molestiae.
-            </p>
+            <div class="testimonal__box">
+              <img
+                src="../img/user-1.jpg"
+                alt="user-1"
+                class="testimonal__img"
+              />
+              <div class="testimonals__info">
+                <h2 class="testimonal__name">Aarav Lynn</h2>
+                <p class="testimonal__location">San Francisco, USA</p>
+              </div>
+            </div>
+
+            <button
+              class="arrow__btn arrow__left arrow__left--1"
+              data-id="left"
+            >
+              &larr;
+            </button>
+            <button
+              class="arrow__btn arrow__right arrow__right--1"
+              data-id="right"
+            >
+              &rarr;
+            </button>
           </div>
 
-          <div class="testimonal__box">
-            <img src="../img/user-1.jpg" alt="user-1" class="testimonal__img" />
-            <div class="testimonals__info">
-              <h2 class="testimonal__name">Aarav Lynn</h2>
-              <p class="testimonal__location">San Francisco, USA</p>
+          <div
+            class="testimonials__group testimonials__group--2"
+            data-id="group2"
+          >
+            <div class="testiminal__content">
+              <h2 class="testiminal__title">
+                The last step to becoming a complete minimalist
+              </h2>
+              <p>
+                Quisquam itaque deserunt ullam, quia ea repellendus provident,
+                ducimus neque ipsam modi voluptatibus doloremque, corrupti
+                laborum. Incidunt numquam perferendis veritatis neque
+                repellendus. Lorem, ipsum dolor sit amet consectetur adipisicing
+                elit. Illo deserunt exercitationem deleniti.
+              </p>
             </div>
+
+            <div class="testimonal__box">
+              <img
+                src="../img/user-2.jpg"
+                alt="user-1"
+                class="testimonal__img"
+              />
+              <div class="testimonals__info">
+                <h2 class="testimonal__name">Miyah Miles</h2>
+                <p class="testimonal__location">London, UK</p>
+              </div>
+            </div>
+
+            <button
+              class="arrow__btn arrow__left arrow__left--2"
+              data-id="left"
+            >
+              &larr;
+            </button>
+            <button
+              class="arrow__btn arrow__right arrow__right--2"
+              data-id="right"
+            >
+              &rarr;
+            </button>
+          </div>
+
+          <div
+            class="testimonials__group testimonials__group--3"
+            data-id="group3"
+          >
+            <div class="testiminal__content">
+              <h2 class="testiminal__title">
+                Finally free from old-school banks
+              </h2>
+              <p>
+                Debitis, nihil sit minus suscipit magni aperiam vel tenetur
+                incidunt commodi architecto numquam omnis nulla autem,
+                necessitatibus blanditiis modi similique quidem. Odio aliquam
+                culpa dicta beatae quod maiores ipsa minus consequatur error
+                sunt, deleniti saepe aliquid quos inventore sequi.
+                Necessitatibus id alias reiciendis, perferendis facere.
+              </p>
+            </div>
+
+            <div class="testimonal__box">
+              <img
+                src="../img/user-3.jpg"
+                alt="user-1"
+                class="testimonal__img"
+              />
+              <div class="testimonals__info">
+                <h2 class="testimonal__name">Francisco Gomes</h2>
+                <p class="testimonal__location">Lisbon, Portugal</p>
+              </div>
+            </div>
+
+            <button
+              class="arrow__btn arrow__left arrow__left--3"
+              data-id="left"
+            >
+              &larr;
+            </button>
+            <button
+              class="arrow__btn arrow__right arrow__right--3"
+              data-id="right"
+            >
+              &rarr;
+            </button>
           </div>
 
           <div class="dot__container">
-            <div class="dot circle active"></div>
-            <div class="dot circle"></div>
-            <div class="dot circle"></div>
+            <div class="dot circle active" data-id="dot1"></div>
+            <div class="dot circle" data-id="dot2"></div>
+            <div class="dot circle" data-id="dot3"></div>
           </div>
         </div>
       </section>

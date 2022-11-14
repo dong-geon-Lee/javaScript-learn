@@ -51,6 +51,7 @@ class Running extends Workout {
     this.calcPace();
     this._setDescription();
   }
+
   calcPace() {
     // min/km
     this.pace = this.duration / this.distance;
@@ -155,6 +156,7 @@ class App {
     // setView는 배열을 받는다([경도,위도])
     // 숫자가 높아질수록 지도가 더 확대된다.
     // 상수 map에 이벤트 리스너를 추가 할 수있다.
+    // ! 1) 왜 this.#map에 할당하나?
     this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
 
     // 방대한 메서드들을 확인 할 수 있다.
@@ -172,6 +174,7 @@ class App {
     // 여기서 on은 addEventListener와 동등하다.
     // Handling clicks on map
     console.log(this, '왜?');
+    // ! 2) this는 맞나?
     this.#map.on('click', this._showForm.bind(this));
 
     this.#workouts.forEach(work => {
