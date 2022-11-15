@@ -1,3 +1,6 @@
+import { API_URL } from './config.js';
+import { getJSON } from './helpers.js';
+
 /**
  * ? 291강 ~ 292강 MVC 아키텍처
  * !12분 까지 배운점은 Controller에 집중되어 있는 데이터를
@@ -10,19 +13,14 @@
  * 작성하는 것을 시작한다.
  * Controller(model.loadRecipe) -> model(loadRecipe) -> view(RecipeView)
  */
+
 export const state = {
   recipe: {},
 };
 
 export const loadRecipe = async id => {
   try {
-    const response = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-    );
-    const data = await response.json();
-
-    if (!response.ok) throw new Error(`${data.message}`);
-
+    const data = await getJSON(`${API_URL}/${id}`);
     const { recipe } = data.data;
 
     state.recipe = {
