@@ -1,3 +1,4 @@
+import * as model from './model.js';
 import icons from 'url:../img/icons.svg';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -76,6 +77,26 @@ console.log('시작점');
  * 아무것도 뜨지 않는 경우를 대비하려고 load 이벤트를 추가하는 코드가 설명되었는데, 이 코드가 없어도
  * 새탭에서 앱 화면이 잘나오고 있다. 무시해도 상관없다고 판단됨.
  * 4. id가 없으면 앱을 보호하기 위해서 guard문을 사용한다 !id -> return;
+ *
+ *
+ * ? 291강
+ * 1번-Business Logic
+ * 2번-State
+ * 3번-HTTP Library
+ * 4번-Application Logic (Router)
+ * 5번-Presentation Logic (UI Layer)
+ *
+ * 통합된 아키텍처 정의 (MVC 아키텍처)
+ * Model - Controller - View
+ * 모델과 뷰는 완전히 독립적으로 서로에 대해서 모른다.
+ * 서로를 import로 가져오지 않으며 컨트롤러를 모르기 때문에 역시
+ * import 하지 않는다. 유일하게 2개를 연결하는 것이 컨트롤러다.
+ * - Model에 일부 데이터를 요청(AJAX)하면 Controller는 데이터를
+ * 가져와서 View에 보낸다.
+ *
+ * 1. Model(1번, 2번, 3번)
+ * 2. Controller(4번)
+ * 3. View(5번)
  */
 
 const renderSpinner = parentEl => {
@@ -93,36 +114,15 @@ const renderSpinner = parentEl => {
 
 const showRecipe = async () => {
   try {
+    // 비즈니스 로직이 아니라 어플리케이션 논리이다.
     const id = window.location.hash.slice(1);
     console.log(id);
 
     if (!id) return;
-
-    //  1) Loading recipe
     renderSpinner(recipeContainer);
 
-    const response = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-    );
-
-    const data = await response.json();
-    if (!response.ok) throw new Error(`${data.message}`);
-    let { recipe } = data.data;
-
-    console.log(recipe);
-
-    recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      image: recipe.image_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-      ingredients: recipe.ingredients,
-    };
-
-    console.log(recipe);
+    //  1) Loading recipe
+    console.log(model);
 
     // 2) Rendering recipe
     const markup = `
