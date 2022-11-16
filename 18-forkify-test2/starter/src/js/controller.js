@@ -92,7 +92,7 @@ const controlRecipes = async () => {
 const controlSearchResults = async () => {
   try {
     resultsView.renderSpinner();
-    console.log(resultsView);
+
     // 1) Get search query
     const query = searchView.getQuery();
     if (!query) return;
@@ -101,7 +101,6 @@ const controlSearchResults = async () => {
     await model.loadSearchResults(query);
 
     // 3) Render results
-    console.log(model.state.search.results);
     resultsView.render(model.state.search.results);
   } catch (error) {
     console.log(error);
