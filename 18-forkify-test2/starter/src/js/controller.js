@@ -70,7 +70,7 @@ console.log(recipeView);
  * 4. id가 없으면 앱을 보호하기 위해서 guard문을 사용한다 !id -> return;
  */
 
-const controlRecipe = async () => {
+const controlRecipes = async () => {
   try {
     const id = window.location.hash.slice(1);
     if (!id) return;
@@ -87,9 +87,8 @@ const controlRecipe = async () => {
   }
 };
 
-controlRecipe();
+const init = () => {
+  recipeView.addHandlerRender(controlRecipes);
+};
 
-window.addEventListener('hashchange', controlRecipe);
-
-// window.addEventListener('load', showRecipe);
-// ['hashchange','load'].forEach(ev=> window.addEventListener(ev,showRecipe));
+init();
