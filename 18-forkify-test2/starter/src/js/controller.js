@@ -2,6 +2,7 @@ import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import searchView from './views/searchView.js';
 
 // https://forkify-api.herokuapp.com/v2
 // https://forkify-api.herokuapp.com/api/v2/recipes?search=pizza
@@ -83,12 +84,24 @@ const controlRecipes = async () => {
     // 2) Rendering recipe
     recipeView.render(model.state.recipe);
   } catch (error) {
-    console.error(error);
+    recipeView.renderError();
+  }
+};
+
+const controlSearchResults = async () => {
+  try {
+    const query = searchView.getQuery();
+    console.log(query);
+
+    await model.loadSearchResults(query);
+  } catch (error) {
+    recipeView.renderError();
   }
 };
 
 const init = () => {
   recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
 
 init();
