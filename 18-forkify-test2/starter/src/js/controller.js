@@ -7,8 +7,8 @@ import 'regenerator-runtime/runtime';
 // https://forkify-api.herokuapp.com/api/v2/recipes?search=pizza
 // id=5ed6604591c37cdc054bcd09
 ///////////////////////////////////////
-console.log('시작점');
-console.log(recipeView);
+// console.log('시작점');
+// console.log(recipeView);
 
 /**
  * ? 288강
@@ -83,7 +83,7 @@ const controlRecipes = async () => {
     // 2) Rendering recipe
     recipeView.render(model.state.recipe);
   } catch (error) {
-    console.error(error);
+    recipeView.renderError();
   }
 };
 
