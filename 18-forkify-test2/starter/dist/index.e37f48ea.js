@@ -622,14 +622,12 @@ var _runtime = require("regenerator-runtime/runtime");
 const controlSearchResults = async ()=>{
     try {
         (0, _resultsViewJsDefault.default).renderSpinner();
-        console.log((0, _resultsViewJsDefault.default));
         // 1) Get search query
         const query = (0, _searchViewJsDefault.default).getQuery();
         if (!query) return;
         // 2) Load search results
         await _modelJs.loadSearchResults(query);
         // 3) Render results
-        console.log(_modelJs.state.search.results);
         (0, _resultsViewJsDefault.default).render(_modelJs.state.search.results);
     } catch (error) {
         console.log(error);
@@ -2953,18 +2951,13 @@ exports.default = new SearchView();
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"cSbZE":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _iconsSvg = require("url:../../img/icons.svg");
-var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _viewJs = require("./View.js");
 var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
-// ResultsView에서 View 클래스의 메서드를 상속받고 있다.
-// export default View
 class ResultsView extends (0, _viewJsDefault.default) {
     _parentElement = document.querySelector(".results");
     _errorMessage = "No recipes found for your query! please try again ;";
     _message = "";
     _generateMarkup() {
-        console.log(this._data);
         return this._data.map(this._generateMarkupPreview).join("");
     }
     _generateMarkupPreview(result) {
@@ -2985,6 +2978,6 @@ class ResultsView extends (0, _viewJsDefault.default) {
 }
 exports.default = new ResultsView();
 
-},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire7e89")
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire7e89")
 
 //# sourceMappingURL=index.e37f48ea.js.map
