@@ -1,4 +1,4 @@
-import { API_URL } from './config.js';
+import { API_URL, RES_PER_PAGE } from './config.js';
 import { getJSON } from './helpers.js';
 
 /**
@@ -14,11 +14,14 @@ import { getJSON } from './helpers.js';
  * Controller(model.loadRecipe) -> model(loadRecipe) -> view(RecipeView)
  */
 
+//  298강
 export const state = {
   recipe: {},
   search: {
     query: '',
     results: [],
+    page: 1,
+    resultsPerPage: RES_PER_PAGE,
   },
 };
 
@@ -64,4 +67,12 @@ export const loadSearchResults = async query => {
   } catch (error) {
     throw error;
   }
+};
+
+// 298강
+export const getSearchResultsPage = (page = state.search.page) => {
+  const start = (page - 1) * state.search.resultsPerPage; // 0
+  const end = page * state.search.resultsPerPage; // 9
+
+  return state.search.results.slice(start, end);
 };
