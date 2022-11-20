@@ -80,10 +80,12 @@ export const getSearchResultsPage = (page = state.search.page) => {
 };
 
 export const updateServings = newServings => {
+  console.log(newServings, 'in');
   state.recipe.ingredients.forEach(ing => {
     ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
     // newQt = oldQt * newServings / oldServings // 2 * 8 / 4 = 4
   });
 
   state.recipe.servings = newServings;
+  console.log(state.recipe.servings);
 };

@@ -646,14 +646,17 @@ const controlPagination = (goToPage)=>{
     // 4) Render initial pagination buttons
     (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
 };
-const controlServings = ()=>{
+const controlServings = (newServings)=>{
     // Update the recipe servings (in state)
-    _modelJs.updateServings(4);
+    console.log(newServings, "뭐지?");
+    _modelJs.updateServings(newServings);
+    console.log(_modelJs.state.recipe);
     // Update the recipe view
     (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
 };
 const init = ()=>{
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
+    (0, _recipeViewJsDefault.default).addHandlerUpdateServings(controlServings);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagination);
 };
@@ -2459,11 +2462,13 @@ const getSearchResultsPage = (page = state.search.page)=>{
     return state.search.results.slice(start, end);
 };
 const updateServings = (newServings)=>{
+    console.log(newServings, "in");
     state.recipe.ingredients.forEach((ing)=>{
         ing.quantity = ing.quantity * newServings / state.recipe.servings;
     // newQt = oldQt * newServings / oldServings // 2 * 8 / 4 = 4
     });
     state.recipe.servings = newServings;
+    console.log(state.recipe.servings);
 };
 
 },{"./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
@@ -2524,6 +2529,29 @@ var _fractional = require("fractional");
             "load"
         ].forEach((ev)=>window.addEventListener(ev, handler));
     }
+    addHandlerUpdateServings(handler) {
+        this._parentElement.addEventListener("click", (e)=>{
+            const btn = e.target.closest(".btn--tiny");
+            if (!btn) return;
+            const updateTo = +btn.dataset.updateTo;
+            console.log(updateTo);
+            // if (btn.classList.contains('btn--decrease-servings')) {
+            //   let decreaseServing = +e.target
+            //     .closest('.recipe__info')
+            //     .querySelector('span').dataset.id;
+            //   decreaseServing < 2 ? (decreaseServing = 1) : decreaseServing--;
+            //   handler(decreaseServing);
+            // }
+            // if (btn.classList.contains('btn--increase-servings')) {
+            //   let increaseServing = +e.target
+            //     .closest('.recipe__info')
+            //     .querySelector('span').dataset.id;
+            //   increaseServing > 9 ? (increaseServing = 10) : increaseServing++;
+            //   handler(increaseServing);
+            // }
+            if (updateTo > 0) handler(updateTo);
+        });
+    }
     _generateMarkup() {
         return `
     <figure class="recipe__fig">
@@ -2549,12 +2577,12 @@ var _fractional = require("fractional");
       <span class="recipe__info-text">servings</span>
 
       <div class="recipe__info-buttons">
-        <button class="btn--tiny btn--increase-servings">
+        <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings - 1}">
           <svg>
             <use href="${0, _iconsSvgDefault.default}#icon-minus-circle"></use>
           </svg>
         </button>
-        <button class="btn--tiny btn--increase-servings">
+        <button class="btn--tiny btn--update-servings" data-update-to="${this._data.servings + 1}">
           <svg>
             <use href="${0, _iconsSvgDefault.default}#icon-plus-circle"></use>
           </svg>
@@ -2878,6 +2906,7 @@ class View {
     _data;
     render(data) {
         if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+        console.log(data, "???");
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
@@ -3080,6 +3109,6 @@ class PaginationView extends (0, _viewJsDefault.default) {
 }
 exports.default = new PaginationView();
 
-},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/icons.svg":"loVOp"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire7e89")
+},{"./View.js":"5cUXS","url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire7e89")
 
 //# sourceMappingURL=index.e37f48ea.js.map
