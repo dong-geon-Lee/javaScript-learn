@@ -84,6 +84,9 @@ const controlRecipes = async () => {
 
     recipeView.renderSpinner();
 
+    // 0) Update results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage());
+
     //  1) Loading recipe
     await model.loadRecipe(id);
 
@@ -125,12 +128,13 @@ const controlPagination = goToPage => {
 
 const controlServings = newServings => {
   // Update the recipe servings (in state)
-  console.log(newServings, '뭐지?');
   model.updateServings(newServings);
 
-  console.log(model.state.recipe);
   // Update the recipe view
-  recipeView.render(model.state.recipe);
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
+
+  // 업데이트란 기본적으로 DOM의 텍스트 부분만 변경한다.
 };
 
 const init = () => {

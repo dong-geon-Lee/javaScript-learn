@@ -616,6 +616,8 @@ var _runtime = require("regenerator-runtime/runtime");
         const id = window.location.hash.slice(1);
         if (!id) return;
         (0, _recipeViewJsDefault.default).renderSpinner();
+        // 0) Update results view to mark selected search result
+        (0, _resultsViewJsDefault.default).update(_modelJs.getSearchResultsPage());
         //  1) Loading recipe
         await _modelJs.loadRecipe(id);
         // 2) Rendering recipe
@@ -648,11 +650,11 @@ const controlPagination = (goToPage)=>{
 };
 const controlServings = (newServings)=>{
     // Update the recipe servings (in state)
-    console.log(newServings, "뭐지?");
     _modelJs.updateServings(newServings);
-    console.log(_modelJs.state.recipe);
     // Update the recipe view
-    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+    // recipeView.render(model.state.recipe);
+    (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
+// 업데이트란 기본적으로 DOM의 텍스트 부분만 변경한다.
 };
 const init = ()=>{
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
@@ -2906,11 +2908,26 @@ class View {
     _data;
     render(data) {
         if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
-        console.log(data, "???");
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    update(data) {
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+        // page에 실제로 존재하지 않는 DOM을 반환한다. (가상DOM)
+        const newDOM = document.createRange().createContextualFragment(newMarkup);
+        const newElements = Array.from(newDOM.querySelectorAll("*"));
+        const curElements = Array.from(this._parentElement.querySelectorAll("*"));
+        newElements.forEach((newEl, i)=>{
+            const curEl = curElements[i];
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") curEl.textContent = newEl.textContent;
+            // Updates changed Attributes
+            if (!newEl.isEqualNode(curEl)) Array.from(newEl.attributes).forEach((attr)=>{
+                curEl.setAttribute(attr.name, attr.value);
+            });
+        });
     }
     _clear() {
         this._parentElement.innerHTML = "";
@@ -3029,9 +3046,11 @@ class ResultsView extends (0, _viewJsDefault.default) {
         return this._data.map(this._generateMarkupPreview).join("");
     }
     _generateMarkupPreview(result) {
+        const id = window.location.hash.slice(1);
+        console.log(id === result.id);
         return `
     <li class="preview">
-    <a class="preview__link" href="#${result.id}">
+    <a class="preview__link ${id === result.id ? "preview__link--active" : ""} " href="#${result.id}">
       <figure class="preview__fig">
         <img src="${result.image}" alt="${result.title}" />
       </figure>
