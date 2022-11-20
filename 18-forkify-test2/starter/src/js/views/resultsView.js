@@ -7,7 +7,7 @@ class ResultsView extends View {
   _message = 'No search recipe results!';
 
   generateMarkup() {
-    return this._data.results.map(this.generateMarkupPreView).join('');
+    return this._data.map(this.generateMarkupPreView).join('');
   }
 
   generateMarkupPreView(result) {

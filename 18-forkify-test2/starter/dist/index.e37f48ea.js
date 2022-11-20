@@ -536,7 +536,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "controlRecipes", ()=>controlRecipes);
 parcelHelpers.export(exports, "searchRecipes", ()=>searchRecipes);
+parcelHelpers.export(exports, "paginationRecipes", ()=>paginationRecipes);
 var _modelJs = require("./model.js");
+var _paginationViewJs = require("./views/paginationView.js");
+var _paginationViewJsDefault = parcelHelpers.interopDefault(_paginationViewJs);
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
 var _resultsViewJs = require("./views/resultsView.js");
@@ -545,8 +548,9 @@ var _searchViewJs = require("./views/searchView.js");
 var _searchViewJsDefault = parcelHelpers.interopDefault(_searchViewJs);
 const controlRecipes = async ()=>{
     try {
-        (0, _recipeViewJsDefault.default).renderSpinner();
         const id = window.location.hash.slice(1);
+        if (!id) return;
+        (0, _recipeViewJsDefault.default).renderSpinner();
         await _modelJs.loadRecipes(id);
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
     } catch (error) {
@@ -558,7 +562,18 @@ const searchRecipes = async (query)=>{
         if (!query) return;
         (0, _resultsViewJsDefault.default).renderSpinner();
         await _modelJs.loadSearchRecipes(query);
-        (0, _resultsViewJsDefault.default).render(_modelJs.state.search);
+        (0, _resultsViewJsDefault.default).render(_modelJs.paginationResult());
+        (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
+    } catch (error) {
+        console.log(error);
+    }
+};
+const paginationRecipes = async (page)=>{
+    console.log(page);
+    try {
+        (0, _resultsViewJsDefault.default).render(_modelJs.paginationResult(page));
+        (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
+        console.log(_modelJs.state.search);
     } catch (error) {
         console.log(error);
     }
@@ -566,10 +581,11 @@ const searchRecipes = async (query)=>{
 const init = ()=>{
     (0, _recipeViewJsDefault.default).addHandlerRecipe(controlRecipes);
     (0, _searchViewJsDefault.default).addHandlerClick(searchRecipes);
+    (0, _paginationViewJsDefault.default).addHandlerClick(paginationRecipes);
 };
 init();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./model.js":"Y4A21","./views/recipeView.js":"l60JC","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./model.js":"Y4A21","./views/recipeView.js":"l60JC","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./views/paginationView.js":"6z7bi"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -605,13 +621,16 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipes", ()=>loadRecipes);
 parcelHelpers.export(exports, "loadSearchRecipes", ()=>loadSearchRecipes);
+parcelHelpers.export(exports, "paginationResult", ()=>paginationResult);
 var _config = require("./config");
 var _helpers = require("./helpers");
 const state = {
     recipe: {},
     search: {
         query: "",
-        results: []
+        results: [],
+        page: 1,
+        resultPerpage: (0, _config.RES_PER_PAGE)
     }
 };
 const loadRecipes = async (id)=>{
@@ -628,7 +647,6 @@ const loadRecipes = async (id)=>{
             sourceUrl: recipe.source_url,
             title: recipe.title
         };
-        console.log(state.recipe);
     } catch (error) {
         throw error;
     }
@@ -644,10 +662,15 @@ const loadSearchRecipes = async (query)=>{
                 title: rec.title
             };
         });
-        console.log(state.search.results);
     } catch (error) {
         throw error;
     }
+};
+const paginationResult = (page = state.search.page)=>{
+    state.search.page = page;
+    const start = (page - 1) * state.search.resultPerpage;
+    const end = page * state.search.resultPerpage;
+    return state.search.results.slice(start, end);
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","./helpers":"hGI1E"}],"k5Hzs":[function(require,module,exports) {
@@ -655,8 +678,10 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
+parcelHelpers.export(exports, "RES_PER_PAGE", ()=>RES_PER_PAGE);
 const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes/";
 const TIMEOUT_SEC = 10;
+const RES_PER_PAGE = 10;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hGI1E":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -742,9 +767,7 @@ class RecipeView extends (0, _viewJsDefault.default) {
      </div>
 
     <div class="recipe__user-generated">
-      <svg>
-        <use href="${0, _iconsSvgDefault.default}#icon-user"></use>
-      </svg>
+
     </div>
     <button class="btn--round">
       <svg class="">
@@ -1176,7 +1199,7 @@ class ResultsView extends (0, _viewJsDefault.default) {
     _errorMessage = "No recipes found for your query. Please try again!";
     _message = "No search recipe results!";
     generateMarkup() {
-        return this._data.results.map(this.generateMarkupPreView).join("");
+        return this._data.map(this.generateMarkupPreView).join("");
     }
     generateMarkupPreView(result) {
         return `
@@ -1201,6 +1224,70 @@ class ResultsView extends (0, _viewJsDefault.default) {
 }
 exports.default = new ResultsView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS","url:../../img/icons.svg":"loVOp"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire7e89")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./View.js":"5cUXS","url:../../img/icons.svg":"loVOp"}],"6z7bi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+var _iconsSvg = require("url:../../img/icons.svg");
+var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
+class PaginationView extends (0, _viewJsDefault.default) {
+    _parentElement = document.querySelector(".pagination");
+    _errorMessage = "No recipes found for your query. Please try again!";
+    _message = "No search recipe results!";
+    addHandlerClick(handler) {
+        this._parentElement.addEventListener("click", (e)=>{
+            const btn = e.target.closest(".btn--inline");
+            if (!btn) return;
+            this._data.page = +btn.dataset.goto;
+            handler(this._data.page);
+        });
+    }
+    generateMarkup() {
+        console.log(this._data);
+        const currentPage = this._data.page;
+        const totalPage = Math.ceil(this._data.results.length / this._data.resultPerpage);
+        console.log(currentPage, totalPage);
+        // 현재페이지 1, 전체페이지는 현재페이지보다 크다. (other page)
+        if (currentPage === 1 && currentPage < totalPage) return `
+        <button data-goto="${currentPage + 1}" class="btn--inline pagination__btn--next">
+          <span>Page ${currentPage + 1}</span>
+          <svg class="search__icon">
+            <use href="${0, _iconsSvgDefault.default}#icon-arrow-right"></use>
+          </svg>
+        </button>
+      `;
+        // 현재 페이지 1, 전체페이지와 현재 페이지와 같다. (last page)
+        if (currentPage === 1 && currentPage === totalPage) return "";
+        // 현재 페이지가 1보다 크고 전체 페이지 보다 작다. (middle page)
+        if (currentPage > 1 && currentPage < totalPage) return `
+        <button data-goto="${currentPage - 1}" class="btn--inline pagination__btn--prev">
+          <svg class="search__icon">
+            <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
+          </svg>
+          <span>Page ${currentPage - 1}</span>
+        </button>
+
+        <button data-goto="${currentPage + 1}" class="btn--inline pagination__btn--next">
+          <span>Page ${currentPage + 1}</span>
+          <svg class="search__icon">
+            <use href="${0, _iconsSvgDefault.default}#icon-arrow-right"></use>
+          </svg>
+        </button>
+    `;
+        // 현재 페이지가 1보다 크고 전체 페이지와 같다. (end page)
+        if (currentPage > 1 && currentPage === totalPage) return `
+        <button data-goto="${currentPage - 1}" class="btn--inline pagination__btn--prev">
+          <svg class="search__icon">
+            <use href="${0, _iconsSvgDefault.default}#icon-arrow-left"></use>
+          </svg>
+          <span>Page ${currentPage - 1}</span>
+        </button>
+    `;
+    }
+}
+exports.default = new PaginationView();
+
+},{"./View.js":"5cUXS","url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire7e89")
 
 //# sourceMappingURL=index.e37f48ea.js.map
