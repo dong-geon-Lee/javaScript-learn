@@ -23,23 +23,6 @@ class RecipeView extends View {
 
       const updateTo = +btn.dataset.updateTo;
       console.log(updateTo);
-      // if (btn.classList.contains('btn--decrease-servings')) {
-      //   let decreaseServing = +e.target
-      //     .closest('.recipe__info')
-      //     .querySelector('span').dataset.id;
-
-      //   decreaseServing < 2 ? (decreaseServing = 1) : decreaseServing--;
-      //   handler(decreaseServing);
-      // }
-
-      // if (btn.classList.contains('btn--increase-servings')) {
-      //   let increaseServing = +e.target
-      //     .closest('.recipe__info')
-      //     .querySelector('span').dataset.id;
-
-      //   increaseServing > 9 ? (increaseServing = 10) : increaseServing++;
-      //   handler(increaseServing);
-      // }
 
       if (updateTo > 0) handler(updateTo);
     });
