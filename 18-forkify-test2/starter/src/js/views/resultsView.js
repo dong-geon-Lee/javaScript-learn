@@ -1,8 +1,9 @@
-import PreviewView from './previewView';
+import PreviewView from './previewView.js';
 
 class ResultsView extends PreviewView {
   _parentElement = document.querySelector('.results');
-  _errorMessage = 'No recipes for this query. Please try another one!';
+  _errorMessage = 'No recipes found for your query! please try again ;';
+  _message = '';
 }
 
 export default new ResultsView();

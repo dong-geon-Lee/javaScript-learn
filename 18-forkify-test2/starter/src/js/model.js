@@ -98,7 +98,7 @@ export const updateServings = newServings => {
   console.log(state.recipe.servings);
 };
 
-const persistBookmarks = () => {
+export const persistBookmarks = () => {
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 };
 
@@ -124,14 +124,8 @@ export const deleteBookmark = id => {
 };
 
 const init = () => {
-  const storage = localStorage.getItem('bookmarks');
-  if (storage) state.bookmarks = JSON.parse(storage);
+  const storage = JSON.parse(localStorage.getItem('bookmarks'));
+  if (storage) state.bookmarks = storage;
 };
 
 init();
-
-const clearBookmarks = () => {
-  localStorage.clear('bookmarks');
-};
-
-// clearBookmarks();
