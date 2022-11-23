@@ -20,5 +20,20 @@ export const getJSON = async url => {
   }
 };
 
-// 정리하면 helper에서 에러를 기록하고 싶은것이 아니라 최종적으로 반환되는
-// model.js 내부에서 에러를 찾고 싶을 떄 throw를 사용해서 에러를 던진다.
+export const sendJSON = async (url, uploadData) => {
+  try {
+    const fetchPro = fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(uploadData),
+    });
+
+    const response = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(`${data.message} (${response.status})`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
