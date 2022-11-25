@@ -23,12 +23,15 @@ class RecipeView extends View {
   addHandlerBookmark(handler) {
     this._parentElement.addEventListener('click', e => {
       const btn = e.target.closest('.btn--bookmark');
+      console.log(btn);
+      console.log(this._data.bookmarked);
       if (!btn) return;
       handler();
     });
   }
 
   generateMarkup() {
+    console.log(this._data);
     return `
     <figure class="recipe__fig">
     <img src="${this._data.imageUrl}" alt="${

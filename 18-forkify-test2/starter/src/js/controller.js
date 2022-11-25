@@ -53,8 +53,6 @@ const controlAddBookmark = () => {
   recipeView.update(model.state.recipe);
 };
 
-const controlBookmark = () => {};
-
 const controlResults = () => {};
 
 const init = () => {

@@ -579,7 +579,6 @@ const controlAddBookmark = ()=>{
     else _modelJs.deleteBookmark(_modelJs.state.recipe.id);
     (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
-const controlBookmark = ()=>{};
 const controlResults = ()=>{};
 const init = ()=>{
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
@@ -598,7 +597,6 @@ parcelHelpers.export(exports, "loadRecipes", ()=>loadRecipes);
 parcelHelpers.export(exports, "searchRecipes", ()=>searchRecipes);
 parcelHelpers.export(exports, "searchResultsPage", ()=>searchResultsPage);
 parcelHelpers.export(exports, "servingRecipes", ()=>servingRecipes);
-parcelHelpers.export(exports, "persistBookmark", ()=>persistBookmark);
 parcelHelpers.export(exports, "addBookmark", ()=>addBookmark);
 parcelHelpers.export(exports, "deleteBookmark", ()=>deleteBookmark);
 var _config = require("./config");
@@ -662,25 +660,21 @@ const servingRecipes = (newServings)=>{
     });
     state.recipe.servings = newServings;
 };
-const persistBookmark = ()=>{
-    localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
-};
 const addBookmark = (recipe)=>{
     state.bookmarks.push(recipe);
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
-    persistBookmark();
 };
 const deleteBookmark = (id)=>{
     const index = state.bookmarks.findIndex((bookmark)=>bookmark.id === id);
     state.bookmarks.splice(index, 1);
     if (id === state.recipe.id) state.recipe.bookmarked = false;
-    persistBookmark();
-};
-const init = ()=>{
-    const storage = JSON.parse(localStorage.getItem("bookmarks"));
-    if (storage) state.bookmarks = storage;
-};
-init();
+}; /** 여기서 고민 할 것 같지 않니?
+ * 여기까지 하면서 토글을 생각할까?
+ * 그러니까 추가와 제거 이 로직을 어떻게 구별해주느냐 ?
+ * 이생각은 분명히 했을거다. 이 순간 state를 이용해서
+ * 상태를 변경시키겠다는것도 인지 하고 있는 순간이니까
+ * 하지만 어떻게? 라고 생각했을거다
+ */ 
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","./helpers":"hGI1E"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
@@ -777,11 +771,14 @@ class RecipeView extends (0, _viewJsDefault.default) {
     addHandlerBookmark(handler) {
         this._parentElement.addEventListener("click", (e)=>{
             const btn = e.target.closest(".btn--bookmark");
+            console.log(btn);
+            console.log(this._data.bookmarked);
             if (!btn) return;
             handler();
         });
     }
     generateMarkup() {
+        console.log(this._data);
         return `
     <figure class="recipe__fig">
     <img src="${this._data.imageUrl}" alt="${this._data.title}" class="recipe__img" />
