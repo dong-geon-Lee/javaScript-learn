@@ -6,10 +6,11 @@ class ResultsView extends View {
   _errorMessage = 'No recipes found for your query. Please try again!';
   _message;
 
-  addHandlerRender(handler) {
-    console.log(handler);
-    this._parentElement.addEventListener('hashchange', () => {
-      handler();
+  addhandlerResultActive(handler) {
+    this._parentElement.addEventListener('click', e => {
+      const btn = e.target.closest('.preview');
+      if (!btn) return;
+      window.addEventListener('hashchange', handler);
     });
   }
 
@@ -19,10 +20,13 @@ class ResultsView extends View {
 
   generateMarkupResult(result) {
     const { id, imageUrl, publisher, title } = result;
+    const hashId = window.location.hash.slice(1);
 
     return `
       <li class="preview">
-        <a class="preview__link" href="#${id}">
+        <a class="preview__link ${
+          id === hashId ? 'preview__link--active' : ''
+        }" href="#${id}">
           <figure class="preview__fig">
             <img src="${imageUrl}" alt="${title}" />
           </figure>

@@ -2,18 +2,9 @@ import View from './View.js';
 import icons from '../../img/icons.svg';
 
 class BookmarksView extends View {
-  _parentElement = document.querySelector('.results');
+  _parentElement = document.querySelector('.bookmarks');
   _errorMessage = 'No recipes found for your query. Please try again!';
   _message;
-
-  //   addHandlerRender(handler) {
-  //     this._parentElement.addEventListener('click', e => {
-  //       const btn = e.target.closest('.preview');
-  //       if (!btn) return;
-  //       console.log(btn);
-  //       handler();
-  //     });
-  //   }
 
   generateMarkup() {
     return this._data.map(this.generateMarkupResult).join('');
@@ -21,10 +12,13 @@ class BookmarksView extends View {
 
   generateMarkupResult(result) {
     const { id, imageUrl, publisher, title } = result;
+    const hashId = window.location.hash.slice(1);
 
     return `
       <li class="preview">
-        <a class="preview__link" href="#${id}">
+        <a class="preview__link ${
+          id === hashId ? 'preview__link--active' : ''
+        }" href="#${id}">
           <figure class="preview__fig">
             <img src="${imageUrl}" alt="${title}" />
           </figure>
@@ -44,5 +38,3 @@ class BookmarksView extends View {
 }
 
 export default new BookmarksView();
-
-// preview__link preview__link--active

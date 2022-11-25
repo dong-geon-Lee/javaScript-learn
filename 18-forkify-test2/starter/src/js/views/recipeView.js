@@ -5,7 +5,7 @@ import { Fraction } from 'fractional';
 class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
   _errorMessage = 'No recipes found for your query. Please try again!';
-  _message;
+  _message = 'add Data Success!';
 
   addHandlerRender(hanlder) {
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, hanlder));
@@ -16,22 +16,19 @@ class RecipeView extends View {
       const btn = e.target.closest('.btn--tiny');
       if (!btn) return;
       const updateServing = +btn.dataset.update;
-      hanlder(updateServing);
+      updateServing > 0 && hanlder(updateServing);
     });
   }
 
   addHandlerBookmark(handler) {
     this._parentElement.addEventListener('click', e => {
       const btn = e.target.closest('.btn--bookmark');
-      console.log(btn);
-      console.log(this._data.bookmarked);
       if (!btn) return;
       handler();
     });
   }
 
   generateMarkup() {
-    console.log(this._data);
     return `
     <figure class="recipe__fig">
     <img src="${this._data.imageUrl}" alt="${

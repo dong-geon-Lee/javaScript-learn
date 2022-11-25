@@ -1,5 +1,5 @@
-import { API_URL, RES_PER_PAGE } from './config';
-import { getJSON } from './helpers';
+import { API_URL, KEY, RES_PER_PAGE } from './config';
+import { getJSON, sendJSON } from './helpers';
 
 export const state = {
   recipe: {},
@@ -12,21 +12,26 @@ export const state = {
   bookmarks: [],
 };
 
+const createStateRecipe = data => {
+  const { recipe } = data.data;
+
+  return {
+    id: recipe.id,
+    cookingTime: recipe.cooking_time,
+    imageUrl: recipe.image_url,
+    ingredients: recipe.ingredients,
+    publisher: recipe.publisher,
+    servings: recipe.servings,
+    sourceUrl: recipe.source_url,
+    title: recipe.title,
+    ...(recipe.key && { key: recipe.key }),
+  };
+};
+
 export const loadRecipes = async id => {
   try {
     const data = await getJSON(`${API_URL}${id}`);
-    const { recipe } = data.data;
-
-    state.recipe = {
-      id: recipe.id,
-      cookingTime: recipe.cooking_time,
-      imageUrl: recipe.image_url,
-      ingredients: recipe.ingredients,
-      publisher: recipe.publisher,
-      servings: recipe.servings,
-      sourceUrl: recipe.source_url,
-      title: recipe.title,
-    };
+    state.recipe = createStateRecipe(data);
 
     if (state.bookmarks.some(bookmark => bookmark.id === id)) {
       state.recipe.bookmarked = true;
@@ -34,7 +39,7 @@ export const loadRecipes = async id => {
       state.recipe.bookmarked = false;
     }
 
-    console.log(recipe);
+    console.log(state.recipe);
   } catch (error) {
     throw error;
   }
@@ -75,10 +80,56 @@ export const servingRecipes = newServings => {
   state.recipe.servings = newServings;
 };
 
+export const addRecipe = async newRecipe => {
+  try {
+    const ingredients = Object.entries(newRecipe)
+      .filter(ing => {
+        const check = ing[0].startsWith('ingredient') && ing[1].trim() !== '';
+        if (check) return ing;
+      })
+      .map(ing => {
+        const inputCheck = ing[1].replaceAll(' ', '').split(',');
+        console.log(inputCheck);
+        if (inputCheck.length < 3) {
+          throw new Error('input ingredient more! at least 3!');
+        }
+
+        const [quantity, unit, description] = ing[1].split(',');
+
+        return {
+          quantity: quantity ? +quantity : null,
+          unit,
+          description,
+        };
+      });
+
+    const recipe = {
+      cooking_time: +newRecipe.cookingTime,
+      image_url: newRecipe.image,
+      ingredients,
+      publisher: newRecipe.publisher,
+      servings: +newRecipe.servings,
+      source_url: newRecipe.sourceUrl,
+      title: newRecipe.title,
+    };
+
+    const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
+    state.recipe = createStateRecipe(data);
+    addBookmark(state.recipe);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const persistBookmarks = () => {
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
+
 export const addBookmark = recipe => {
   state.bookmarks.push(recipe);
 
   if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+  persistBookmarks();
 };
 
 export const deleteBookmark = id => {
@@ -86,12 +137,12 @@ export const deleteBookmark = id => {
   state.bookmarks.splice(index, 1);
 
   if (id === state.recipe.id) state.recipe.bookmarked = false;
+  persistBookmarks();
 };
 
-/** 여기서 고민 할 것 같지 않니?
- * 여기까지 하면서 토글을 생각할까?
- * 그러니까 추가와 제거 이 로직을 어떻게 구별해주느냐 ?
- * 이생각은 분명히 했을거다. 이 순간 state를 이용해서
- * 상태를 변경시키겠다는것도 인지 하고 있는 순간이니까
- * 하지만 어떻게? 라고 생각했을거다
- */
+const init = () => {
+  const storage = JSON.parse(localStorage.getItem('bookmarks'));
+  if (storage) state.bookmarks = storage;
+};
+
+init();
